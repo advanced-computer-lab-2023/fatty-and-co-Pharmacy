@@ -28,14 +28,11 @@ const patientSchema = new Schema(
       required: false,
     },
     FamilyMem: {
+      // TODO: change this
       type: [ImportFamObject.FamilyMem], //NOT SURE MEN LAW DA VALID TYPE
       required: false,
     },
-    PackageName: {
-      type: String,
-      enum: ["Silver", "Gold", "Platinum"],
-      required: false,
-    },
+    // TODO: add prescriptions
   },
   { timestamps: true }
 );
