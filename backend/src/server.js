@@ -4,6 +4,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 
 // Route Variables
+const medicineRoutes = require("./routes/medicine");
+
 
 // ENV Variables
 const port = process.env.PORT || 8000;
@@ -23,6 +25,8 @@ app.use((req, res, next) => {
 app.get("/", (req, res) => {
   res.send("Pharmacy Home");
 });
+app.use("/medicine", medicineRoutes);
+
 
 // Server
 mongoose
