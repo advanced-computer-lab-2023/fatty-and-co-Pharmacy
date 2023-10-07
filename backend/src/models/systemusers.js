@@ -24,7 +24,7 @@ const systemUsersSchema = new Schema(
     },
     Type: {
       type: String,
-      enum: ["Admin", "Patient", "Doctor"],
+      enum: ["Admin", "Patient", "Pharmacist"],
       required: true,
     },
     JwtToken: {
