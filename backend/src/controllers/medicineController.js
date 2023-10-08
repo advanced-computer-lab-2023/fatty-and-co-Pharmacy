@@ -100,10 +100,34 @@ const deleteMedicine = async (req, res) => {
   }
 };
 
+
+//filter medicine by medicinal use
+const filterMedicine = async (req, res) => {
+  const {MedicinalUse} = req.body;
+
+  try{
+    const Meds = await medicineModel.find({
+      ...MedicinalUse(MedicinalUse? {MedicinalUse: {$regex: MedicinalUse, $options: "i" }} : {}),
+    });
+
+  if(Meds.length == 0){
+    res.status(404).json({ error: "Medicines not found" });
+      return;
+  }
+  res.status(200).json(Meds);
+
+  }catch(err){
+    res.status(500).json({ message: err.message });
+
+  }
+};
+
+
 module.exports = {
   createMedicine,
   getMedicines,
   getMedicine,
   updateMedicine,
   deleteMedicine,
+  filterMedicine,
 };
