@@ -12,7 +12,7 @@ const createMedicine = async (req, res) => {
     Price,
     Image,
     Sales,
-    Medicinal_Use
+    Medicinal_Use,
   } = req.body;
   const newMedicine = new medicineModel({
     Name: Name,
@@ -22,7 +22,7 @@ const createMedicine = async (req, res) => {
     Price: Price,
     Image: Image,
     Sales: Sales,
-    Medicinal_Use: Medicinal_Use
+    Medicinal_Use: Medicinal_Use,
   });
 
   await newMedicine.save();
@@ -39,11 +39,13 @@ const getMedicines = async (req, res) => {
   }
 };
 
+// retrieve a specific Medicine by Name
 const getMedicine = async (req, res) => {
-  // retrieve a specific Medicine by Name
   try {
     const { Name } = req.params;
-    const package = await medicineModel.find({ Name: Name });
+    const package = await medicineModel.find({
+      Name: { $regex: Name, $options: "i" },
+    });
     res.status(200).json(package);
   } catch (err) {
     res.status(404).json({ message: "No Medicine found" });
