@@ -16,6 +16,7 @@ const {
   generatePackage,
   generateEmail,
   generatePassword,
+  generateMedicineDetails,
 } = require("../common/utils/generators");
 
 // create a new System User
@@ -95,6 +96,56 @@ const createPatient = async (req, res) => {
   }
 };
 
+// create a random medicine
+const createMedicine = async (req, res) => {
+  const {
+    Name,
+    Quantity,
+    Active_Ingredients,
+    Description,
+    Price,
+    Image,
+    Medicinal_Use,
+    Sales,
+  } = req.body;
+
+  const {
+    name,
+    quantity,
+    active_ingredients,
+    description,
+    price,
+    image,
+    medicinal_use,
+    sales,
+  } = generateMedicineDetails();
+
+  const finalName = Name || name;
+  const finalQuantity = Quantity || quantity;
+  const finalActive_Ingredients = Active_Ingredients || active_ingredients;
+  const finalDescription = Description || description;
+  const finalPrice = Price || price;
+  const finalImage = Image || image;
+  const finalMedicinal_Use = Medicinal_Use || medicinal_use;
+  const finalSales = Sales || sales;
+
+  try {
+    const newMedicine = await medicineModel.create({
+      Name: finalName,
+      Quantity: finalQuantity,
+      Active_Ingredients: finalActive_Ingredients,
+      Description: finalDescription,
+      Price: finalPrice,
+      Image: finalImage,
+      Medicinal_Use: finalMedicinal_Use,
+      Sales: finalSales,
+    });
+    res.status(201).json(newMedicine);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 // get all users
 const getSystemUsers = async (req, res) => {
   try {
@@ -145,4 +196,5 @@ module.exports = {
   getAdmins,
   getPharmacists,
   getPatients,
+  createMedicine,
 };

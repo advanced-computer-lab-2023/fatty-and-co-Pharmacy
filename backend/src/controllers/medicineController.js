@@ -46,6 +46,9 @@ const getMedicine = async (req, res) => {
     const medicine = await medicineModel.find({
       Name: { $regex: Name, $options: "i" },
     });
+    if (!medicine) res.status(404).json({ message: "No Medicine found" });
+    if (medicine.length === 0)
+      res.status(404).json({ message: "No Medicine found" });
     res.status(200).json(medicine);
   } catch (err) {
     res.status(404).json({ message: "No Medicine found" });

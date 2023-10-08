@@ -3,6 +3,7 @@ const {
   createSystemUser,
   createPharmacist,
   createPatient,
+  createMedicine,
   getSystemUsers,
   getAdmins,
   getPharmacists,
@@ -41,6 +42,10 @@ router.post("/createPharmacist", (req, res) => {
 
 router.post("/createPatient", (req, res) => {
   createPatient(req, res);
+});
+
+router.post("/createMedicine", (req, res) => {
+  createMedicine(req, res);
 });
 
 module.exports = router;
