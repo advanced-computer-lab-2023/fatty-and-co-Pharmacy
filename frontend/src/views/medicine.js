@@ -26,7 +26,7 @@ const Medicine = () => {
       <CardGroup style={{ margin: "10px" }}>
         {medicines &&
           medicines.map((medicine) => (
-            <MedicineCard key={medicine._id} Medicine={medicine} />
+            <MedicinePharmacistCard key={medicine._id} Medicine={medicine} />
           ))}
       </CardGroup>
       {/* add packages */}

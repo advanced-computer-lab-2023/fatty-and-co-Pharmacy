@@ -26,21 +26,22 @@ const MedicineCard = ({ Medicine }) => {
   const [message, setMessage] = useState("");
 
   // handle Archive
-  const handleArchive = async () => {
-    
+  const handleArchive = async () => { // TODO wil need context
     const state = Medicine.state === "archived" ? "unarchived" : "archived";
+    console.log(state);
     const response = await fetch("/medicine/updateMedicine/" + Medicine._id, {
       method: "PATCH",
       body: JSON.stringify({
         state: state,
       }),
     });
-
+    console.log(response.ok);
     const data = await response.json();
     if (response.ok) {
       setState(state);
       window.location.reload();
     } else {
+      
       setMessage(data.message);
     }
   };
@@ -50,7 +51,6 @@ const MedicineCard = ({ Medicine }) => {
   const toggle = () => setIsOpen(!isOpen);
 
   const handleEdit = async () => {
-
     const response = await fetch("/medicine/updateMedicine/" + Medicine._id, {
       method: "PATCH",
       headers: {
@@ -73,39 +73,44 @@ const MedicineCard = ({ Medicine }) => {
     } else {
       setMessage(data.message);
     }
-  }
+  };
 
   //end edit
 
   return (
     <Card
-      className="text-center"
+      className="text-left"
       style={{
-        width: "18rem",
       }}
     >
-      <CardBody style={{
-        width: "18rem",
-      }}>
+      <CardBody
+        style={{
+          width: "20rem",
+          fontSize: "14px",
+        }}
+      >
         <React.StrictMode>
           <Collapse isOpen={!isOpen} {...Medicine}>
-            <img src={Medicine.Image} alt={Medicine.Name} />
+            <img
+              src={Medicine.Image}
+              alt={Medicine.Name}
+              style={{ width: "10rem", height: "13rem" }}
+            />
             <CardTitle tag="h5">{Medicine.Name}</CardTitle>
-            <CardText>Quantity : {Medicine.Quantity}</CardText>
             <CardText>
+              Quantity : {Medicine.Quantity} <br />
               Active Ingredients : {Medicine.Active_Ingredients}
-            </CardText>
-            <CardText> Medicinal_Use : {Medicine.Medicinal_Use}</CardText>
-            <CardText>
+              <br />
+              Medicinal_Use : {Medicine.Medicinal_Use}
+              <br />
               Active Ingredients : {Medicine.Active_Ingredients}
-            </CardText>
-            <CardText>
+              <br />
               Total Sales : {Medicine.Sales}
-            </CardText>
-            <CardText>
+              <br />
               Price : {Medicine.Price} <small>L.E</small>
+              <br />
+              Description : {Medicine.Description}
             </CardText>
-            <CardText>Description : {Medicine.Description}</CardText>
             <Button
               onClick={toggle}
               color="primary"
@@ -118,7 +123,7 @@ const MedicineCard = ({ Medicine }) => {
               color="danger"
               style={{ margin: "5px", width: "70%" }}
             >
-                {Medicine.state === "archived" ? "Unarchive" : "Archive"}
+              {Medicine.state }
             </Button>
             {message && <p>message</p>}
           </Collapse>
@@ -141,13 +146,13 @@ const MedicineCard = ({ Medicine }) => {
                 id="QuantityEdit"
                 required
                 style={{ width: "80%", margin: "10px" }}
-                placeholder="Price in L.E"
+                placeholder="Quantity"
                 onChange={(e) => setQuantity(e.target.value)}
               />
             </CardText>
             <CardText>
               <input
-                type="number"
+                type="text"
                 name="Active_Ingredients"
                 id="Active_Ingredients"
                 required
@@ -158,7 +163,7 @@ const MedicineCard = ({ Medicine }) => {
             </CardText>
             <CardText>
               <input
-                type="number"
+                type="text"
                 name="Medicine_Discount"
                 id="Medicine_DiscountEdit"
                 required
@@ -170,7 +175,7 @@ const MedicineCard = ({ Medicine }) => {
             </CardText>
             <CardText>
               <input
-                type="number"
+                type="text"
                 name="Medicinal_Use"
                 id="Medicinal_UseEdit"
                 required
@@ -181,7 +186,7 @@ const MedicineCard = ({ Medicine }) => {
             </CardText>
             <CardText>
               <input
-                type="number"
+                type="text"
                 name="Image"
                 id="ImageEdit"
                 required
