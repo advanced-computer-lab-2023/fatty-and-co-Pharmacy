@@ -43,10 +43,10 @@ const getMedicines = async (req, res) => {
 const getMedicine = async (req, res) => {
   try {
     const { Name } = req.params;
-    const package = await medicineModel.find({
+    const medicine = await medicineModel.find({
       Name: { $regex: Name, $options: "i" },
     });
-    res.status(200).json(package);
+    res.status(200).json(medicine);
   } catch (err) {
     res.status(404).json({ message: "No Medicine found" });
   }
