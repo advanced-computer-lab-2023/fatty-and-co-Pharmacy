@@ -5,6 +5,7 @@ const {
   getMedicine,
   updateMedicine,
   deleteMedicine,
+  filterMedicine,
 } = require("../controllers/medicineController");
 
 // Create the router
@@ -24,5 +25,8 @@ router.delete("/deleteMedicine/:id", deleteMedicine);
 
 // update a medicine by id
 router.patch("/updateMedicine/:id", updateMedicine);
+
+//filter Medicine by medicinal yse
+router.get("/filterMedicine", filterMedicine);
 
 module.exports = router;
