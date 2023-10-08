@@ -13,7 +13,7 @@ const createRequest = async (req, res) => {
       HourlyRate: req.body.HourlyRate,
       Affiliation: req.body.Affiliation,
       EducationalBackground: req.body.EducationalBackground,
-      Status: req.body.Status,
+      Status: 'pending',
     });
     res.status(200).send({ request });
   } catch (error) {
