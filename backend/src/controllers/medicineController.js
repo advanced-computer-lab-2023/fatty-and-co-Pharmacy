@@ -42,13 +42,16 @@ const getMedicines = async (req, res) => {
 // retrieve a specific Medicine by Name
 const getMedicine = async (req, res) => {
   try {
+
     const { Name } = req.params;
     const medicine = await medicineModel.find({
       Name: { $regex: Name, $options: "i" },
     });
     if (!medicine) res.status(404).json({ message: "No Medicine found" });
     if (medicine.length === 0)
-      res.status(404).json({ message: "No Medicine found" });
+    //Added a return to avoid two consecutive res.status 
+      {res.status(404).json({ message: "No Medicine found" });
+        return;}
     res.status(200).json(medicine);
   } catch (err) {
     res.status(404).json({ message: "No Medicine found" });
@@ -104,16 +107,20 @@ const deleteMedicine = async (req, res) => {
 //filter medicine by medicinal use
 const filterMedicine = async (req, res) => {
   const {MedicinalUse} = req.body;
+  let Meds = new Array();
 
   try{
-    const Meds = await medicineModel.find({
-      ...MedicinalUse(MedicinalUse? {MedicinalUse: {$regex: MedicinalUse, $options: "i" }} : {}),
-    });
+    if(MedicinalUse){
+         Meds = await medicineModel.find({
+         Medicinal_Use: {$regex: MedicinalUse, $options: "i" }})
+    }else{
+         Meds = await medicineModel.find();
+    }
 
-  if(Meds.length == 0){
-    res.status(404).json({ error: "Medicines not found" });
-      return;
-  }
+    if(Meds.length === 0){
+      res.status(200).json({ error: "Medicines not found" });
+        return;
+    }
   res.status(200).json(Meds);
 
   }catch(err){

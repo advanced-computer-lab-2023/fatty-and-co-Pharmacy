@@ -15,7 +15,10 @@ const router = express.Router();
 router.get("/medicines", getMedicines);
 
 // GET a medicine by Name
-router.get("/:Name", getMedicine);
+//changed it from /:Name to /getMedicine/:Name 
+//because in the first case if the user entered any value
+//even if not a medicine name this will get called
+router.get("/getMedicine/:Name", getMedicine);
 
 // POST create a new medicine
 router.post("/addMedicine", createMedicine);
@@ -27,6 +30,6 @@ router.delete("/deleteMedicine/:id", deleteMedicine);
 router.patch("/updateMedicine/:id", updateMedicine);
 
 //filter Medicine by medicinal yse
-router.get("/filterMedicine", filterMedicine);
+router.get("/filter", filterMedicine);
 
 module.exports = router;
