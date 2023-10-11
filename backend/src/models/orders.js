@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const orderSchema = new Schema({
   PatientUsername: {
     type: String,
+    ref: "Patient",
     required: true,
     trim: true,
   },

@@ -8,6 +8,7 @@ const patientSchema = new Schema(
       required: true,
       trim: true,
       unique: true,
+      ref: "User",
     },
     Name: {
       type: String,
@@ -21,15 +22,16 @@ const patientSchema = new Schema(
       type: Date,
       required: true,
     },
-    Gender: {
-      type: String,
-      enum: ["M", "F"],
-      required: true,
-    },
     EmergencyContact: {
-      type: { FullName: String, PhoneNumber: Number, Relation: String },
+      type: { FullName: String, PhoneNumber: Number }, //NOT SURE OF THIS SYNTAX
       required: false,
     },
+    // TODO: change this
+    // FamilyMem: {
+    //   type: [ImportFamObject.FamilyMem], //NOT SURE MEN LAW DA VALID TYPE
+    //   required: false,
+    // },
+    // TODO: add prescriptions
   },
   { timestamps: true }
 );
