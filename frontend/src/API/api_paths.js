@@ -19,6 +19,11 @@ export const API_PATHS = {
 
   // getmedicines: MEDICINE_BASE + "getmedicines",
 
+  getRequests: ADMIN_BASE + "requests/",
+  getRequest: ADMIN_BASE + "getRequest/",
+  deleteUser: ADMIN_BASE + "deleteUser/",
+  createAdmin: ADMIN_BASE + "addAdmin/",
+
   adminViewPharmacist: ADMIN_BASE + "viewpharmacist/", // + username
   adminViewPatient: ADMIN_BASE + "viewpatient/", // + username
 };
