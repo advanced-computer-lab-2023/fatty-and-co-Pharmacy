@@ -6,8 +6,10 @@ import RTLPage from "views/Dashboard/RTL";
 import Profile from "views/Dashboard/Profile";
 import SignIn from "views/Auth/SignIn.js";
 import SignUp from "views/Auth/SignUp.js";
+import Medicine from "views/Pharmacist/Medicine/medicine";
 import ViewPatientDetails from "views/Admin/ViewPatientDetails";
 import ViewPharmacistDetails from "views/Admin/ViewPharmacistDetails";
+
 
 import {
   HomeIcon,
@@ -20,6 +22,14 @@ import {
 } from "components/Icons/Icons";
 
 var dashRoutes = [
+  {
+    path: "/medicine",
+    name: "Medicine",
+    rtlName: "لوحة القيادة",
+    icon: <HomeIcon color="inherit" />,
+    component: Medicine,
+    layout: "/admin",
+  },
   {
     path: "/dashboard",
     name: "Dashboard",
