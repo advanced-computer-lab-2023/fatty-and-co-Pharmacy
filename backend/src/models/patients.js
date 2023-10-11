@@ -8,6 +8,7 @@ const patientSchema = new Schema(
       required: true,
       trim: true,
       unique: true,
+      ref: "User",
     },
     Name: {
       type: String,

@@ -4,9 +4,13 @@ const express = require("express");
 const mongoose = require("mongoose");
 
 // Route Variables
-const medicineRoutes = require("./routes/medicine");
 const testRoutes = require("./routes/tests");
+const medicineRoutes = require("./routes/medicine");
 const adminRoutes = require("./routes/admins");
+const pharmacistRoutes = require("./routes/pharmacists");
+const patientRoutes = require("./routes/patients");
+const orderRoutes = require("./routes/orders");
+const guestRoutes = require("./routes/guests");
 
 // ENV Variables
 const port = process.env.PORT || 8000;
@@ -27,8 +31,12 @@ app.get("/", (req, res) => {
   res.send("Pharmacy Home");
 });
 app.use("/medicine", medicineRoutes);
-app.use("/test", testRoutes);
 app.use("/admin", adminRoutes);
+app.use("/pharmacist", pharmacistRoutes);
+app.use("/patient", patientRoutes);
+app.use("/order", orderRoutes);
+app.use("/guest", guestRoutes);
+app.use("/test", testRoutes);
 
 // Server
 mongoose

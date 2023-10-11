@@ -11,14 +11,8 @@ const {
 // Create the router
 const router = express.Router();
 
-// GET All medicines
+// GET All medicines (has search functionality if you pass name in a query string )
 router.get("/medicines", getMedicines);
-
-// GET a medicine by Name
-//changed it from /:Name to /getMedicine/:Name 
-//because in the first case if the user entered any value
-//even if not a medicine name this will get called
-router.get("/getMedicine/:Name", getMedicine);
 
 // POST create a new medicine
 router.post("/addMedicine", createMedicine);

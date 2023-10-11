@@ -37,11 +37,11 @@ const medicineSchema = new Schema(
       type: Number,
       default: 0,
     },
-    state: {
-    type: String,
-    enum: ["archived", "unarchived"], 
-    default: "unarchived"
-  }
+    State: {
+      type: String,
+      enum: ["archived", "unarchived"],
+      default: "unarchived",
+    },
   },
 
   { timestamps: true }
