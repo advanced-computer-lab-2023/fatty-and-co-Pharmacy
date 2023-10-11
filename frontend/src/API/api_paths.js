@@ -1,11 +1,11 @@
 const API_BASE = "http://localhost:8000/";
-const Medicine_BASE = "http://localhost:8000/medicine/";
+const ORDER_BASE = "http://localhost:8000/package/";
+const PHARMACIST_BASE = "http://localhost:8000/doctor/";
+const PATIENT_BASE = "http://localhost:8000/patient/";
+const ADMIN_BASE = "http://localhost:8000/admin/";
+const MEDICINE_BASE = "http://localhost:8000/appointment/";
+const GUEST_BASE = "http://localhost:8000/guest/";
 
 export const API_PATHS = {
-  medicines: Medicine_BASE + "medicines/",
-  addMedicine: Medicine_BASE + "addMedicine/",
-  deleteMedicine: Medicine_BASE + "deleteMedicine/",
-  updateMedicine: Medicine_BASE + "updateMedicine/",
-
-  
+  // Add paths here
 };
