@@ -8,8 +8,8 @@ const GUEST_BASE = "http://localhost:8000/guest/";
 
 export const API_PATHS = {
   // Add paths here
-  
-  // medicine paths
+  signup: PATIENT_BASE + "addPatient/",
+  docSignUp: GUEST_BASE + "addRequest/",
   addMedicine: MEDICINE_BASE + "addMedicine/",
   getMedicines: MEDICINE_BASE + "getMedicines",
   getMedicine: MEDICINE_BASE + "medicine/",

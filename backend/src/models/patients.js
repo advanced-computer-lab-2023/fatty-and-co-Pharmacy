@@ -23,7 +23,7 @@ const patientSchema = new Schema(
       required: true,
     },
     EmergencyContact: {
-      type: { FullName: String, PhoneNumber: Number }, //NOT SURE OF THIS SYNTAX
+      type: { FullName: String, PhoneNumber: Number, Relation: String }, //NOT SURE OF THIS SYNTAX
       required: false,
     },
     // TODO: change this
