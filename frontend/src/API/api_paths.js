@@ -8,4 +8,9 @@ const GUEST_BASE = "http://localhost:8000/guest/";
 
 export const API_PATHS = {
   // Add paths here
+
+  getmedicines: MEDICINE_BASE + "getmedicines",
+
+  adminViewPharmacist: ADMIN_BASE + "viewpharmacist/", // + username
+  adminViewPatient: ADMIN_BASE + "viewpatient/", // + username
 };
