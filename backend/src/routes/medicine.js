@@ -2,7 +2,6 @@ const express = require("express");
 const {
   createMedicine,
   getMedicines,
-  getMedicine,
   updateMedicine,
   deleteMedicine,
   filterMedicine,
@@ -11,7 +10,7 @@ const {
 // Create the router
 const router = express.Router();
 
-// GET All medicines (has search functionality if you pass name in a query string )
+// GET All medicines (has search functionality if you pass name/medicinaluse in a query string )
 router.get("/getMedicines", getMedicines);
 
 // POST create a new medicine
