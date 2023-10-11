@@ -6,7 +6,8 @@ import RTLPage from "views/Dashboard/RTL";
 import Profile from "views/Dashboard/Profile";
 import SignIn from "views/Auth/SignIn.js";
 import SignUp from "views/Auth/SignUp.js";
-import Medicine from "views/Admin/Medicine/medicine";
+import Medicine from "views/Pharmacist/Medicine/medicine";
+
 
 import {
   HomeIcon,

@@ -70,8 +70,9 @@ const updateMedicine = async (req, res) => {
       Sales,
       _id: id,
     };
-    await medicineModel.findByIdAndUpdate(id, updatedMedicine, { new: true });
-    res.status(200).json(updatedMedicine);
+    const newMed = await medicineModel.findByIdAndUpdate(id, updatedMedicine, { new: true });
+    
+    res.status(200).json(newMed);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -110,6 +111,25 @@ const filterMedicine = async (req, res) => {
     res.status(200).json(Meds);
   } catch (err) {
     res.status(500).json({ message: err.message });
+  }
+};
+
+// retrieve a specific Medicine by Name
+const getMedicine = async (req, res) => {
+  try {
+    const { Name } = req.params;
+    const medicine = await medicineModel.find({
+      Name: { $regex: Name, $options: "i" },
+    });
+    if (!medicine) res.status(404).json({ message: "No Medicine found" });
+    if (medicine.length === 0) {
+      //Added a return to avoid two consecutive res.status
+      res.status(404).json({ message: "No Medicine found" });
+      return;
+    }
+    res.status(200).json(medicine);
+  } catch (err) {
+    res.status(404).json({ message: "No Medicine found" });
   }
 };
 

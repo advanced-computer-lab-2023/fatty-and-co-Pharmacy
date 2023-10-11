@@ -1,6 +1,7 @@
 require("dotenv").config();
 
 const express = require("express");
+const cors = require("cors");
 const mongoose = require("mongoose");
 
 // Route Variables
@@ -9,7 +10,7 @@ const medicineRoutes = require("./routes/medicine");
 const adminRoutes = require("./routes/admins");
 const pharmacistRoutes = require("./routes/pharmacists");
 const patientRoutes = require("./routes/patients");
-const orderRoutes = require("./routes/orders");
+// const orderRoutes = require("./routes/orders");
 const guestRoutes = require("./routes/guests");
 
 // ENV Variables
@@ -20,6 +21,7 @@ const mongoURI = process.env.MONGO_URI;
 const app = express();
 
 // Middleware
+app.use(cors());
 app.use(express.json());
 app.use((req, res, next) => {
   console.log(req.method, req.path);
@@ -34,7 +36,7 @@ app.use("/medicine", medicineRoutes);
 app.use("/admin", adminRoutes);
 app.use("/pharmacist", pharmacistRoutes);
 app.use("/patient", patientRoutes);
-app.use("/order", orderRoutes);
+// app.use("/order", orderRoutes);
 app.use("/guest", guestRoutes);
 app.use("/test", testRoutes);
 
