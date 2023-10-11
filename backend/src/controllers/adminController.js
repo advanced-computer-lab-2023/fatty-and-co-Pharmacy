@@ -49,4 +49,53 @@ const viewPatient = async (req, res) => {
   }
 };
 
-module.exports = { viewPharmacist, viewPatient };
+const getRequest = async (req, res) => {
+  const { Username } = req.body;
+  try {
+    const request = await requestModel.find({ Username: Username });
+    res.status(200).json(request);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const acceptRequest = async (req, res) => {
+  const { Username } = req.body;
+  try {
+    const request = await requestModel.findOneAndUpdate({
+      Username: Username,
+      Status: "Accepted",
+    });
+    const pharmacist = await pharmacistModel.create({
+      Username: Username,
+      Name: request.Name,
+      DateOfBirth: request.DateOfBirth,
+      HourlyRate: request.HourlyRate,
+      Affiliation: request.Affiliation,
+      EducationalBackground: request.EducationalBackground,
+    });
+    const user = await userModel.create({
+      Username: Username,
+      Password: request.Password,
+      Email: request.Email,
+    });
+    res.status(200).json(request);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const rejectRequest = async (req, res) => {
+  const { Username } = req.body;
+  try {
+    const request = await requestModel.findOneAndUpdate({
+      Username: Username,
+      Status: "Rejected",
+    });
+    res.status(200).json(request);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+module.exports = { viewPharmacist, viewPatient, getRequest, acceptRequest, rejectRequest };
