@@ -2,7 +2,11 @@ import { MedicineContextProvider } from "./components/Context";
 import Index from "./index";
 
 function Medicine() {
-  return <Index />;
+  return (
+    <MedicineContextProvider>
+      <Index />
+    </MedicineContextProvider>
+  );
 }
 
 export default Medicine;

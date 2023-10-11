@@ -7,12 +7,49 @@ import {
   Text,
   Tag,
   useColorModeValue,
+  Table,
+  Thead,
+  Tbody,
+  Tfoot,
+  Tr,
+  Th,
+  Td,
+  TableCaption,
+  TableContainer,
+  Badge,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Stack,
+  useToast,
+  Input,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuItemOption,
+  MenuGroup,
+  MenuOptionGroup,
+  MenuDivider,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
+import { useMedicineContext } from "../../../../hooks/useMedicineContext";
+import { API_PATHS } from "API/api_paths";
 
 const MedicineCard = ({ Medicine }) => {
   // Chakra color mode
   const textColor = useColorModeValue("gray.700", "white");
+  const { dispatch } = useMedicineContext();
   const [Name, setName] = useState(Medicine.Name);
 
   const [Quantity, setQuantity] = useState(Medicine.Quantity);
@@ -24,8 +61,16 @@ const MedicineCard = ({ Medicine }) => {
   const [MImage, setImage] = useState(Medicine.Image);
   const [Medicinal_Use, setMedicinal_Use] = useState(Medicine.Medicinal_Use);
   const [Sales, setSales] = useState(Medicine.Sales);
+  const [Archived, setArchived] = useState(Medicine.state);
+  const [message, setMessage] = useState("");
 
-  //
+  const isArchviedC = Archived === "archived" ? "red" : "green";
+  const isArchvied = Archived === "archived" ? "Archived" : "Avabile";
+
+  // handle edit
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const toast = useToast();
+
   return (
     <Flex direction="column">
       <Box mb="20px" position="relative" borderRadius="15px">
@@ -42,18 +87,32 @@ const MedicineCard = ({ Medicine }) => {
       <Flex direction="column">
         <Text fontSize="md" color="gray.500" fontWeight="600" mb="10px">
           {Medicinal_Use.map((use) => (
-            <Tag style={{margin:"0 5px 0 0"}}>{use}</Tag>
+            <Tag style={{ margin: "0 5px 0 0" }}>{use}</Tag>
           ))}
         </Text>
-        <Text fontSize="xl" color={textColor} fontWeight="bold" mb="10px">
+        <Text fontSize="xl" color={textColor} fontWeight="bold" mb="3px">
           {Name}
+          <Badge ml="1" colorScheme={isArchviedC}>
+            {isArchvied}
+          </Badge>
         </Text>
-        <Text fontSize="md" color="gray.500" fontWeight="400" mb="20px">
+        <Text fontSize="sm" color="gray.500" fontWeight="400">
+          API:
+          {Active_Ingredients.map((use) => (
+            <text>{" " + use} </text>
+          ))}
+        </Text>
+        <Text fontSize="sm" color="gray.500" fontWeight="400">
           Quantity: {Quantity}
-          Price : {Price} EGP
-          <br /> Sales : {Sales}
         </Text>
-        <Text fontSize="md" color="gray.500" fontWeight="400" mb="20px">
+        <Text fontSize="sm" color="gray.500" fontWeight="400">
+          Price : {Price} EGP
+        </Text>
+        <Text fontSize="sm" color="gray.500" fontWeight="400">
+          Sales : {Sales}
+        </Text>
+        <br />
+        <Text fontSize="sm" color="gray.500" fontWeight="400" mb="10px">
           {Description}
         </Text>
         <Flex justifyContent="space-between">
@@ -64,11 +123,230 @@ const MedicineCard = ({ Medicine }) => {
             h="36px"
             fontSize="xs"
             px="1.5rem"
+            onClick={onOpen}
           >
-            VIEW PROJECT
+            Edit
           </Button>
         </Flex>
       </Flex>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Edit {Name}</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Stack spacing={3}>
+              <Text fontSize="sm" fontWeight="semibold">
+                just add the diffrent values
+              </Text>
+              <Input
+                variant="filled"
+                type="text"
+                placeholder="Name"
+                onChange={(e) => {
+                  if (e.target.value.length == 0) {
+                    setName(Medicine.Name);
+                  } else {
+                    setName(e.target.value);
+                  }
+                }}
+              />
+              <Input
+                variant="filled"
+                type="number"
+                placeholder="Price EGP"
+                onChange={(e) => {
+                  if (e.target.value.length == 0) {
+                    setPrice(Medicine.Price);
+                  } else {
+                    setPrice(e.target.value);
+                  }
+                }}
+              />
+              <Input
+                variant="filled"
+                type="number"
+                placeholder="Quantity"
+                onChange={(e) => {
+                  if (e.target.value.length == 0) {
+                    setQuantity(Medicine.Quantity);
+                  } else {
+                    setQuantity(e.target.value);
+                  }
+                }}
+              />
+              <Input
+                variant="filled"
+                type="number"
+                placeholder="Sales"
+                onChange={(e) => {
+                  if (e.target.value.length == 0) {
+                    setSales(Medicine.Sales);
+                  } else {
+                    setSales(e.target.value);
+                  }
+                }}
+              />
+              <Input
+                variant="filled"
+                type="text"
+                placeholder="Active Ingredients"
+                onChange={(e) => {
+                  if (e.target.value.length == 0) {
+                    setActive_Ingredients(Medicine.Active_Ingredients);
+                  } else {
+                    setActive_Ingredients(e.target.value);
+                  }
+                }}
+              />
+              <Input
+                variant="filled"
+                type="text"
+                placeholder="Medicnal Use"
+                onChange={(e) => {
+                  if (e.target.value.length == 0) {
+                    setMedicinal_Use(Medicine.Medicinal_Use);
+                  } else {
+                    setMedicinal_Use(e.target.value);
+                  }
+                }}
+              />
+              <Input
+                variant="filled"
+                type="text"
+                placeholder="Image"
+                onChange={(e) => {
+                  if (e.target.value.length == 0) {
+                    setImage(Medicine.Image);
+                  } else {
+                    setImage(e.target.value);
+                  }
+                }}
+              />
+              <Input
+                variant="filled"
+                type="text"
+                placeholder="Description"
+                onChange={(e) => {
+                  if (e.target.value.length == 0) {
+                    setDescription(Medicine.Description);
+                  } else {
+                    setDescription(e.target.value);
+                  }
+                }}
+              />
+              <Menu>
+                <MenuButton as={Button}>{Archived}</MenuButton>
+                <MenuList>
+                  <MenuItem
+                    value={"archived"}
+                    onClick={(e) => {
+                      setArchived(e.target.value);
+                    }}
+                  >
+                    archived
+                  </MenuItem>
+                  <MenuItem
+                    value={"unarchived"}
+                    onClick={(e) => {
+                      setArchived(e.target.value);
+                    }}
+                  >
+                    unarchived
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+            </Stack>
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              variant="ghost"
+              mr={3}
+              onClick={(e) => {
+                console.log(Medicine);
+                setName(Medicine.Name);
+                setPrice(Medicine.Price);
+                console.log(Medicine.Medicinal_Use);
+                setActive_Ingredients([...Medicine.Active_Ingredients]);
+                setMedicinal_Use([...Medicine.Medicinal_Use]);
+                setQuantity(Medicine.Quantity);
+                setSales(Medicine.Sales);
+                setImage(Medicine.Image);
+                setDescription(Medicine.Description);
+                setArchived(Medicine.state);
+                onClose();
+              }}
+            >
+              Close
+            </Button>
+            <Button
+              colorScheme="blue"
+              onClick={async () => {
+                // API_PATHS.updateMedicine + Medicine._id
+                const response = await fetch(
+                  "medicine/updateMedicine/" + Medicine._id,
+                  {
+                    method: "PATCH",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                      Name,
+                      Price,
+                      Active_Ingredients,
+                      Medicinal_Use,
+                      Quantity,
+                      Sales,
+                      Image: MImage,
+                      Description,
+                      state: Archived,
+                    }),
+                  }
+                );
+
+                const data = await response.json();
+
+                if (response.status === 200) {
+                  dispatch({ type: "UPDATE_MEDICINE", payload: data });
+
+                  toast({
+                    title: "Medicine Updated.",
+                    description: "You updated the Medicine succsefuly.",
+                    status: "success",
+                    duration: 9000,
+                    isClosable: true,
+                  });
+                  
+                  console.log([...Medicine.Medicinal_Use] ,"");
+                } else {
+                  // setMessage(data.message);
+                  setMessage(data.message);
+                  setName(Medicine.Name);
+                  setPrice(Medicine.Price);
+                  setActive_Ingredients(Medicine.Active_Ingredients);
+                  setMedicinal_Use(Medicine.Medicinal_Use);
+                  setQuantity(Medicine.Quantity);
+                  setSales(Medicine.Sales);
+                  setImage(Medicine.Image);
+                  setDescription(Medicine.Description);
+                  setArchived(Medicine.state);
+
+                  return toast({
+                    title: "failed Medi Update.",
+                    description: message,
+                    status: "error",
+                    duration: 9000,
+                    isClosable: true,
+                  });
+                }
+              }}
+            >
+              Save Changes
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+      
     </Flex>
   );
 };

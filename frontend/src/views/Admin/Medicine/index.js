@@ -11,10 +11,12 @@ import PlatformSettings from "./components/PlatformSettings";
 import ProfileInformation from "./components/ProfileInformation";
 import MedicineGroup from "./components/MedicineGroup";
 import { useState, useEffect } from "react";
+import { useMedicineContext } from "../../../hooks/useMedicineContext";
 
 function Index() {
   // Chakra color mode
-  const [medicines, setMedicines] = useState([]);
+  // const [medicines, setMedicines] = useState([]);
+  const { medicines, dispatch } = useMedicineContext();
   const textColor = useColorModeValue("gray.700", "white");
 
   useEffect(() => {
@@ -22,8 +24,7 @@ function Index() {
       const res = await fetch("/medicine/medicines");
       const data = await res.json();
       if (res.ok) {
-        setMedicines(data);
-        console.log(data);
+        dispatch({ type: "SET_MEDICINES", payload: data });
       }
     };
     fetchMedicines();
