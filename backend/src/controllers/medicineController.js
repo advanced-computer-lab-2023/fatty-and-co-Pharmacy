@@ -58,7 +58,7 @@ const getMedicine = async (req, res) => {
   }
 };
 
-// Update a Medicine
+// Update a Medicine by details or price 
 const updateMedicine = async (req, res) => {
   try {
     const { id } = req.params;
