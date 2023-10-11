@@ -30,32 +30,21 @@ const createMedicine = async (req, res) => {
 };
 
 const getMedicines = async (req, res) => {
+  const { Name } = req.query;
+
   //retrieve all Medicine from the database
   try {
-    const Medicine = await medicineModel.find();
+    const Medicine = await medicineModel.find({
+      // Search for documents whose 'Name' field contains the 'Name' variable, if it is not empty
+      ...(Name ? { Name: { $regex: Name.trim(), $options: "i" } } : {}),
+    });
     res.status(200).json(Medicine);
   } catch (err) {
     res.status(404).json({ message: "No Medicine found" });
   }
 };
 
-// retrieve a specific Medicine by Name
-const getMedicine = async (req, res) => {
-  try {
-    const { Name } = req.params;
-    const medicine = await medicineModel.find({
-      Name: { $regex: Name, $options: "i" },
-    });
-    if (!medicine) res.status(404).json({ message: "No Medicine found" });
-    if (medicine.length === 0)
-      res.status(404).json({ message: "No Medicine found" });
-    res.status(200).json(medicine);
-  } catch (err) {
-    res.status(404).json({ message: "No Medicine found" });
-  }
-};
-
-// Update a Medicine by details or price 
+// Update a Medicine by details or price
 const updateMedicine = async (req, res) => {
   try {
     const { id } = req.params;
@@ -100,10 +89,35 @@ const deleteMedicine = async (req, res) => {
   }
 };
 
+//filter medicine by medicinal use
+const filterMedicine = async (req, res) => {
+  const { MedicinalUse } = req.body;
+  let Meds = new Array();
+
+  try {
+    if (MedicinalUse) {
+      Meds = await medicineModel.find({
+        Medicinal_Use: { $regex: MedicinalUse, $options: "i" },
+      });
+    } else {
+      Meds = await medicineModel.find();
+    }
+
+    if (Meds.length === 0) {
+      res.status(200).json({ error: "Medicines not found" });
+      return;
+    }
+    res.status(200).json(Meds);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 module.exports = {
   createMedicine,
   getMedicines,
   getMedicine,
   updateMedicine,
   deleteMedicine,
+  filterMedicine,
 };
