@@ -38,7 +38,7 @@ function SignUp() {
   const [Password, setPassword] = useState("");
   const [DateOfBirth, setDateOfBirth] = useState("");
   const [EmergencyContactName, setEmergencyContactName] = useState("");
-  const [EmergenceContactNumber, setEmergencyContactNumber] = useState("");
+  const [EmergencyContactNumber, setEmergencyContactNumber] = useState("");
   const [EmergencyContactRelation, setEmergencyContactRelation] = useState("");
   const [MobileNum, setMobileNumber] = useState("");
   return (
@@ -191,7 +191,8 @@ function SignUp() {
                 MobileNum,
                 Gender,
                 EmergencyContactName,
-                EmergenceContactNumber,
+                EmergencyContactNumber,
+                EmergencyContactRelation,
               };
               const response = await fetch(API_PATHS.signup, {
                 method: "POST",
@@ -335,20 +336,22 @@ function SignUp() {
                 placeholder="Enter a valid phone number"
                 mb="24px"
                 size="lg"
+                value={EmergencyContactNumber}
                 required
                 onChange={(e) => setEmergencyContactNumber(e.target.value)}
               />
               <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
-                Emergency Contact Relation To The Patient
+                Emergency Contact Relation to the Patient
               </FormLabel>
               <Input
                 fontSize="sm"
                 ms="4px"
                 borderRadius="15px"
-                type="number"
+                type="text"
                 placeholder="..."
                 mb="24px"
                 size="lg"
+                value={EmergencyContactRelation}
                 required
                 onChange={(e) => setEmergencyContactRelation(e.target.value)}
               />

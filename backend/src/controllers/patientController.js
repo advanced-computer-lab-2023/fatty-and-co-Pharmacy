@@ -1,10 +1,10 @@
 const patientModel = require("../models/patients");
-const familyMemberModel = require("../models/familymembers");
-const { getAllPatients } = require("./testController");
+// const familyMemberModel = require("../models/familymembers");
+// const { getAllPatients } = require("./testController");
 const { getPatients } = require("./testController");
 
 const createPatient = async (req, res) => {
-  const {} = req.body;
+  const {EmergencyContactNumber,EmergencyContactName,EmergencyContactRelation} = req.body;
   try {
     const patient = await patientModel.create({
       Username: req.body.Username,
@@ -13,9 +13,9 @@ const createPatient = async (req, res) => {
       DateOfBirth: req.body.DateOfBirth,
       Gender: req.body.Gender,
       EmergencyContact: {
-        FullName: req.body.EmergencyContactName,
-        PhoneNumber: req.body.EmergencyContactNumber,
-        Relation: req.body.EmergencyCo
+        FullName: EmergencyContactName,
+        PhoneNumber: EmergencyContactNumber,
+        Relation: EmergencyContactRelation,
       },
     });
     res.status(200).send({ patient });
