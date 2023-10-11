@@ -8,7 +8,7 @@ const { default: mongoose } = require("mongoose");
 const createAdmin = async (req, res) => {
   const { Username, Password, Email } = req.body;
   try {
-    const admin = await userModel.create({
+    const admin = await systemUserModel.create({
       Username: Username,
       Password: Password,
       Email: Email,
@@ -21,10 +21,19 @@ const createAdmin = async (req, res) => {
 };
 
 const getRequest = async (req, res) => {
-  const { Username } = req.body;
+  const { Username } = req.query;
   try {
-    const request = await requests.find({ Username: Username });
+    const request = await requestModel.find({ Username: Username });
     res.status(200).json(request);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const getRequests = async (req, res) => {
+  try {
+    const requests = await requestModel.find();
+    res.status(200).json(requests);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -130,4 +139,5 @@ module.exports = {
   deleteUser,
   acceptRequest,
   rejectRequest,
+  getRequests
 };

@@ -9,7 +9,9 @@ import SignUp from "views/Auth/SignUp.js";
 import Medicine from "views/Pharmacist/Medicine/medicine";
 import ViewPatientDetails from "views/Admin/ViewPatientDetails";
 import ViewPharmacistDetails from "views/Admin/ViewPharmacistDetails";
-
+import DeleteUser from "views/Admin/DeleteUser/DeleteUserForm"
+import CreateAdmin from "views/Admin/CreateAdmin/CreateAdminForm"
+import Requests from "views/Admin/Requests";
 
 import {
   HomeIcon,
@@ -28,6 +30,28 @@ var dashRoutes = [
     rtlName: "لوحة القيادة",
     icon: <HomeIcon color="inherit" />,
     component: Medicine,
+    layout: "/admin",
+  },
+  {
+    path: "/viewRequests",
+    name: "View Requests",
+    icon: <HomeIcon color="inherit" />,
+    component: Requests,
+    layout: "/admin",
+  },
+  {
+    path: "/addAdmin",
+    name: "Add Admin",
+    icon: <HomeIcon color="inherit" />,
+    component: CreateAdmin,
+    layout: "/admin",
+  },
+  {
+    path: "/deleteUser",
+    name: "Delete User",
+    icon: <HomeIcon color="inherit" />,
+    component: DeleteUser,
+
     layout: "/admin",
   },
   {

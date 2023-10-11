@@ -7,13 +7,14 @@ const createRequest = async (req, res) => {
   try {
     const request = await requestModel.create({
       Username: req.body.Username,
+      Email: req.body.Email,
       Password: req.body.Password,
       Name: req.body.Name,
       DateOfBirth: req.body.DateOfBirth,
       HourlyRate: req.body.HourlyRate,
       Affiliation: req.body.Affiliation,
       EducationalBackground: req.body.EducationalBackground,
-      Status: req.body.Status,
+      Status: "Pending",
     });
     res.status(200).send({ request });
   } catch (error) {
