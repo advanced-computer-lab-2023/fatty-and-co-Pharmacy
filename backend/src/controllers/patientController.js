@@ -1,6 +1,7 @@
 const patientModel = require("../models/patients");
 const familyMemberModel = require("../models/familymembers");
 const { getAllPatients } = require("./testController");
+const { getPatients } = require("./testController");
 
 const createPatient = async (req, res) => {
   const {} = req.body;

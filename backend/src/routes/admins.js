@@ -13,9 +13,9 @@ router.get("/", (req, res) => {
   res.send("Admins");
 });
 
-router.get("/viewPharmacist/:id", viewPharmacist);
+router.get("/viewPharmacist/:username", viewPharmacist);
 
-router.get("/viewPatient/:id", viewPatient);
+router.get("/viewPatient/:username", viewPatient);
 
 router.get("/getRequest", getRequest);
 
