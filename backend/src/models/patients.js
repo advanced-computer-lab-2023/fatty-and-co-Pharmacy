@@ -31,7 +31,11 @@ const patientSchema = new Schema(
     //   type: [ImportFamObject.FamilyMem], //NOT SURE MEN LAW DA VALID TYPE
     //   required: false,
     // },
-    // TODO: add prescriptions
+    // TODO: properly add prescriptions
+    Prescriptions: {
+      type: [String],
+      required: false,
+    },
   },
   { timestamps: true }
 );

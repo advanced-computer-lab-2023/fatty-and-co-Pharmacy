@@ -78,7 +78,9 @@ const deleteUser = async (req, res) => {
         Username: Username,
       });
     } else if (user.Type == "Pharmacist") {
-      const doctor = await pharmacistModel.findOneAndDelete({ Username: Username });
+      const doctor = await pharmacistModel.findOneAndDelete({
+        Username: Username,
+      });
     }
 
     res.status(200).json(user);
@@ -87,19 +89,12 @@ const deleteUser = async (req, res) => {
   }
 };
 
-
 // view a Pharmacist's basic information
 const viewPharmacist = async (req, res) => {
-  const { id } = req.params;
-
-  // Check if the 'id' parameter is a valid MongoDB ObjectID
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    res.status(404).json({ error: "Invalid ID" });
-    return;
-  }
+  const { username } = req.params;
 
   try {
-    const pharmacist = await pharmacistModel.findById(id);
+    const pharmacist = await pharmacistModel.findOne({ Username: username });
     if (!pharmacist) {
       res.status(404).json({ error: "Pharmacist not found" });
       return;
@@ -112,16 +107,10 @@ const viewPharmacist = async (req, res) => {
 
 // view a Patient's basic information (excluding prescriptions)
 const viewPatient = async (req, res) => {
-  const { id } = req.params;
-
-  // Check if the 'id' parameter is a valid MongoDB ObjectID
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    res.status(404).json({ error: "Invalid ID" });
-    return;
-  }
+  const { username } = req.params;
 
   try {
-    const patient = await patientModel.findById(id);
+    const patient = await patientModel.findOne({ Username: username });
     if (!patient) {
       res.status(404).json({ error: "Patient not found" });
       return;
@@ -133,10 +122,12 @@ const viewPatient = async (req, res) => {
   }
 };
 
-module.exports = { viewPharmacist, 
-                  viewPatient, 
-                  createAdmin,
-                  getRequest,
-                  deleteUser,
-                  acceptRequest,
-                  rejectRequest };
+module.exports = {
+  viewPharmacist,
+  viewPatient,
+  createAdmin,
+  getRequest,
+  deleteUser,
+  acceptRequest,
+  rejectRequest,
+};

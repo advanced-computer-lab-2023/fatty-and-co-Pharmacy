@@ -30,13 +30,16 @@ const createMedicine = async (req, res) => {
 };
 
 const getMedicines = async (req, res) => {
-  const { Name } = req.query;
+  const { Name, MedicinalUse } = req.query;
 
   //retrieve all Medicine from the database
   try {
     const Medicine = await medicineModel.find({
       // Search for documents whose 'Name' field contains the 'Name' variable, if it is not empty
       ...(Name ? { Name: { $regex: Name.trim(), $options: "i" } } : {}),
+      ...(MedicinalUse
+        ? { Medicinal_Use: { $regex: MedicinalUse, $options: "i" } }
+        : {}),
     });
     res.status(200).json(Medicine);
   } catch (err) {
@@ -136,7 +139,6 @@ const getMedicine = async (req, res) => {
 module.exports = {
   createMedicine,
   getMedicines,
-  getMedicine,
   updateMedicine,
   deleteMedicine,
   filterMedicine,

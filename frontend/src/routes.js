@@ -7,6 +7,8 @@ import Profile from "views/Dashboard/Profile";
 import SignIn from "views/Auth/SignIn.js";
 import SignUp from "views/Auth/SignUp.js";
 import Medicine from "views/Pharmacist/Medicine/medicine";
+import ViewPatientDetails from "views/Admin/ViewPatientDetails";
+import ViewPharmacistDetails from "views/Admin/ViewPharmacistDetails";
 
 
 import {
@@ -34,6 +36,22 @@ var dashRoutes = [
     rtlName: "لوحة القيادة",
     icon: <HomeIcon color="inherit" />,
     component: Dashboard,
+    layout: "/admin",
+  },
+  {
+    path: "/viewpatient",
+    name: "View Patient",
+    rtlName: "لوحة القيادة",
+    icon: <StatsIcon color="inherit" />,
+    component: ViewPatientDetails,
+    layout: "/admin",
+  },
+  {
+    path: "/viewpharmacist",
+    name: "View Pharmacist",
+    rtlName: "لوحة القيادة",
+    icon: <StatsIcon color="inherit" />,
+    component: ViewPharmacistDetails,
     layout: "/admin",
   },
   {
