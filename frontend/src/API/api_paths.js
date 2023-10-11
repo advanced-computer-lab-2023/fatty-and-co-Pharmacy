@@ -11,9 +11,14 @@ export const API_PATHS = {
   
   // medicine paths
   addMedicine: MEDICINE_BASE + "addMedicine/",
-  getMedicines: MEDICINE_BASE + "medicines",
+  getMedicines: MEDICINE_BASE + "getMedicines",
   getMedicine: MEDICINE_BASE + "medicine/",
   updateMedicine: MEDICINE_BASE + "updateMedicine/",
   deleteMedicine: MEDICINE_BASE + "deleteMedicine/",
   
+
+  // getmedicines: MEDICINE_BASE + "getmedicines",
+
+  adminViewPharmacist: ADMIN_BASE + "viewpharmacist/", // + username
+  adminViewPatient: ADMIN_BASE + "viewpatient/", // + username
 };
