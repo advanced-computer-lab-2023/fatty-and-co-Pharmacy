@@ -73,8 +73,10 @@ const updateMedicine = async (req, res) => {
       Sales,
       _id: id,
     };
-    const newMed = await medicineModel.findByIdAndUpdate(id, updatedMedicine, { new: true });
-    
+    const newMed = await medicineModel.findByIdAndUpdate(id, updatedMedicine, {
+      new: true,
+    });
+
     res.status(200).json(newMed);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -142,4 +144,5 @@ module.exports = {
   updateMedicine,
   deleteMedicine,
   filterMedicine,
+  getMedicine,
 };
