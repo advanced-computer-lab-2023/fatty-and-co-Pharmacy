@@ -134,6 +134,15 @@ var dashRoutes = [
         component: SignUp,
         layout: "/auth",
       },
+      {
+        path: "/pharmSignUp",
+        name: "Register as Doctor",
+        rtlName: "لوحة القيادة",
+        icon: <RocketIcon color="inherit" />,
+        secondaryNavbar: true,
+        component: DocSignUp,
+        layout: "/auth",
+      },
     ],
   },
 ];
