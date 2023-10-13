@@ -22,6 +22,7 @@ import {
   RocketIcon,
   SupportIcon,
 } from "components/Icons/Icons";
+import pharmSignUp from "views/Auth/pharmSignUp";
 
 var dashRoutes = [
   {
@@ -136,11 +137,11 @@ var dashRoutes = [
       },
       {
         path: "/pharmSignUp",
-        name: "Register as Doctor",
+        name: "Register as a Pharmacist",
         rtlName: "لوحة القيادة",
         icon: <RocketIcon color="inherit" />,
         secondaryNavbar: true,
-        component: DocSignUp,
+        component: pharmSignUp,
         layout: "/auth",
       },
     ],
