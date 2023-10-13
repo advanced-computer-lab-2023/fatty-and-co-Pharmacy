@@ -6,6 +6,7 @@ const {
   getPatient,
   updatePatient,
   getPatientUsername,
+  getEmergencyContact
 } = require("../controllers/patientController");
 
 const router = express.Router();
@@ -21,5 +22,7 @@ router.get("/getPatient/:id", getPatient);
 router.patch("/updatePatient/:id", updatePatient);
 
 router.get("/getPatientUsername/:Username", getPatientUsername);
+
+router.get("/getEmergencyContact/:Username", getEmergencyContact);
 
 module.exports = router;
