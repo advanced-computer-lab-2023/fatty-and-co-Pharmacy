@@ -31,6 +31,7 @@ function Sidebar(props) {
     <Box ref={mainPanel}>
       <Box display={{ sm: "none", xl: "block" }} position="fixed">
         <Box
+          overflowY = "auto"
           bg={sidebarBg}
           transition={variantChange}
           w="260px"
@@ -48,7 +49,7 @@ function Sidebar(props) {
           borderRadius={sidebarRadius}
         >
           <SidebarContent routes={routes}
-        logoText={"PURITY UI DASHBOARD"}
+        logoText={"FRIDAYS PHARMACY"}
         display="none"
         sidebarVariant={sidebarVariant}
         />

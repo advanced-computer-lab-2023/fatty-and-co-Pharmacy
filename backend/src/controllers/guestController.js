@@ -7,14 +7,27 @@ const createRequest = async (req, res) => {
   try {
     const request = await requestModel.create({
       Username: req.body.Username,
+      Email: req.body.Email,
       Password: req.body.Password,
       Name: req.body.Name,
       DateOfBirth: req.body.DateOfBirth,
       HourlyRate: req.body.HourlyRate,
       Affiliation: req.body.Affiliation,
       EducationalBackground: req.body.EducationalBackground,
-      Status: req.body.Status,
+      Status: "Pending",
     });
+    res.status(200).send({ request });
+  } catch (error) {
+    res.status(400).send({ message: error.message });
+  }
+};
+
+const updateRequest = async (req, res) => {
+  try {
+    const request = await requestModel.findByIdAndUpdate(
+      req.params.id,
+      req.body
+    );
     res.status(200).send({ request });
   } catch (error) {
     res.status(400).send({ message: error.message });
@@ -25,6 +38,7 @@ const createRequest = async (req, res) => {
 
 
 module.exports = {
-  createRequest
+  createRequest,
+  updateRequest
 };
  

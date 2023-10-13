@@ -1,5 +1,5 @@
 const express = require("express");
-const {createRequest} = require("../controllers/guestController");
+const { createRequest, updateRequest } = require("../controllers/guestController");
 
 const router = express.Router();
 
@@ -8,5 +8,7 @@ router.post("/addRequest", createRequest);
 router.get("/", (req, res) => {
   res.send("Guests");
 });
+
+router.put("/updateRequest/:id", updateRequest);
 
 module.exports = router;
