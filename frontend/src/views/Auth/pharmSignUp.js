@@ -90,9 +90,9 @@ import {
                             DateOfBirth,
                             HourlyRate,
                             Affiliation,
-                            EducationalBackground
+                            EducationalBackground,
                         };
-                        const response = await fetch("http://localhost:8000/addRequest", {
+                        const response = await fetch("API_PATHS.pharmSignUp", {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify(Request),
