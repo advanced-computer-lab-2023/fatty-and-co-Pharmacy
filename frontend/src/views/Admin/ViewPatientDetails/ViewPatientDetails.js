@@ -45,6 +45,7 @@ export const ViewPatientDetails = () => {
             relation: data.EmergencyContact.Relation,
           },
         }));
+        console.log(formData);
       })
       .catch((error) => console.log(error));
   }, [username]);
@@ -92,15 +93,15 @@ export const ViewPatientDetails = () => {
           </Text>
           <Text>
             <strong>Emergency Contact Name: </strong>
-            {formData.emergencyContact.FullName}
+            {formData.emergencyContact.fullName}
           </Text>
           <Text>
             <strong>Emergency Contact Phone Number: </strong>
-            {formData.emergencyContact.PhoneNumber}
+            {formData.emergencyContact.phoneNumber}
           </Text>
           <Text>
             <strong>Emergency Contact Relation: </strong>
-            {formData.emergencyContact.Relation}
+            {formData.emergencyContact.relation}
           </Text>
         </Flex>
       )) || (
