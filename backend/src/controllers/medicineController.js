@@ -122,16 +122,11 @@ const filterMedicine = async (req, res) => {
 // retrieve a specific Medicine by Name
 const getMedicine = async (req, res) => {
   try {
-    const { Name } = req.params;
+    const { Name, Medicinal_Use } = req.params;
     const medicine = await medicineModel.find({
-      Name: { $regex: Name, $options: "i" },
+      ...(Name ? { Name: { $regex: Name, $options: "i" } } : {}),
+      ...(Medicinal_Use ? { Medicinal_Use: { $in: Medicinal_Use } } : {}),
     });
-    if (!medicine) res.status(404).json({ message: "No Medicine found" });
-    if (medicine.length === 0) {
-      //Added a return to avoid two consecutive res.status
-      res.status(404).json({ message: "No Medicine found" });
-      return;
-    }
     res.status(200).json(medicine);
   } catch (err) {
     res.status(404).json({ message: "No Medicine found" });

@@ -140,6 +140,7 @@ const MedicineGroup = ({
             placeholder="Medicine Name..."
             onChange={handleNameValueChange}
           />
+          
         </Flex>
       </CardHeader>
       <CardBody px="5px">
