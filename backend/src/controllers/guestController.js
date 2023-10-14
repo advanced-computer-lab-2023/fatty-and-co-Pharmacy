@@ -4,6 +4,7 @@ const requestModel = require("../models/requests.js");
 
 const createRequest = async (req, res) => {
   const {} = req.body;
+  
   try {
     const request = await requestModel.create({
       Username: req.body.Username,
@@ -18,7 +19,9 @@ const createRequest = async (req, res) => {
     });
     res.status(200).send({ request });
   } catch (error) {
+    console.log(error);
     res.status(400).send({ message: error.message });
+    
   }
 };
 

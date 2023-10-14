@@ -50,7 +50,7 @@ const MedicineCard = ({ Medicine }) => {
   const [Ingredient, setIngredient] = useState("");
 
   const isArchviedC = Archived === "archived" ? "red" : "green";
-  const isArchvied = Archived === "archived" ? "Not Avabile" : "Avabile";
+  const isArchvied = Archived === "archived" ? "Not Available" : "Available";
 
   // handle edit
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -59,7 +59,7 @@ const MedicineCard = ({ Medicine }) => {
   return (
     <Flex direction="column">
       <Box mb="20px" position="relative" borderRadius="15px">
-        <Image src={MImage}  alt={Name} borderRadius="15px"  boxSize='200px'/>
+        <Image src={MImage} alt={Name} borderRadius="15px" boxSize="200px" />
         <Box
           w="100%"
           h="100%"
@@ -84,7 +84,7 @@ const MedicineCard = ({ Medicine }) => {
           </Badge>
         </Text>
         <Text fontSize="sm" color="gray.500" fontWeight="400">
-          API:
+        Active Ing:
           {Active_Ingredients.map((use) => (
             <text>{" " + use} </text>
           ))}
@@ -102,11 +102,8 @@ const MedicineCard = ({ Medicine }) => {
         <Text fontSize="sm" color="gray.500" fontWeight="400" mb="10px">
           {Description}
         </Text>
-        <Flex justifyContent="space-between">
-          
-        </Flex>
+        <Flex justifyContent="space-between"></Flex>
       </Flex>
-      
     </Flex>
   );
 };
