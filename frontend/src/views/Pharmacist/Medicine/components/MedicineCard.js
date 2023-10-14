@@ -358,7 +358,7 @@ const MedicineCard = ({ Medicine }) => {
                       Sales,
                       Image: MImage,
                       Description,
-                      state: Archived,
+                      State: Archived,
                     }),
                   }
                 );
