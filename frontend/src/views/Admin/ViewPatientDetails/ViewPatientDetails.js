@@ -14,6 +14,7 @@ import axios from "axios";
 export const ViewPatientDetails = () => {
   const [formData, setFormData] = useState({
     name: "",
+    email: "",
     mobileNum: "",
     dateOfBirth: "",
     gender: "",
@@ -36,6 +37,7 @@ export const ViewPatientDetails = () => {
         setFormData((prevState) => ({
           ...prevState,
           name: data.Name,
+          email: data.Email,
           mobileNum: data.MobileNum,
           dateOfBirth: data.DateOfBirth,
           gender: data.Gender,
@@ -45,15 +47,11 @@ export const ViewPatientDetails = () => {
             relation: data.EmergencyContact.Relation,
           },
         }));
-        console.log(formData);
       })
       .catch((error) => console.log(error));
   }, [username]);
 
-  console.log(formData);
-
   const handleSubmit = () => {
-    console.log("Submitted");
     setUsername(textboxValue);
   };
 
@@ -78,6 +76,10 @@ export const ViewPatientDetails = () => {
           <Text>
             <strong>Name: </strong>
             {formData.name}
+          </Text>
+          <Text>
+            <strong>Email: </strong>
+            {formData.email}
           </Text>
           <Text>
             <strong>Mobile Number: </strong>
