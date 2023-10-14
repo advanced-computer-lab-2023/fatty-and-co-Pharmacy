@@ -6,7 +6,9 @@ import RTLPage from "views/Dashboard/RTL";
 import Profile from "views/Dashboard/Profile";
 import SignIn from "views/Auth/SignIn.js";
 import SignUp from "views/Auth/SignUp.js";
-import Medicine from "views/Pharmacist/Medicine/medicine";
+import MedicinePharmacist from "views/Pharmacist/Medicine/medicine";
+import MedicineAdmin from "views/Admin/Medicine/medicine";
+import MedicinePatient from "views/Patient/Medicine/medicine";
 import ViewPatientDetails from "views/Admin/ViewPatientDetails";
 import ViewPharmacistDetails from "views/Admin/ViewPharmacistDetails";
 import DeleteUser from "views/Admin/DeleteUser/DeleteUserForm"
@@ -26,11 +28,27 @@ import pharmSignUp from "views/Auth/pharmSignUp";
 
 var dashRoutes = [
   {
-    path: "/medicine",
-    name: "Medicine",
+    path: "/MedicinePharmacist",
+    name: "Medicine Pharmacist",
     rtlName: "لوحة القيادة",
     icon: <HomeIcon color="inherit" />,
-    component: Medicine,
+    component: MedicinePharmacist,
+    layout: "/admin",
+  },
+  {
+    path: "/MedicineAdmin",
+    name: "Medicine Admin",
+    rtlName: "لوحة القيادة",
+    icon: <HomeIcon color="inherit" />,
+    component: MedicineAdmin,
+    layout: "/admin",
+  },
+  {
+    path: "/MedicinePatient",
+    name: "Medicine Patient",
+    rtlName: "لوحة القيادة",
+    icon: <HomeIcon color="inherit" />,
+    component: MedicinePatient,
     layout: "/admin",
   },
   {
