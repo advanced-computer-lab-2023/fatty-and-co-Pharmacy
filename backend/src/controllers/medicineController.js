@@ -30,16 +30,15 @@ const createMedicine = async (req, res) => {
 };
 
 const getMedicines = async (req, res) => {
-  const { Name, MedicinalUse } = req.query;
+  const { Name, Medicinal_Use } = req.query;
 
+  console.log(req.query);
   //retrieve all Medicine from the database
   try {
     const Medicine = await medicineModel.find({
       // Search for documents whose 'Name' field contains the 'Name' variable, if it is not empty
       ...(Name ? { Name: { $regex: Name.trim(), $options: "i" } } : {}),
-      ...(MedicinalUse
-        ? { Medicinal_Use: { $regex: MedicinalUse, $options: "i" } }
-        : {}),
+      ...(Medicinal_Use ? { Medicinal_Use: { $in: Medicinal_Use } } : {}),
     });
     res.status(200).json(Medicine);
   } catch (err) {
@@ -77,8 +76,10 @@ const updateMedicine = async (req, res) => {
       Sales,
       _id: id,
     };
-    const newMed = await medicineModel.findByIdAndUpdate(id, updatedMedicine, { new: true });
-    
+    const newMed = await medicineModel.findByIdAndUpdate(id, updatedMedicine, {
+      new: true,
+    });
+
     res.status(200).json(newMed);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -124,16 +125,11 @@ const filterMedicine = async (req, res) => {
 // retrieve a specific Medicine by Name
 const getMedicine = async (req, res) => {
   try {
-    const { Name } = req.params;
+    const { Name, Medicinal_Use } = req.params;
     const medicine = await medicineModel.find({
-      Name: { $regex: Name, $options: "i" },
+      ...(Name ? { Name: { $regex: Name, $options: "i" } } : {}),
+      ...(Medicinal_Use ? { Medicinal_Use: { $in: Medicinal_Use } } : {}),
     });
-    if (!medicine) res.status(404).json({ message: "No Medicine found" });
-    if (medicine.length === 0) {
-      //Added a return to avoid two consecutive res.status
-      res.status(404).json({ message: "No Medicine found" });
-      return;
-    }
     res.status(200).json(medicine);
   } catch (err) {
     res.status(404).json({ message: "No Medicine found" });
@@ -146,4 +142,5 @@ module.exports = {
   updateMedicine,
   deleteMedicine,
   filterMedicine,
+  getMedicine,
 };

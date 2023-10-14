@@ -6,13 +6,13 @@ import RTLPage from "views/Dashboard/RTL";
 import Profile from "views/Dashboard/Profile";
 import SignIn from "views/Auth/SignIn.js";
 import SignUp from "views/Auth/SignUp.js";
-import MedicinePharmacist from "views/Pharmacist/Medicine/medicine";
-import MedicineAdmin from "views/Admin/Medicine/medicine";
-import MedicinePatient from "views/Patient/Medicine/medicine";
 import ViewPatientDetails from "views/Admin/ViewPatientDetails";
+import AdminMedicine from "views/Admin/Medicine/adminMedicine";
+import PharmacistMedicine from "views/Pharmacist/Medicine/pharmacistMedicine";
+import PatientMedicine from "views/Patient/Medicine/pateintMedicine";
 import ViewPharmacistDetails from "views/Admin/ViewPharmacistDetails";
-import DeleteUser from "views/Admin/DeleteUser/DeleteUserForm"
-import CreateAdmin from "views/Admin/CreateAdmin/CreateAdminForm"
+import DeleteUser from "views/Admin/DeleteUser/DeleteUserForm";
+import CreateAdmin from "views/Admin/CreateAdmin/CreateAdminForm";
 import Requests from "views/Admin/Requests";
 
 import {
@@ -28,27 +28,27 @@ import pharmSignUp from "views/Auth/pharmSignUp";
 
 var dashRoutes = [
   {
-    path: "/MedicinePharmacist",
-    name: "Medicine Pharmacist",
+    path: "/adminmedicine",
+    name: "Admin Medicine",
     rtlName: "لوحة القيادة",
     icon: <HomeIcon color="inherit" />,
-    component: MedicinePharmacist,
+    component: AdminMedicine,
     layout: "/admin",
   },
   {
-    path: "/MedicineAdmin",
-    name: "Medicine Admin",
+    path: "/pharmacistmedicine",
+    name: "Pharmacist Medicine",
     rtlName: "لوحة القيادة",
     icon: <HomeIcon color="inherit" />,
-    component: MedicineAdmin,
+    component: PharmacistMedicine,
     layout: "/admin",
   },
   {
-    path: "/MedicinePatient",
-    name: "Medicine Patient",
+    path: "/patientmedicine",
+    name: "Patient Medicine",
     rtlName: "لوحة القيادة",
     icon: <HomeIcon color="inherit" />,
-    component: MedicinePatient,
+    component: PatientMedicine,
     layout: "/admin",
   },
   {
