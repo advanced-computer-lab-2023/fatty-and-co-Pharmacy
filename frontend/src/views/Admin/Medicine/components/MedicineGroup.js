@@ -27,6 +27,9 @@ import {
   TagLeftIcon,
   TagRightIcon,
   TagCloseButton,
+  Select,
+  CheckboxGroup,
+  Checkbox,
 } from "@chakra-ui/react";
 // Custom components
 import Card from "components/Card/Card";
@@ -124,6 +127,26 @@ const MedicineGroup = ({
   const handleNameValueChange = (value) => {
     setSearchAndFilterParams({ ...searchAndFilterParams, Name: value });
   };
+  const handleMedicinalUseValueChange = (value) => {
+    setSearchAndFilterParams({
+      ...searchAndFilterParams,
+      Medicinal_Use: selectedUses,
+    });
+    console.log(searchAndFilterParams);
+  };
+
+  const [selectedUses, setSelectedUses] = useState([]);
+  const medicinalUses = [
+    "painkiller",
+    "fever",
+    "anti-inflammatory",
+    "anxiety",
+    "pain",
+  ];
+  const handleMedicinalUseChange = (values) => {
+    setSelectedUses(values);
+  };
+
   return (
     <Card p="16px" my="24px" style={{ margin: "80px 0 0 0px" }}>
       <CardHeader p="12px 5px" mb="12px">
@@ -140,7 +163,20 @@ const MedicineGroup = ({
             placeholder="Medicine Name..."
             onChange={handleNameValueChange}
           />
-          
+          <Box>
+            <CheckboxGroup
+              colorScheme="green"
+              defaultValue={selectedUses}
+              onChange={handleMedicinalUseChange}
+            >
+              {medicinalUses.map((use, index) => (
+                <Checkbox key={index} value={use}>
+                  {use}
+                </Checkbox>
+              ))}
+            </CheckboxGroup>
+            <Button onClick={handleMedicinalUseValueChange}>Submit</Button>
+          </Box>
         </Flex>
       </CardHeader>
       <CardBody px="5px">
