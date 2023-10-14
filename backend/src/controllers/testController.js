@@ -60,6 +60,12 @@ const createPharmacist = async (req, res) => {
     EducationalBackground || generateEducationalBackground();
 
   try {
+    await systemUserModel.create({
+      Username: username,
+      Email: generateEmail(),
+      Password: generatePassword(),
+      Type: "Pharmacist",
+    });
     const newPharmacist = await pharmacistModel.create({
       Username: username,
       Name: name,
@@ -84,6 +90,12 @@ const createPatient = async (req, res) => {
   const mobileNum = MobileNum || generateMobileNum();
 
   try {
+    await systemUserModel.create({
+      Username: username,
+      Email: generateEmail(),
+      Password: generatePassword(),
+      Type: "Patient",
+    });
     const newPatient = await patientModel.create({
       Username: username,
       Name: name,
