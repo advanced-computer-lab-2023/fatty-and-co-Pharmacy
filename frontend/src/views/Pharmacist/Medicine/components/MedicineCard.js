@@ -50,7 +50,7 @@ const MedicineCard = ({ Medicine }) => {
   const [Ingredient, setIngredient] = useState("");
 
   const isArchviedC = Archived === "archived" ? "red" : "green";
-  const isArchvied = Archived === "archived" ? "Archived" : "Avabile";
+  const isArchvied = Archived === "archived" ? "Archived" : "Available";
 
   // handle edit
   const { isOpen, onOpen, onClose } = useDisclosure();
