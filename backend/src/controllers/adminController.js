@@ -104,11 +104,14 @@ const viewPharmacist = async (req, res) => {
 
   try {
     const pharmacist = await pharmacistModel.findOne({ Username: username });
+    const pharmaUser = await systemUserModel.findOne({ Username: username });
     if (!pharmacist) {
       res.status(404).json({ error: "Pharmacist not found" });
       return;
     }
-    res.status(200).json(pharmacist);
+    let pharmacistObject = pharmacist.toObject();
+    pharmacistObject.Email = pharmaUser.Email;
+    res.status(200).json(pharmacistObject);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -120,12 +123,17 @@ const viewPatient = async (req, res) => {
 
   try {
     const patient = await patientModel.findOne({ Username: username });
+    const patientUser = await systemUserModel.findOne({
+      Username: username,
+    });
     if (!patient) {
       res.status(404).json({ error: "Patient not found" });
       return;
     }
-    delete patient.Prescriptions;
-    res.status(200).json(patient);
+    let patientObject = patient.toObject();
+    patientObject.Email = patientUser.Email;
+    delete patientObject.Prescriptions;
+    res.status(200).json(patientObject);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -139,5 +147,5 @@ module.exports = {
   deleteUser,
   acceptRequest,
   rejectRequest,
-  getRequests
+  getRequests,
 };

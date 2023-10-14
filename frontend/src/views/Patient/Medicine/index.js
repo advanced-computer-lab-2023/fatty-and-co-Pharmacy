@@ -23,7 +23,7 @@ function Index() {
   const textColor = useColorModeValue("gray.700", "white");
   const [searchAndFilterParams, setSearchAndFilterParams] = useState({
     Name: "",
-    Medicinal_Use: "",
+    Medicinal_Use: [],
   });
 
   useEffect(() => {

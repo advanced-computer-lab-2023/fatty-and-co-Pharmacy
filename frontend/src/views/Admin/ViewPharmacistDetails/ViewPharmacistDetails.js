@@ -33,7 +33,7 @@ export const ViewPharmacistDetails = () => {
         setFormData((prevState) => ({
           ...prevState,
           name: data.Name,
-          mobileNum: data.MobileNum,
+          email: data.Email,
           dateOfBirth: data.DateOfBirth,
           hourlyRate: data.HourlyRate,
           affiliation: data.Affiliation,
@@ -74,8 +74,8 @@ export const ViewPharmacistDetails = () => {
             {formData.name}
           </Text>
           <Text>
-            <strong>Mobile Number: </strong>
-            {formData.mobileNum}
+            <strong>Email: </strong>
+            {formData.email}
           </Text>
           <Text>
             <strong>Date of Birth: </strong>
