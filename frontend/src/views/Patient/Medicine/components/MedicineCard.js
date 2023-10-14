@@ -44,13 +44,13 @@ const MedicineCard = ({ Medicine }) => {
   const [MImage, setImage] = useState(Medicine.Image);
   const [Medicinal_Use, setMedicinal_Use] = useState(Medicine.Medicinal_Use);
   const [Sales, setSales] = useState(Medicine.Sales);
-  const [Archived, setArchived] = useState(Medicine.state);
+  const [Archived, setArchived] = useState(Medicine.State);
   const [message, setMessage] = useState("");
   const [use, setUse] = useState("");
   const [Ingredient, setIngredient] = useState("");
 
   const isArchviedC = Archived === "archived" ? "red" : "green";
-  const isArchvied = Archived === "archived" ? "Archived" : "Avabile";
+  const isArchvied = Archived === "archived" ? "Not Avabile" : "Avabile";
 
   // handle edit
   const { isOpen, onOpen, onClose } = useDisclosure();

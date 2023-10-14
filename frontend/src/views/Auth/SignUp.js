@@ -405,12 +405,12 @@ function SignUp() {
               OR
             </Text>
             <Text color={textColor} fontWeight="medium">
-              Register as a doctor
+              Register as a pharmacist
               <Link
                 color={titleColor}
                 as="span"
                 ms="5px"
-                href="./docSignUp"
+                href="./pharmSignUp"
                 fontWeight="bold"
               >
                 here

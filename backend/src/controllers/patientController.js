@@ -1,4 +1,5 @@
 const patientModel = require("../models/patients");
+const userModel = require("../models/systemusers");
 // const familyMemberModel = require("../models/familymembers");
 // const { getAllPatients } = require("./testController");
 const { getPatients } = require("./testController");
@@ -17,12 +18,45 @@ const createPatient = async (req, res) => {
         PhoneNumber: EmergencyContactNumber,
         Relation: EmergencyContactRelation,
       },
+      
     });
-    res.status(200).send({ patient });
+    const user = await userModel.create({
+      Username: req.body.Username,
+      Password: req.body.Password,
+      Email: req.body.Email,
+      Type: "Patient",
+    });
+    res.status(200).send({ patient, user });
   } catch (error) {
     res.status(400).send({ message: error.message });
   }
 };
+
+const getEmergencyContact = async (req, res) => {
+  try {
+    const { Username } = req.params;
+    const patient = await patientModel.findOne({ Username: Username });
+
+    console.log(patient);
+
+    if (!patient) {
+      res.status(404).send({ message: "Patient not found." });
+      return;
+    }
+
+    const EmergencyContact = patient.EmergencyContact;
+    const  Name = patient.Name;
+    console.log(Name);
+    if (!EmergencyContact) {
+      res.status(404).send({ message: "Emergency contact not found for the patient." });
+      return;
+    }
+
+    res.status(200).send({ EmergencyContact });
+  } catch (error) {
+    res.status(400).send({ message: error.message });
+  }
+}
 
 const getAllPatients = async (req, res) => {
   try {
@@ -82,4 +116,5 @@ module.exports = {
   getPatient,
   updatePatient,
   getPatientUsername,
+  getEmergencyContact,
 };

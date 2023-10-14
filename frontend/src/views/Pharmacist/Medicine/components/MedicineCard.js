@@ -44,7 +44,7 @@ const MedicineCard = ({ Medicine }) => {
   const [MImage, setImage] = useState(Medicine.Image);
   const [Medicinal_Use, setMedicinal_Use] = useState(Medicine.Medicinal_Use);
   const [Sales, setSales] = useState(Medicine.Sales);
-  const [Archived, setArchived] = useState(Medicine.state);
+  const [Archived, setArchived] = useState(Medicine.State);
   const [message, setMessage] = useState("");
   const [use, setUse] = useState("");
   const [Ingredient, setIngredient] = useState("");
@@ -320,7 +320,7 @@ const MedicineCard = ({ Medicine }) => {
                 setSales(Medicine.Sales);
                 setImage(Medicine.Image);
                 setDescription(Medicine.Description);
-                setArchived(Medicine.state);
+                setArchived(Medicine.State);
                 onClose();
               }}
             >
@@ -331,6 +331,17 @@ const MedicineCard = ({ Medicine }) => {
               onClick={async () => {
                 // API_PATHS.updateMedicine + Medicine._id
                 // "medicine/updateMedicine/"
+
+                if(Active_Ingredients.length === 0 || Medicinal_Use.length === 0) {
+                  return toast({
+                    title: "failed Add Medicine.",
+                    description: "Please add at least one ingredient and one use.",
+                    status: "error",
+                    duration: 5000,
+                    isClosable: true,
+                  });
+                }
+
                 const response = await fetch(
                   API_PATHS.updateMedicine + Medicine._id,
                   {
@@ -347,7 +358,7 @@ const MedicineCard = ({ Medicine }) => {
                       Sales,
                       Image: MImage,
                       Description,
-                      state: Archived,
+                      State: Archived,
                     }),
                   }
                 );
@@ -361,7 +372,7 @@ const MedicineCard = ({ Medicine }) => {
                     title: "Medicine Updated.",
                     description: "You updated the Medicine succsefuly.",
                     status: "success",
-                    duration: 9000,
+                    duration: 5000,
                     isClosable: true,
                   });
                   onClose();
@@ -376,7 +387,7 @@ const MedicineCard = ({ Medicine }) => {
                   setSales(Medicine.Sales);
                   setImage(Medicine.Image);
                   setDescription(Medicine.Description);
-                  setArchived(Medicine.state);
+                  setArchived(Medicine.State);
 
                   toast({
                     title: "failed Medicine Update.",
