@@ -19,27 +19,27 @@ function Index() {
   // const [medicines, setMedicines] = useState([]);
   const { medicines, dispatch } = useMedicineContext();
   const textColor = useColorModeValue("gray.700", "white");
+  const [searchAndFilterParams, setSearchAndFilterParams] = useState({
+    Name: "",
+    Medicinal_Use: [],
+  });
 
   useEffect(() => {
-    const fetchMedicines = async () => {
-      try {
-        // API_PATHS.getMedicines
-        // "medicine/medicines"
-        const res = await fetch(API_PATHS.getMedicines);
-        const data = await res.json();
-        if (res.ok) {
-          dispatch({ type: "SET_MEDICINES", payload: data });
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchMedicines();
-  }, []);
+    axios
+      .get(API_PATHS.getMedicines, { params: searchAndFilterParams })
+      .then((response) => {
+        dispatch({ type: "SET_MEDICINES", payload: response.data });
+      })
+      .catch((err) => console.log(err));
+  }, [searchAndFilterParams]);
 
   return (
     <Flex direction="column">
-      <MedicineGroup medicines={medicines} />
+      <MedicineGroup
+        medicines={medicines}
+        searchAndFilterParams={searchAndFilterParams}
+        setSearchAndFilterParams={setSearchAndFilterParams}
+      />
 
       {
         // medicines && medicines.map((medicine)=>(
