@@ -59,7 +59,7 @@ const MedicineCard = ({ Medicine }) => {
   return (
     <Flex direction="column">
       <Box mb="20px" position="relative" borderRadius="15px">
-        <Image src={MImage}  alt={Name} borderRadius="15px"  boxSize='200px'/>
+        <Image src={MImage} alt={Name} borderRadius="15px" boxSize="200px" />
         <Box
           w="100%"
           h="100%"
@@ -84,7 +84,7 @@ const MedicineCard = ({ Medicine }) => {
           </Badge>
         </Text>
         <Text fontSize="sm" color="gray.500" fontWeight="400">
-          API:
+          Active Ing:
           {Active_Ingredients.map((use) => (
             <text>{" " + use} </text>
           ))}
@@ -332,10 +332,14 @@ const MedicineCard = ({ Medicine }) => {
                 // API_PATHS.updateMedicine + Medicine._id
                 // "medicine/updateMedicine/"
 
-                if(Active_Ingredients.length === 0 || Medicinal_Use.length === 0) {
+                if (
+                  Active_Ingredients.length === 0 ||
+                  Medicinal_Use.length === 0
+                ) {
                   return toast({
                     title: "failed Add Medicine.",
-                    description: "Please add at least one ingredient and one use.",
+                    description:
+                      "Please add at least one ingredient and one use.",
                     status: "error",
                     duration: 5000,
                     isClosable: true,
