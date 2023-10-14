@@ -186,9 +186,11 @@ const MedicineGroup = ({
           gap="24px"
         >
           {medicines &&
-            medicines.map((medicine) => (
-              <MedicineCard key={medicine._id} Medicine={medicine} />
-            ))}
+            medicines
+              .filter((medicine) => medicine.State === "unarchived")
+              .map((medicine) => (
+                <MedicineCard key={medicine._id} Medicine={medicine} />
+              ))}
         </Grid>
       </CardBody>
     </Card>
