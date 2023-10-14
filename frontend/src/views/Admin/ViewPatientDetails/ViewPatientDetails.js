@@ -38,14 +38,13 @@ export const ViewPatientDetails = () => {
           name: data.Name,
           mobileNum: data.MobileNum,
           dateOfBirth: data.DateOfBirth,
-          // gender: data.Gender,
-          // emergencyContact: {
-          //   fullName: data.EmergencyContact.FullName,
-          //   phoneNumber: data.EmergencyContact.PhoneNumber,
-          //   relation: data.EmergencyContact.Relation,
-          // },
+          gender: data.Gender,
+          emergencyContact: {
+            fullName: data.EmergencyContact.FullName,
+            phoneNumber: data.EmergencyContact.PhoneNumber,
+            relation: data.EmergencyContact.Relation,
+          },
         }));
-        // console.log(formData);
       })
       .catch((error) => console.log(error));
   }, [username]);

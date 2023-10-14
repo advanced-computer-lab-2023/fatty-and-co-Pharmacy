@@ -27,6 +27,9 @@ import {
   TagLeftIcon,
   TagRightIcon,
   TagCloseButton,
+  Select,
+  CheckboxGroup,
+  Checkbox,
 } from "@chakra-ui/react";
 // Custom components
 import Card from "components/Card/Card";
@@ -38,8 +41,13 @@ import MedicineCard from "./MedicineCard";
 import { useState, useEffect } from "react";
 import { API_PATHS } from "../../../../API/api_paths";
 import { useMedicineContext } from "../../../../hooks/useMedicineContext";
+import { SearchBar } from "components/Navbars/SearchBar/SearchBar";
 
-const MedicineGroup = ({ medicines }) => {
+const MedicineGroup = ({
+  medicines,
+  searchAndFilterParams,
+  setSearchAndFilterParams,
+}) => {
   // Chakra color mode
   const textColor = useColorModeValue("gray.700", "white");
 
@@ -51,7 +59,7 @@ const MedicineGroup = ({ medicines }) => {
   const [Description, setDescription] = useState("");
   const [Price, setPrice] = useState("");
   const [MImage, setImage] = useState("");
-  const [use, setUse] = useState(""); 
+  const [use, setUse] = useState("");
   const [Medicinal_Use, setMedicinal_Use] = useState([]);
   const [Sales, setSales] = useState(0);
   const [Archived, setArchived] = useState("unarchived");
@@ -116,16 +124,59 @@ const MedicineGroup = ({ medicines }) => {
     }
   };
 
+  const handleNameValueChange = (value) => {
+    setSearchAndFilterParams({ ...searchAndFilterParams, Name: value });
+  };
+  const handleMedicinalUseValueChange = (value) => {
+    setSearchAndFilterParams({
+      ...searchAndFilterParams,
+      Medicinal_Use: selectedUses,
+    });
+    console.log(searchAndFilterParams);
+  };
+
+  const [selectedUses, setSelectedUses] = useState([]);
+  const medicinalUses = [
+    "painkiller",
+    "fever",
+    "anti-inflammatory",
+    "anxiety",
+    "pain",
+  ];
+  const handleMedicinalUseChange = (values) => {
+    setSelectedUses(values);
+  };
+
   return (
     <Card p="16px" my="24px" style={{ margin: "80px 0 0 0px" }}>
       <CardHeader p="12px 5px" mb="12px">
-        <Flex direction="column">
-          <Text fontSize="lg" color={textColor} fontWeight="bold">
-            "Medicine Group"
-          </Text>
-          <Text fontSize="sm" color="gray.500" fontWeight="400">
-            "Medicine Group Description"
-          </Text>
+        <Flex direction="row" alignItems="flex-start">
+          <Flex direction="column">
+            <Text fontSize="lg" color={textColor} fontWeight="bold">
+              "Medicine Group"
+            </Text>
+            <Text fontSize="sm" color="gray.500" fontWeight="400">
+              "Medicine Group Description"
+            </Text>
+          </Flex>
+          <SearchBar
+            placeholder="Medicine Name..."
+            onChange={handleNameValueChange}
+          />
+          <Box>
+            <CheckboxGroup
+              colorScheme="green"
+              defaultValue={selectedUses}
+              onChange={handleMedicinalUseChange}
+            >
+              {medicinalUses.map((use, index) => (
+                <Checkbox key={index} value={use}>
+                  {use}
+                </Checkbox>
+              ))}
+            </CheckboxGroup>
+            <Button onClick={handleMedicinalUseValueChange}>Submit</Button>
+          </Box>
         </Flex>
       </CardHeader>
       <CardBody px="5px">
@@ -138,10 +189,7 @@ const MedicineGroup = ({ medicines }) => {
             medicines.map((medicine) => (
               <MedicineCard key={medicine._id} Medicine={medicine} />
             ))}
-
-          
         </Grid>
-        
       </CardBody>
     </Card>
   );

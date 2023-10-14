@@ -59,7 +59,7 @@ const MedicineCard = ({ Medicine }) => {
   return (
     <Flex direction="column">
       <Box mb="20px" position="relative" borderRadius="15px">
-        <Image src={MImage}  alt={Name} borderRadius="15px"  boxSize='200px'/>
+        <Image src={MImage} alt={Name} borderRadius="15px" boxSize="200px" />
         <Box
           w="100%"
           h="100%"
@@ -102,11 +102,8 @@ const MedicineCard = ({ Medicine }) => {
         <Text fontSize="sm" color="gray.500" fontWeight="400" mb="10px">
           {Description}
         </Text>
-        <Flex justifyContent="space-between">
-          
-        </Flex>
+        <Flex justifyContent="space-between"></Flex>
       </Flex>
-      
     </Flex>
   );
 };
