@@ -1,6 +1,7 @@
 const pharmacistModel = require("../models/pharmacists");
 const patientModel = require("../models/patients");
 const requestModel = require("../models/requests");
+const orderModel = require("../models/orders");
 const systemUserModel = require("../models/systemusers");
 
 const { default: mongoose } = require("mongoose");
@@ -82,17 +83,19 @@ const deleteUser = async (req, res) => {
   const { Username } = req.body;
   try {
     const user = await systemUserModel.findOneAndDelete({ Username: Username });
-    if (user.Type == "Patient") {
-      const patient = await patientModel.findOneAndDelete({
-        Username: Username,
-      });
-    } else if (user.Type == "Pharmacist") {
-      const doctor = await pharmacistModel.findOneAndDelete({
-        Username: Username,
-      });
+      if (user && user.Type === "Patient") {
+        const patient = await patientModel.findOneAndDelete({ Username: Username });
+        const orders = await orderModel.find({ PatientUsername: Username });
+        if (orders.length > 0) {
+          await orders.deleteMany({ PatientUsername: Username });
+        }
+        res.status(200).json({ user, patient });
+      } else if (user && user.Type == "Pharmacist") {
+        const pharmacist = await pharmacistModel.findOneAndDelete({
+          Username: Username,
+        });      
+      res.status(200).json({user, pharmacist});
     }
-
-    res.status(200).json(user);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
