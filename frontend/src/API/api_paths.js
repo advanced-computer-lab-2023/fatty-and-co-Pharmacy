@@ -11,11 +11,10 @@ export const API_PATHS = {
   signup: PATIENT_BASE + "addPatient/",
   pharmSignUp: GUEST_BASE + "addRequest/",
   addMedicine: MEDICINE_BASE + "addMedicine/",
-  getMedicines: MEDICINE_BASE + "getMedicines",
-  getMedicine: MEDICINE_BASE + "medicine/",
+  getMedicines: MEDICINE_BASE + "getMedicines/",
+  getMedicine: MEDICINE_BASE + "getMedicine/",
   updateMedicine: MEDICINE_BASE + "updateMedicine/",
   deleteMedicine: MEDICINE_BASE + "deleteMedicine/",
-  
 
   // getmedicines: MEDICINE_BASE + "getmedicines",
 

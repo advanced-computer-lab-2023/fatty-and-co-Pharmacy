@@ -64,6 +64,15 @@ const MedicineGroup = ({ medicines }) => {
     // API_PATHS.addMedicine
     // "medicine/addMedicine"
     e.preventDefault();
+    if(Active_Ingredients.length === 0 || Medicinal_Use.length === 0) {
+      return toast({
+        title: "failed Add Medicine.",
+        description: "Please add at least one ingredient and one use.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
 
     const response = await fetch(API_PATHS.addMedicine, {
       method: "POST",
@@ -103,7 +112,7 @@ const MedicineGroup = ({ medicines }) => {
       setSales("");
       setImage("");
       setDescription("");
-      setArchived("");
+      setArchived("unarchived");
       onClose();
     } else {
       return toast({
@@ -249,7 +258,6 @@ const MedicineGroup = ({ medicines }) => {
                       variant="filled"
                       type="text"
                       placeholder="Medicnal Use"
-                      required
                       style={{ width: "75%" }}
                       onChange={(e) => {
                         setUse(e.target.value);
@@ -336,7 +344,7 @@ const MedicineGroup = ({ medicines }) => {
                     setSales("");
                     setImage("");
                     setDescription("");
-                    setArchived("");
+                    setArchived("unarchived");
                     onClose();
                   }}
                 >

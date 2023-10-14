@@ -1,7 +1,7 @@
 import { MedicineContextProvider } from "../../../hooks/MedicineContext";
 import Index from "./index";
 
-function Medicine() {
+function AdminMedicine() {
   return (
     <MedicineContextProvider>
       <Index />
@@ -9,4 +9,4 @@ function Medicine() {
   );
 }
 
-export default Medicine;
+export default AdminMedicine;
