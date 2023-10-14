@@ -27,6 +27,8 @@ import {
   TagLeftIcon,
   TagRightIcon,
   TagCloseButton,
+  CheckboxGroup,
+  Checkbox,
 } from "@chakra-ui/react";
 // Custom components
 import Card from "components/Card/Card";
@@ -38,6 +40,7 @@ import MedicineCard from "./MedicineCard";
 import { useState, useEffect } from "react";
 import { API_PATHS } from "../../../../API/api_paths";
 import { useMedicineContext } from "../../../../hooks/useMedicineContext";
+import { SearchBar } from "components/Navbars/SearchBar/SearchBar";
 
 const MedicineGroup = ({
   medicines,

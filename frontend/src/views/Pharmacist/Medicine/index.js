@@ -13,6 +13,7 @@ import MedicineGroup from "./components/MedicineGroup";
 import { useState, useEffect } from "react";
 import { useMedicineContext } from "../../../hooks/useMedicineContext";
 import { API_PATHS } from "../../../API/api_paths";
+import axios from "axios";
 
 function Index() {
   // Chakra color mode
