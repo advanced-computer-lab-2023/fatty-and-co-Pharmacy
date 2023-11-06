@@ -28,6 +28,8 @@ import {
 import React, { useState } from "react";
 import { useMedicineContext } from "../../../../hooks/useMedicineContext";
 import { API_PATHS } from "API/api_paths";
+import axios from "axios";
+import { useAuthContext } from "hooks/useAuthContext";
 
 const MedicineCard = ({ Medicine }) => {
   // Chakra color mode
@@ -55,6 +57,9 @@ const MedicineCard = ({ Medicine }) => {
   // handle edit
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
+
+  const { user } = useAuthContext();
+  const Authorization = `Bearer ${user.token}`;
 
   return (
     <Flex direction="column">
@@ -332,28 +337,79 @@ const MedicineCard = ({ Medicine }) => {
                 // API_PATHS.updateMedicine + Medicine._id
                 // "medicine/updateMedicine/"
 
-                if (
-                  Active_Ingredients.length === 0 ||
-                  Medicinal_Use.length === 0
-                ) {
-                  return toast({
-                    title: "failed Add Medicine.",
-                    description:
-                      "Please add at least one ingredient and one use.",
-                    status: "error",
-                    duration: 5000,
-                    isClosable: true,
-                  });
-                }
+                // if (
+                //   Active_Ingredients.length === 0 ||
+                //   Medicinal_Use.length === 0
+                // ) {
+                //   return toast({
+                //     title: "failed Add Medicine.",
+                //     description:
+                //       "Please add at least one ingredient and one use.",
+                //     status: "error",
+                //     duration: 5000,
+                //     isClosable: true,
+                //   });
+                // }
 
-                const response = await fetch(
-                  API_PATHS.updateMedicine + Medicine._id,
-                  {
-                    method: "PATCH",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
+                // const response = await fetch(
+                //   API_PATHS.updateMedicine + Medicine._id,
+                //   {
+                //     method: "PATCH",
+                //     headers: {
+                //       "Content-Type": "application/json",
+                //     },
+                //     body: JSON.stringify({
+                //       Name,
+                //       Price,
+                //       Active_Ingredients,
+                //       Medicinal_Use,
+                //       Quantity,
+                //       Sales,
+                //       Image: MImage,
+                //       Description,
+                //       State: Archived,
+                //     }),
+                //   }
+                // );
+
+                // const data = await response.json();
+                // console.log(data);
+                // if (response.status === 200) {
+                //   dispatch({ type: "UPDATE_MEDICINE", payload: data });
+
+                //   toast({
+                //     title: "Medicine Updated.",
+                //     description: "You updated the Medicine succsefuly.",
+                //     status: "success",
+                //     duration: 5000,
+                //     isClosable: true,
+                //   });
+                //   onClose();
+                // } else {
+                //   // setMessage(data.message);
+                //   setMessage(data.message);
+                //   setName(Medicine.Name);
+                //   setPrice(Medicine.Price);
+                //   setActive_Ingredients(Medicine.Active_Ingredients);
+                //   setMedicinal_Use(Medicine.Medicinal_Use);
+                //   setQuantity(Medicine.Quantity);
+                //   setSales(Medicine.Sales);
+                //   setImage(Medicine.Image);
+                //   setDescription(Medicine.Description);
+                //   setArchived(Medicine.State);
+
+                //   toast({
+                //     title: "failed Medicine Update.",
+                //     description: message,
+                //     status: "error",
+                //     duration: 9000,
+                //     isClosable: true,
+                //   });
+                // }
+                axios
+                  .patch(
+                    API_PATHS.updateMedicine + Medicine._id,
+                    {
                       Name,
                       Price,
                       Active_Ingredients,
@@ -363,44 +419,51 @@ const MedicineCard = ({ Medicine }) => {
                       Image: MImage,
                       Description,
                       State: Archived,
-                    }),
-                  }
-                );
+                    },
+                    {
+                      headers: {
+                        Authorization,
+                      },
+                    }
+                  )
+                  .then((response) => {
+                    // Handle success
+                    dispatch({
+                      type: "UPDATE_MEDICINE",
+                      payload: response.data,
+                    });
 
-                const data = await response.json();
-                console.log(data);
-                if (response.status === 200) {
-                  dispatch({ type: "UPDATE_MEDICINE", payload: data });
+                    toast({
+                      title: "Medicine Updated.",
+                      description: "You updated the Medicine successfully.",
+                      status: "success",
+                      duration: 5000,
+                      isClosable: true,
+                    });
+                    onClose();
+                  })
+                  .catch((error) => {
+                    // Handle error
+                    console.log(error);
+                    setMessage(error.response.data.message);
+                    setName(Medicine.Name);
+                    setPrice(Medicine.Price);
+                    setActive_Ingredients(Medicine.Active_Ingredients);
+                    setMedicinal_Use(Medicine.Medicinal_Use);
+                    setQuantity(Medicine.Quantity);
+                    setSales(Medicine.Sales);
+                    setImage(Medicine.Image);
+                    setDescription(Medicine.Description);
+                    setArchived(Medicine.State);
 
-                  toast({
-                    title: "Medicine Updated.",
-                    description: "You updated the Medicine succsefuly.",
-                    status: "success",
-                    duration: 5000,
-                    isClosable: true,
+                    toast({
+                      title: "failed Medicine Update.",
+                      description: message,
+                      status: "error",
+                      duration: 9000,
+                      isClosable: true,
+                    });
                   });
-                  onClose();
-                } else {
-                  // setMessage(data.message);
-                  setMessage(data.message);
-                  setName(Medicine.Name);
-                  setPrice(Medicine.Price);
-                  setActive_Ingredients(Medicine.Active_Ingredients);
-                  setMedicinal_Use(Medicine.Medicinal_Use);
-                  setQuantity(Medicine.Quantity);
-                  setSales(Medicine.Sales);
-                  setImage(Medicine.Image);
-                  setDescription(Medicine.Description);
-                  setArchived(Medicine.State);
-
-                  toast({
-                    title: "failed Medicine Update.",
-                    description: message,
-                    status: "error",
-                    duration: 9000,
-                    isClosable: true,
-                  });
-                }
               }}
             >
               Save Changes

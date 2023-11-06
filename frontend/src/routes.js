@@ -41,7 +41,7 @@ var dashRoutes = [
     rtlName: "لوحة القيادة",
     icon: <HomeIcon color="inherit" />,
     component: PharmacistMedicine,
-    layout: "/admin",
+    layout: "/pharmacist",
   },
   {
     path: "/patientmedicine",
@@ -49,7 +49,7 @@ var dashRoutes = [
     rtlName: "لوحة القيادة",
     icon: <HomeIcon color="inherit" />,
     component: PatientMedicine,
-    layout: "/admin",
+    layout: "/patient",
   },
   {
     path: "/viewRequests",
@@ -70,7 +70,6 @@ var dashRoutes = [
     name: "Delete User",
     icon: <HomeIcon color="inherit" />,
     component: DeleteUser,
-
     layout: "/admin",
   },
   {

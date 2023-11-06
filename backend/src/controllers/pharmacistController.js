@@ -1,5 +1,7 @@
 const pharmacistModel = require("../models/pharmacists");
 
+// I think this is useless?
+// if not then it need to create a user in systemuser model too using addentry method
 const createPharmacist = async (req, res) => {
   const {} = req.body;
   try {
@@ -35,6 +37,8 @@ const getPharmacist = async (req, res) => {
   }
 };
 
+// I think this is useless?
+// if not useless it needs to delete from user model too
 const deletePharmacist = async (req, res) => {
   try {
     const pharmacist = await pharmacistModel.findByIdAndDelete(req.params.id);

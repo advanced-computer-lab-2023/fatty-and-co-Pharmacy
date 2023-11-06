@@ -10,11 +10,19 @@ const {
   rejectRequest,
 } = require("../controllers/adminController");
 
+const { checkAdmin } = require("../common/middleware/checkType");
+
 const router = express.Router();
 
 router.get("/", (req, res) => {
   res.send("Admins");
 });
+4;
+
+// middleware to check if user is an admin
+router.use(checkAdmin);
+
+// ALL OF THE FOLLOWING ROUTES CAN ONLY BE ACCESSED BY ADMINS
 
 router.get("/requests", getRequests);
 

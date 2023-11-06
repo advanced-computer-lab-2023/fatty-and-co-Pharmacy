@@ -9,14 +9,15 @@ const { default: mongoose } = require("mongoose");
 const createAdmin = async (req, res) => {
   const { Username, Password, Email } = req.body;
   try {
-    const admin = await systemUserModel.create({
-      Username: Username,
-      Password: Password,
-      Email: Email,
-      Type: "Admin",
-    });
+    const admin = await systemUserModel.addEntry(
+      Username,
+      Password,
+      Email,
+      "Admin"
+    );
     res.status(200).json(admin);
   } catch (error) {
+    console.log(error.message);
     res.status(400).json({ error: error.message });
   }
 };
@@ -47,6 +48,12 @@ const acceptRequest = async (req, res) => {
       Username: Username,
       Status: "Accepted",
     });
+    const user = await systemUserModel.addEntry(
+      Username,
+      request.Password,
+      request.Email,
+      "Pharmacist"
+    );
     const doc = await pharmacistModel.create({
       Username: Username,
       Name: request.Name,
@@ -54,11 +61,6 @@ const acceptRequest = async (req, res) => {
       HourlyRate: request.HourlyRate,
       Affiliation: request.Affiliation,
       EducationalBackground: request.EducationalBackground,
-    });
-    const user = await systemUserModel.create({
-      Username: Username,
-      Password: request.Password,
-      Email: request.Email,
     });
     res.status(200).json(request);
   } catch (error) {
@@ -83,18 +85,20 @@ const deleteUser = async (req, res) => {
   const { Username } = req.body;
   try {
     const user = await systemUserModel.findOneAndDelete({ Username: Username });
-      if (user && user.Type === "Patient") {
-        const patient = await patientModel.findOneAndDelete({ Username: Username });
-        const orders = await orderModel.find({ PatientUsername: Username });
-        if (orders.length > 0) {
-          await orders.deleteMany({ PatientUsername: Username });
-        }
-        res.status(200).json({ user, patient });
-      } else if (user && user.Type == "Pharmacist") {
-        const pharmacist = await pharmacistModel.findOneAndDelete({
-          Username: Username,
-        });      
-      res.status(200).json({user, pharmacist});
+    if (user && user.Type === "Patient") {
+      const patient = await patientModel.findOneAndDelete({
+        Username: Username,
+      });
+      const orders = await orderModel.find({ PatientUsername: Username });
+      if (orders.length > 0) {
+        await orders.deleteMany({ PatientUsername: Username });
+      }
+      res.status(200).json({ user, patient });
+    } else if (user && user.Type == "Pharmacist") {
+      const pharmacist = await pharmacistModel.findOneAndDelete({
+        Username: Username,
+      });
+      res.status(200).json({ user, pharmacist });
     }
   } catch (error) {
     res.status(400).json({ error: error.message });

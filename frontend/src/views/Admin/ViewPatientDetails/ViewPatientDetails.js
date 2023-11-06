@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { API_PATHS } from "API/api_paths";
 import axios from "axios";
+import { useAuthContext } from "hooks/useAuthContext";
 
 export const ViewPatientDetails = () => {
   const [formData, setFormData] = useState({
@@ -28,9 +29,14 @@ export const ViewPatientDetails = () => {
   const [username, setUsername] = useState("");
   const [textboxValue, setTextboxValue] = useState("");
 
+  const { user } = useAuthContext();
+  const Authorization = `Bearer ${user.token}`;
+
   useEffect(() => {
     axios
-      .get(API_PATHS.adminViewPatient + username)
+      .get(API_PATHS.adminViewPatient + username, {
+        headers: { Authorization },
+      })
       .then((response) => {
         const data = response.data;
         console.log(data);
