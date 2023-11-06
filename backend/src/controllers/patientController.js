@@ -4,34 +4,6 @@ const userModel = require("../models/systemusers");
 // const { getAllPatients } = require("./testController");
 const { getPatients } = require("./testController");
 
-const createPatient = async (req, res) => {
-  const {EmergencyContactNumber,EmergencyContactName,EmergencyContactRelation} = req.body;
-  try {
-    const patient = await patientModel.create({
-      Username: req.body.Username,
-      Name: req.body.Name,
-      MobileNum: req.body.MobileNum,
-      DateOfBirth: req.body.DateOfBirth,
-      Gender: req.body.Gender,
-      EmergencyContact: {
-        FullName: EmergencyContactName,
-        PhoneNumber: EmergencyContactNumber,
-        Relation: EmergencyContactRelation,
-      },
-      
-    });
-    const user = await userModel.create({
-      Username: req.body.Username,
-      Password: req.body.Password,
-      Email: req.body.Email,
-      Type: "Patient",
-    });
-    res.status(200).send({ patient, user });
-  } catch (error) {
-    res.status(400).send({ message: error.message });
-  }
-};
-
 const getEmergencyContact = async (req, res) => {
   try {
     const { Username } = req.params;
@@ -45,10 +17,12 @@ const getEmergencyContact = async (req, res) => {
     }
 
     const EmergencyContact = patient.EmergencyContact;
-    const  Name = patient.Name;
+    const Name = patient.Name;
     console.log(Name);
     if (!EmergencyContact) {
-      res.status(404).send({ message: "Emergency contact not found for the patient." });
+      res
+        .status(404)
+        .send({ message: "Emergency contact not found for the patient." });
       return;
     }
 
@@ -56,7 +30,7 @@ const getEmergencyContact = async (req, res) => {
   } catch (error) {
     res.status(400).send({ message: error.message });
   }
-}
+};
 
 const getAllPatients = async (req, res) => {
   try {
@@ -88,6 +62,8 @@ const getPatientUsername = async (req, res) => {
   }
 };
 
+// I think this is useless?
+// if not useless it needs to delete from user model and order model too
 const deletePatient = async (req, res) => {
   try {
     const patient = await patientModel.findByIdAndDelete(req.params.id);
@@ -110,7 +86,6 @@ const updatePatient = async (req, res) => {
 };
 
 module.exports = {
-  createPatient,
   getAllPatients,
   deletePatient,
   getPatient,

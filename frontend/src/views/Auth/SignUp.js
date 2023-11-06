@@ -20,6 +20,7 @@ import React from "react";
 import { FaApple, FaFacebook, FaGoogle } from "react-icons/fa";
 import { useState } from "react";
 import { API_PATHS } from "API/api_paths";
+import axios from "axios";
 
 const genders = ["M", "F"];
 
@@ -194,19 +195,29 @@ function SignUp() {
                 EmergencyContactNumber,
                 EmergencyContactRelation,
               };
-              const response = await fetch(API_PATHS.signup, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(Patient),
-              });
-              const data = await response.json();
-              console.log(data);
-              if (response.ok) {
-                console.log("Patient added successfully!");
-                window.location.href = "/auth/signin";
-              } else {
-                console.log("Error adding patient!");
-              }
+              // const response = await fetch(API_PATHS.signup, {
+              //   method: "POST",
+              //   headers: { "Content-Type": "application/json" },
+              //   body: JSON.stringify(Patient),
+              // });
+              // const data = await response.json();
+              // console.log(data);
+              // if (response.ok) {
+              //   console.log("Patient added successfully!");
+              //   window.location.href = "/auth/signin";
+              // } else {
+              //   console.log("Error adding patient!");
+              // }
+              axios
+                .post(API_PATHS.signup, { Patient })
+                .then((response) => {
+                  window.location.href = "./signin";
+                })
+                .catch((err) => {
+                  console.log(
+                    "Error adding patient " + err.response.data.message
+                  );
+                });
             }}
           >
             <FormControl>
@@ -386,9 +397,8 @@ function SignUp() {
               Already have an account?
               <Link
                 color={titleColor}
-                as="span"
                 ms="5px"
-                href="/auth/signin "
+                href="./signin "
                 fontWeight="bold"
               >
                 Sign In
@@ -408,7 +418,6 @@ function SignUp() {
               Register as a pharmacist
               <Link
                 color={titleColor}
-                as="span"
                 ms="5px"
                 href="./pharmSignUp"
                 fontWeight="bold"

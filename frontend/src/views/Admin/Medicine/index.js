@@ -13,6 +13,7 @@ import MedicineGroup from "./components/MedicineGroup";
 import { useState, useEffect } from "react";
 import { useMedicineContext } from "../../../hooks/useMedicineContext";
 import { API_PATHS } from "../../../API/api_paths";
+import { useAuthContext } from "hooks/useAuthContext";
 import axios from "axios";
 
 function Index() {
@@ -25,9 +26,15 @@ function Index() {
     Medicinal_Use: [],
   });
 
+  const { user } = useAuthContext();
+  const Authorization = `Bearer ${user.token}`;
+
   useEffect(() => {
     axios
-      .get(API_PATHS.getMedicines, { params: searchAndFilterParams })
+      .get(API_PATHS.getMedicines, {
+        params: searchAndFilterParams,
+        headers: { Authorization },
+      })
       .then((response) => {
         dispatch({ type: "SET_MEDICINES", payload: response.data });
       })

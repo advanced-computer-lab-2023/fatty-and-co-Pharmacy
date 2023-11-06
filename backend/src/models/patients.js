@@ -25,17 +25,12 @@ const patientSchema = new Schema(
     Gender: {
       type: String,
       enum: ["M", "F"],
-      required: true
+      required: true,
     },
     EmergencyContact: {
       type: { FullName: String, PhoneNumber: Number, Relation: String }, //NOT SURE OF THIS SYNTAX
       required: false,
     },
-    // TODO: change this
-    // FamilyMem: {
-    //   type: [ImportFamObject.FamilyMem], //NOT SURE MEN LAW DA VALID TYPE
-    //   required: false,
-    // },
     // TODO: properly add prescriptions
     Prescriptions: {
       type: [String],

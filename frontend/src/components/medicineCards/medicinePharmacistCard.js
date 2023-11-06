@@ -8,6 +8,9 @@ import {
   Button,
   Collapse,
 } from "reactstrap";
+import { useAuthContext } from "hooks/useAuthContext";
+import axios from "axios";
+import { API_PATHS } from "API/api_paths";
 
 const MedicineCard = ({ Medicine }) => {
   // handle edit
@@ -25,25 +28,39 @@ const MedicineCard = ({ Medicine }) => {
 
   const [message, setMessage] = useState("");
 
+  const { user } = useAuthContext();
+  const Authorization = `Bearer ${user.token}`;
+
   // handle Archive
-  const handleArchive = async () => { // TODO wil need context
+  const handleArchive = async () => {
     const state = Medicine.state === "archived" ? "unarchived" : "archived";
-    console.log(state);
-    const response = await fetch("/medicine/updateMedicine/" + Medicine._id, {
-      method: "PATCH",
-      body: JSON.stringify({
-        state: state,
-      }),
-    });
-    console.log(response.ok);
-    const data = await response.json();
-    if (response.ok) {
-      setState(state);
-      window.location.reload();
-    } else {
-      
-      setMessage(data.message);
-    }
+    // const response = await fetch("/medicine/updateMedicine/" + Medicine._id, {
+    //   method: "PATCH",
+    //   body: JSON.stringify({
+    //     state: state,
+    //   }),
+    // });
+
+    // const data = await response.json();
+    // if (response.ok) {
+    //   setState(state);
+    //   window.location.reload();
+    // } else {
+    //   setMessage(data.message);
+    // }
+    axios
+      .patch(
+        API_PATHS.updateMedicine + Medicine._id,
+        { state: state },
+        { headers: { Authorization } }
+      )
+      .then((response) => {
+        setState(state);
+        window.location.reload();
+      })
+      .catch((err) => {
+        setMessage(err.response.data.message);
+      });
   };
 
   // handle edit
@@ -51,38 +68,56 @@ const MedicineCard = ({ Medicine }) => {
   const toggle = () => setIsOpen(!isOpen);
 
   const handleEdit = async () => {
-    const response = await fetch("/medicine/updateMedicine/" + Medicine._id, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        Name: Name,
-        Quantity: Quantity,
-        Active_Ingredients: Active_Ingredients,
-        Description: Description,
-        Price: Price,
-        Image: Image,
-        Medicinal_Use: Medicinal_Use,
-        Sales: Sales,
-      }),
-    });
-    const data = await response.json();
-    if (response.ok) {
-      window.location.reload();
-    } else {
-      setMessage(data.message);
-    }
+    // const response = await fetch("/medicine/updateMedicine/" + Medicine._id, {
+    //   method: "PATCH",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     Name: Name,
+    //     Quantity: Quantity,
+    //     Active_Ingredients: Active_Ingredients,
+    //     Description: Description,
+    //     Price: Price,
+    //     Image: Image,
+    //     Medicinal_Use: Medicinal_Use,
+    //     Sales: Sales,
+    //   }),
+    // });
+    // const data = await response.json();
+    // if (response.ok) {
+    //   window.location.reload();
+    // } else {
+    //   setMessage(data.message);
+    // }
+
+    axios
+      .patch(
+        API_PATHS.updateMedicine + Medicine._id,
+        {
+          Name: Name,
+          Quantity: Quantity,
+          Active_Ingredients: Active_Ingredients,
+          Description: Description,
+          Price: Price,
+          Image: Image,
+          Medicinal_Use: Medicinal_Use,
+          Sales: Sales,
+        },
+        { headers: { Authorization } }
+      )
+      .then((response) => {
+        window.location.reload();
+      })
+      .catch((err) => {
+        setMessage(err.response.data.message);
+      });
   };
 
   //end edit
 
   return (
-    <Card
-      className="text-left"
-      style={{
-      }}
-    >
+    <Card className="text-left" style={{}}>
       <CardBody
         style={{
           width: "20rem",
@@ -123,7 +158,7 @@ const MedicineCard = ({ Medicine }) => {
               color="danger"
               style={{ margin: "5px", width: "70%" }}
             >
-              {Medicine.state }
+              {Medicine.state}
             </Button>
             {message && <p>message</p>}
           </Collapse>

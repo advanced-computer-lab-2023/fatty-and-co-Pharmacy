@@ -31,12 +31,12 @@ const createSystemUser = async (req, res) => {
   const email = Email || generateEmail();
   const type = Type || "Admin";
   try {
-    const newUser = await systemUserModel.create({
-      Username: username,
-      Password: password,
-      Email: email,
-      Type: type,
-    });
+    const newUser = await systemUserModel.addEntry(
+      username,
+      password,
+      email,
+      type
+    );
     res.status(201).json(newUser);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -78,12 +78,7 @@ const createPharmacist = async (req, res) => {
       EducationalBackground: educationalBackground,
       Status: "Accepted",
     });
-    await systemUserModel.create({
-      Username: username,
-      Email: email,
-      Password: password,
-      Type: "Pharmacist",
-    });
+    await systemUserModel.addEntry(username, password, email, "Pharmacist");
     const newPharmacist = await pharmacistModel.create({
       Username: username,
       Name: name,
@@ -100,8 +95,15 @@ const createPharmacist = async (req, res) => {
 
 // create a random patient
 const createPatient = async (req, res) => {
-  const { Username, Name, DateOfBirth, MobileNum, EmergencyContact, Gender } =
-    req.body;
+  const {
+    Username,
+    Name,
+    Password,
+    DateOfBirth,
+    MobileNum,
+    EmergencyContact,
+    Gender,
+  } = req.body;
 
   const username = Username || generateUsername();
   const name = Name || generateName();
@@ -111,15 +113,16 @@ const createPatient = async (req, res) => {
     FullName: generateName(),
     PhoneNumber: generateMobileNum(),
   };
+  const password = Password || generatePassword();
   const gender = Gender || generateGender();
 
   try {
-    await systemUserModel.create({
-      Username: username,
-      Email: generateEmail(),
-      Password: generatePassword(),
-      Type: "Patient",
-    });
+    await systemUserModel.addEntry(
+      username,
+      password,
+      generateEmail(),
+      "Patient"
+    );
     const newPatient = await patientModel.create({
       Username: username,
       Name: name,

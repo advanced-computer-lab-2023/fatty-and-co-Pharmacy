@@ -39,7 +39,9 @@ import React from "react";
 import { FaPlus } from "react-icons/fa";
 import MedicineCard from "./MedicineCard";
 import { useState, useEffect } from "react";
-import { API_PATHS } from "../../../../API/api_paths";
+import { useAuthContext } from "hooks/useAuthContext";
+import axios from "axios";
+import { API_PATHS } from "API/api_paths";
 import { useMedicineContext } from "../../../../hooks/useMedicineContext";
 import { SearchBar } from "components/Navbars/SearchBar/SearchBar";
 
@@ -68,60 +70,110 @@ const MedicineGroup = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
 
+  const { user } = useAuthContext();
+  const Authorization = `Bearer ${user.token}`;
+
   const handleSubmit = async (e) => {
     // API_PATHS.addMedicine
     // "medicine/addMedicine"
     e.preventDefault();
 
-    const response = await fetch(API_PATHS.addMedicine, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        Name,
-        Price,
-        Active_Ingredients,
-        Medicinal_Use,
-        Quantity,
-        Sales,
-        Image: MImage,
-        Description,
-        state: Archived,
-      }),
-    });
-    const data = await response.json();
+    // const response = await fetch(API_PATHS.addMedicine, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     Name,
+    //     Price,
+    //     Active_Ingredients,
+    //     Medicinal_Use,
+    //     Quantity,
+    //     Sales,
+    //     Image: MImage,
+    //     Description,
+    //     state: Archived,
+    //   }),
+    // });
+    // const data = await response.json();
 
-    if (response.status === 200) {
-      dispatch({ type: "ADD_MEDICINE", payload: data });
+    // if (response.status === 200) {
+    //   dispatch({ type: "ADD_MEDICINE", payload: data });
 
-      toast({
-        title: "Medicine Added.",
-        description: "You Added the Medicine succsefuly.",
-        status: "success",
-        duration: 9000,
-        isClosable: true,
+    //   toast({
+    //     title: "Medicine Added.",
+    //     description: "You Added the Medicine succsefuly.",
+    //     status: "success",
+    //     duration: 9000,
+    //     isClosable: true,
+    //   });
+
+    //   setName("");
+    //   setPrice("");
+    //   setActive_Ingredients("");
+    //   setMedicinal_Use("");
+    //   setQuantity("");
+    //   setSales("");
+    //   setImage("");
+    //   setDescription("");
+    //   setArchived("");
+    //   onClose();
+    // } else {
+    //   return toast({
+    //     title: "failed Medi Update.",
+    //     description: message,
+    //     status: "error",
+    //     duration: 9000,
+    //     isClosable: true,
+    //   });
+    // }
+
+    axios
+      .post(
+        API_PATHS.addMedicine,
+        {
+          Name,
+          Price,
+          Active_Ingredients,
+          Medicinal_Use,
+          Quantity,
+          Sales,
+          Image: MImage,
+          Description,
+          state: Archived,
+        },
+        { headers: { Authorization } }
+      )
+      .then((response) => {
+        dispatch({ type: "ADD_MEDICINE", payload: response.data });
+
+        toast({
+          title: "Medicine Added.",
+          description: "Medicine Added Successfully.",
+          status: "success",
+          duration: 9000,
+          isClosable: true,
+        });
+        setName("");
+        setPrice("");
+        setActive_Ingredients("");
+        setMedicinal_Use("");
+        setQuantity("");
+        setSales("");
+        setImage("");
+        setDescription("");
+        setArchived("");
+        onClose();
+      })
+      .catch((err) => {
+        return toast({
+          title: "Failed to add Medicine",
+          description: err.response.data.message,
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        });
       });
-
-      setName("");
-      setPrice("");
-      setActive_Ingredients("");
-      setMedicinal_Use("");
-      setQuantity("");
-      setSales("");
-      setImage("");
-      setDescription("");
-      setArchived("");
-      onClose();
-    } else {
-      return toast({
-        title: "failed Medi Update.",
-        description: message,
-        status: "error",
-        duration: 9000,
-        isClosable: true,
-      });
-    }
   };
 
   const handleNameValueChange = (value) => {

@@ -8,6 +8,8 @@ const {
   getMedicine,
 } = require("../controllers/medicineController");
 
+const { checkPharmacist } = require("../common/middleware/checkType");
+
 // Create the router
 const router = express.Router();
 
@@ -18,13 +20,13 @@ router.get("/getMedicines", getMedicines);
 router.get("/getMedicine/:Name", getMedicine);
 
 // POST create a new medicine
-router.post("/addMedicine", createMedicine);
+router.post("/addMedicine", checkPharmacist, createMedicine);
 
 // DELETE a medicine
-router.delete("/deleteMedicine/:id", deleteMedicine);
+router.delete("/deleteMedicine/:id", checkPharmacist, deleteMedicine);
 
 // update a medicine by id
-router.patch("/updateMedicine/:id", updateMedicine);
+router.patch("/updateMedicine/:id", checkPharmacist, updateMedicine);
 
 //filter Medicine by medicinal yse
 router.get("/filter", filterMedicine);
