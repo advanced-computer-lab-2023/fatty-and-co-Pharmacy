@@ -28,6 +28,8 @@ import {
 import React, { useState } from "react";
 import { useMedicineContext } from "../../../../hooks/useMedicineContext";
 import { API_PATHS } from "API/api_paths";
+import axios from "axios";
+import { useAuthContext } from "hooks/useAuthContext";
 
 const MedicineCard = ({ Medicine }) => {
   // Chakra color mode
@@ -55,11 +57,26 @@ const MedicineCard = ({ Medicine }) => {
   // handle edit
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
+  const { user } = useAuthContext();
+  const Authorization = `Bearer ${user.token}`;
+
+  const addToCart = (medicine) => {
+    console.log(Authorization);
+    console.log(medicine._id);
+    axios
+      .post(API_PATHS.addItemToCart + `?Medicine=${medicine._id}`, null, {
+        headers: { Authorization },
+      })
+      .then((response) => { console.log(response); })
+      .catch((error) => {
+        console.error("Error Adding to cart:", error);
+      });
+  };
 
   return (
     <Flex direction="column">
       <Box mb="20px" position="relative" borderRadius="15px">
-        <Image src={MImage}  alt={Name} borderRadius="15px"  boxSize='200px'/>
+        <Image src={MImage} alt={Name} borderRadius="15px" boxSize='200px' />
         <Box
           w="100%"
           h="100%"
@@ -103,10 +120,10 @@ const MedicineCard = ({ Medicine }) => {
           {Description}
         </Text>
         <Flex justifyContent="space-between">
-          
+          <Button colorScheme="green" onClick={() => addToCart(Medicine)}>Add to Cart</Button>
         </Flex>
       </Flex>
-      
+
     </Flex>
   );
 };

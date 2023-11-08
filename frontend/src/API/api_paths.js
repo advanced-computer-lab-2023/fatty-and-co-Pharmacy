@@ -5,6 +5,7 @@ const PATIENT_BASE = "http://localhost:8000/patient/";
 const ADMIN_BASE = "http://localhost:8000/admin/";
 const MEDICINE_BASE = "http://localhost:8000/medicine/";
 const GUEST_BASE = "http://localhost:8000/guest/";
+const CART_BASE = "http://localhost:8000/cart/";
 
 export const API_PATHS = {
   // Add paths here
@@ -36,4 +37,10 @@ export const API_PATHS = {
   // Patient paths
 
   // Order paths
+
+  // Cart paths
+  addItemToCart: CART_BASE + "addToCart/", // + medicineID
+  incrementItem: CART_BASE + "incrementItem/", // + medicineID
+  decrementItem: CART_BASE + "decrementItem/", // + mdedicineID
+
 };
