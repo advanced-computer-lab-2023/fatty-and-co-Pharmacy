@@ -2,7 +2,7 @@ const express = require("express");
 const {
     
     viewCart,
-    deleteItem,addMedicineToCart, incrementItemCount, decrementItemCount,
+    deleteItem,addMedicineToCart, incrementItemCount, decrementItemCount,createOrder
 } = require("../controllers/cartController");
 
 const { checkPatient } = require("../common/middleware/checkType");
@@ -19,6 +19,6 @@ router.post("/incrementItem", checkPatient, incrementItemCount);
 router.post("/decrementItem", checkPatient, decrementItemCount);
 router.get("/viewCart", checkPatient, viewCart);
 router.post("/deleteItem", checkPatient, deleteItem);
-
+router.post("/createOrder", checkPatient, createOrder);
 
 module.exports = router;

@@ -30,7 +30,10 @@ const orderSchema = new Schema({
     enum: ["Cash", "Credit Card"],
     required: true,
   },
-  //TODO: add array of medicine
+  Medicine: {
+    type: [String],
+    required: true,
+}
 });
 
 const Order = mongoose.model("Order", orderSchema);

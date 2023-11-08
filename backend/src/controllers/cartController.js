@@ -45,6 +45,7 @@ const incrementItemCount = async (req, res) => {
     }
 }
 
+
 const decrementItemCount = async (req, res) => {
     try {
         const Username = req.user.Username;
@@ -123,9 +124,37 @@ const deleteItem = async (req, res) => {
         res.status(400).send({ message: error.message });
     }
 }
+const createOrder = async (req, res) => {
+    const username = req.user.Username;
+    const cart = await cartModel.find({ PatientUsername: username });
+    const medicine = cart.Medicine;
+    const totalCost = cart.TotalCost;
+    const status = req.query.status
+    const PaymentMethod = req.query.PaymentMethod
+    const details = req.query.Details
+  
+    const newOrder = await orderModel.create({
+      PatientUsername: username,
+      Date: new Date(),
+      Status: status,
+      Details: details,
+      TotalCost: totalCost,
+      PaymentMethod: PaymentMethod,
+      Medicine: medicine,
+    });
+  
+    try {
+      await newOrder.save();
+      await cartModel.deleteOne({ PatientUsername: username });
+      res.status(200).send({ message: newOrder });
+    } catch (error) {
+      res.status(400).send({ message: error.message });
+    }
+  };
 
 module.exports = {
     addMedicineToCart, incrementItemCount, decrementItemCount,
     viewCart,
-    deleteItem
+    deleteItem,
+    createOrder
 }
