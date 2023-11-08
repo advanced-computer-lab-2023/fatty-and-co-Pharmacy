@@ -1,7 +1,8 @@
 const express = require("express");
 const {
+    
     viewCart,
-    deleteItem
+    deleteItem,addMedicineToCart, incrementItemCount, decrementItemCount,
 } = require("../controllers/cartController");
 
 const { checkPatient } = require("../common/middleware/checkType");
@@ -9,7 +10,13 @@ const { checkPatient } = require("../common/middleware/checkType");
 const router = express.Router();
 
 // Add Medicine to cart as a patient.
-// router.post("/addToCart/:id", checkPatient, addMedicineToCart);
+router.post("/addToCart", checkPatient, addMedicineToCart);
+
+// Increment count of medicine in cart.
+router.post("/incrementItem", checkPatient, incrementItemCount);
+
+// Decrement count of medicine in cart
+router.post("/decrementItem", checkPatient, decrementItemCount);
 router.get("/viewCart", checkPatient, viewCart);
 router.post("/deleteItem", checkPatient, deleteItem);
 
