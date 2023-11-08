@@ -125,27 +125,30 @@ const deleteItem = async (req, res) => {
     }
 }
 const createOrder = async (req, res) => {
+    try{
     const username = req.user.Username;
-    const cart = await cartModel.find({ PatientUsername: username });
+    const cart = await cartModel.findOne({ PatientUsername: username });
     const medicine = cart.Medicine;
     const totalCost = cart.TotalCost;
-    const status = req.query.status
+    console.log(cart);
+    
     const PaymentMethod = req.query.PaymentMethod
     const details = req.query.Details
   
     const newOrder = await orderModel.create({
       PatientUsername: username,
       Date: new Date(),
-      Status: status,
+      Status: "Pending",
+      Medicine: medicine,
       Details: details,
       TotalCost: totalCost,
       PaymentMethod: PaymentMethod,
-      Medicine: medicine,
+      
     });
-  
-    try {
       await newOrder.save();
-      await cartModel.deleteOne({ PatientUsername: username });
+      const newmed = [];
+      const newcost = 0;
+      await cartModel.findOneAndUpdate({ PatientUsername: username,Medicine:newmed,TotalCost:newcost });
       res.status(200).send({ message: newOrder });
     } catch (error) {
       res.status(400).send({ message: error.message });
