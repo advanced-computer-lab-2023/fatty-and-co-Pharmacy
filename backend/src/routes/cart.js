@@ -8,6 +8,6 @@ const { checkPatient } = require("../common/middleware/checkType");
 const router = express.Router();
 
 // Add Medicine to cart as a patient.
-router.post("/addToCart/:id", checkPatient, addMedicineToCart);
+router.post("/addToCart", checkPatient, addMedicineToCart);
 
 module.exports = router;
