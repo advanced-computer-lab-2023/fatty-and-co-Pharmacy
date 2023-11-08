@@ -12,6 +12,7 @@ const addMedicineToCart = async (req, res) => {
         if (!medicine) {
             res.status(400).send({ message: "Medicine not found" });
         } else {
+            const cart = await cartModel.findOne({ PatientUsername: Username });
             const updatedTotalCost = cart.TotalCost + medicine.Price;
             const updatedMedicine = cart.Medicine.slice();
             updatedMedicine.push(MedicineID);
@@ -73,30 +74,14 @@ const decrementItemCount = async (req, res) => {
 const viewCart = async (req, res) => {
     const username = req.user.Username;
     try {
-      const cart = await cartModel.find({ PatientUsername: username });
-    
-      res.status(200).send({ cart });
+        const cart = await cartModel.find({ PatientUsername: username });
+
+        res.status(200).send({ cart });
     } catch (error) {
-      res.status(400).send({ message: error.message });
+        res.status(400).send({ message: error.message });
     }
-  };
+};
 
-//   const deleteItem = async (req, res) => {
-//     const username = req.user.Username;
-//     const medicineID = req.query.medicineID;
-
-//     try {
-//       const cart = await cartModel.find({ PatientUsername: username });
-//       const medicine = cart.Medicine;
-//       const filteredNumbers = medicine.filter(function(number) {
-//         return number !== medicineID;
-//       });
-
-//       res.status(200).send({ newcart });
-//     } catch (error) {
-//       res.status(400).send({ message: error.message });
-//     }
-//   };
 const deleteItem = async (req, res) => {
     try {
         const Username = req.user.Username;
@@ -139,8 +124,8 @@ const deleteItem = async (req, res) => {
     }
 }
 
-  module.exports ={
+module.exports = {
     addMedicineToCart, incrementItemCount, decrementItemCount,
     viewCart,
     deleteItem
-  }
+}
