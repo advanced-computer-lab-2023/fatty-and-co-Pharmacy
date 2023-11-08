@@ -1,6 +1,7 @@
 const systemUserModel = require("../models/systemusers");
 const patientModel = require("../models/patients");
 const requestModel = require("../models/requests.js");
+const cartModel = require("../models/cart");
 
 const generateToken = require("../common/jwt/generateToken");
 
@@ -36,7 +37,12 @@ const createPatient = async (req, res) => {
         Relation: EmergencyContactRelation,
       },
     });
-    res.status(200).send({ patient, user });
+    const cart = await cartModel.create({
+      PatientUsername: Username,
+      TotalCost: 0,
+      Medicine: [],
+    })
+    res.status(200).send({ patient, user, cart });
   } catch (error) {
     res.status(400).send({ message: error.message });
   }
