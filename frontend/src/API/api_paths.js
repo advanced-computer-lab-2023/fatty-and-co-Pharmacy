@@ -40,7 +40,10 @@ export const API_PATHS = {
 
   // Cart paths
   addItemToCart: CART_BASE + "addToCart/", // + medicineID
-  incrementItem: CART_BASE + "incrementItem/", // + medicineID
+  viewCart: CART_BASE + "viewCart/",
+  // incrementItem: CART_BASE + "incrementItem/", // + medicineID
   decrementItem: CART_BASE + "decrementItem/", // + mdedicineID
+  deleteItem: CART_BASE + "deleteItem/",
+  checkout: CART_BASE + "createOrder/",
 
 };

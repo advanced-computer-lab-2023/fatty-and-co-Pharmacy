@@ -7,43 +7,45 @@ const addMedicineToCart = async (req, res) => {
     try {
         const Username = req.user.Username;
         const MedicineID = req.query.Medicine;
-        console.log(MedicineID);
-        const medicine = await medicineModel.findById(MedicineID);
-        if (!medicine) {
-            res.status(400).send({ message: "Medicine not found" });
-        } else {
-            const cart = await cartModel.findOne({ PatientUsername: Username });
-            const updatedTotalCost = cart.TotalCost + medicine.Price;
-            const updatedMedicine = cart.Medicine.slice();
-            updatedMedicine.push(MedicineID);
-            const oldCart = await cartModel.findOneAndUpdate({ PatientUsername: Username, TotalCost: updatedTotalCost, Medicine: updatedMedicine });
-            const newCart = await cartModel.findOne({ PatientUsername: Username });
-            res.status(200).send(newCart);
-        }
-    } catch (error) {
-        res.status(400).send({ message: error.message });
-    }
-}
-
-const incrementItemCount = async (req, res) => {
-    try {
-        const Username = req.user.Username;
-        const MedicineID = req.query.Medicine;
         const medicine = await medicineModel.findById(MedicineID);
         if (!medicine) {
             res.status(400).send({ message: "Medicine not found" });
         }
         const cart = await cartModel.findOne({ PatientUsername: Username });
-        const updatedTotalCost = cart.TotalCost + medicine.Price;
-        const updatedMedicine = cart.Medicine.slice();
-        updatedMedicine.push(MedicineID);
-        const oldCart = await cartModel.findOneAndUpdate({ PatientUsername: Username, TotalCost: updatedTotalCost, Medicine: updatedMedicine });
-        const newCart = await cartModel.findOne({ PatientUsername: Username });
-        res.status(200).send(newCart);
+        if (!cart) {
+            return res.status(400).send({ message: "Cart not found" });
+        }
+        cart.TotalCost += medicine.Price;
+        cart.Medicine.push(MedicineID);
+        await cart.save();
+        res.status(200).send(cart);
     } catch (error) {
         res.status(400).send({ message: error.message });
     }
 }
+
+// Unnecessary - just use `addMedicineToCart()`
+
+// const incrementItemCount = async (req, res) => {
+//     try {
+//         const Username = req.user.Username;
+//         const MedicineID = req.query.Medicine;
+//         const medicine = await medicineModel.findById(MedicineID);
+//         if (!medicine) {
+//             res.status(400).send({ message: "Medicine not found" });
+//         }
+//         const cart = await cartModel.findOne({ PatientUsername: Username });
+//         if (!cart) {
+//             return res.status(400).send({ message: "Cart not found" });
+//         }
+//         cart.Medicine.push(MedicineID);
+//         cart.TotalCost += medicine.Price;
+//         await cart.save();
+//         res.status(200).send(cart);
+//     } catch (error) {
+//         res.status(400).send({ message: error.message });
+//     }
+// }
 
 
 const decrementItemCount = async (req, res) => {
@@ -65,8 +67,7 @@ const decrementItemCount = async (req, res) => {
         cart.Medicine.splice(medicineIndex, 1);
         cart.TotalCost -= medicine.Price;
         await cart.save();
-        const newCart = await cartModel.findOne({ PatientUsername: Username });
-        res.status(200).send(newCart);
+        res.status(200).send(cart);
     } catch (error) {
         res.status(400).send({ message: error.message });
     }
@@ -75,13 +76,42 @@ const decrementItemCount = async (req, res) => {
 const viewCart = async (req, res) => {
     const username = req.user.Username;
     try {
-        const cart = await cartModel.find({ PatientUsername: username });
+        const cart = await cartModel.findOne({ PatientUsername: username });
+        if (!cart) {
+            return res.status(404).send({ message: 'Cart not found for the user.' });
+        }
+        const medicineQuantityMap = new Map();
 
-        res.status(200).send({ cart });
+        cart.Medicine.forEach((medicineId) => {
+            if (medicineQuantityMap.has(medicineId)) {
+                medicineQuantityMap.set(medicineId, medicineQuantityMap.get(medicineId) + 1);
+            } else {
+                medicineQuantityMap.set(medicineId, 1);
+            }
+        });
+
+        const medicine = await Promise.all(
+            Array.from(medicineQuantityMap.keys()).map(async (medicineId) => {
+                const medicine = await medicineModel.findById(medicineId);
+                return {
+                    id: medicine ? medicine._id : 'Unkown',
+                    Name: medicine ? medicine.Name : 'Unknown',
+                    Price: medicine ? medicine.Price : 0,
+                    Quantity: medicineQuantityMap.get(medicineId),
+                    TotalPrice: medicine ? (medicine.Price * medicineQuantityMap.get(medicineId)) : 0
+                };
+            })
+        );
+
+        res.status(200).send({ cart, medicine });
     } catch (error) {
-        res.status(400).send({ message: error.message });
+        console.error(error);
+        res.status(500).send({ message: error.message });
     }
 };
+
+
+
 
 const deleteItem = async (req, res) => {
     try {
@@ -119,44 +149,45 @@ const deleteItem = async (req, res) => {
         // Save the updated cart object in your database
         await cart.save();
 
-        res.status(200).send({ message: "All instances of Medicine removed from cart and TotalCost updated" });
+        res.status(200).send(cart);
     } catch (error) {
         res.status(400).send({ message: error.message });
     }
 }
 const createOrder = async (req, res) => {
-    try{
-    const username = req.user.Username;
-    const cart = await cartModel.findOne({ PatientUsername: username });
-    const medicine = cart.Medicine;
-    const totalCost = cart.TotalCost;
-    console.log(cart);
-    
-    const PaymentMethod = req.query.PaymentMethod
-    const details = req.query.Details
-  
-    const newOrder = await orderModel.create({
-      PatientUsername: username,
-      Date: new Date(),
-      Status: "Pending",
-      Medicine: medicine,
-      Details: details,
-      TotalCost: totalCost,
-      PaymentMethod: PaymentMethod,
-      
-    });
-      await newOrder.save();
-      const newmed = [];
-      const newcost = 0;
-      await cartModel.findOneAndUpdate({ PatientUsername: username,Medicine:newmed,TotalCost:newcost });
-      res.status(200).send({ message: newOrder });
+    try {
+        const username = req.user.Username;
+        const cart = await cartModel.findOne({ PatientUsername: username });
+        const medicine = cart.Medicine;
+        const totalCost = cart.TotalCost;
+        console.log(cart);
+
+        const PaymentMethod = req.query.PaymentMethod
+        const details = req.query.Details
+
+        const newOrder = await orderModel.create({
+            PatientUsername: username,
+            Date: new Date(),
+            Status: "Pending",
+            Medicine: medicine,
+            Details: details,
+            TotalCost: totalCost,
+            PaymentMethod: PaymentMethod,
+
+        });
+        await newOrder.save();
+        const newmed = [];
+        const newcost = 0;
+        await cartModel.findOneAndUpdate({ PatientUsername: username, Medicine: newmed, TotalCost: newcost });
+        res.status(200).send({ message: newOrder });
     } catch (error) {
-      res.status(400).send({ message: error.message });
+        res.status(400).send({ message: error.message });
     }
-  };
+};
 
 module.exports = {
-    addMedicineToCart, incrementItemCount, decrementItemCount,
+    addMedicineToCart,
+    decrementItemCount,
     viewCart,
     deleteItem,
     createOrder

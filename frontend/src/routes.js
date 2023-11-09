@@ -14,6 +14,7 @@ import ViewPharmacistDetails from "views/Admin/ViewPharmacistDetails";
 import DeleteUser from "views/Admin/DeleteUser/DeleteUserForm";
 import CreateAdmin from "views/Admin/CreateAdmin/CreateAdminForm";
 import Requests from "views/Admin/Requests";
+import CartTable from "views/Patient/Medicine/components/Cart";
 
 import {
   HomeIcon,
@@ -103,6 +104,14 @@ var dashRoutes = [
     icon: <StatsIcon color="inherit" />,
     component: Tables,
     layout: "/admin",
+  },
+  {
+    path: "/cart",
+    name: "Cart",
+    rtlName: "لوحة القيادة",
+    icon: <StatsIcon color="inherit" />,
+    component: CartTable,
+    layout: "/patient",
   },
   {
     path: "/billing",
