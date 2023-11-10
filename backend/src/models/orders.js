@@ -19,7 +19,7 @@ const orderSchema = new Schema({
   },
   Details: {
     type: String,
-    required: true,
+    required: false,
   },
   TotalCost: {
     type: Number,
@@ -27,13 +27,17 @@ const orderSchema = new Schema({
   },
   PaymentMethod: {
     type: String,
-    enum: ["Cash", "Credit Card"],
+    enum: ["Wallet", "Cash", "Credit Card"],
     required: true,
   },
   Medicine: {
     type: [String],
     required: true,
-}
+  },
+  DeliveryAddress: {
+    type: String,
+    required: true,
+  }
 });
 
 const Order = mongoose.model("Order", orderSchema);
