@@ -4,6 +4,7 @@ import {
   HashRouter,
   BrowserRouter,
   Route,
+  Router,
   Switch,
   Redirect,
 } from "react-router-dom";

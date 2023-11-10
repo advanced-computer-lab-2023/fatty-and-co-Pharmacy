@@ -14,8 +14,9 @@ import ViewPharmacistDetails from "views/Admin/ViewPharmacistDetails";
 import DeleteUser from "views/Admin/DeleteUser/DeleteUserForm";
 import CreateAdmin from "views/Admin/CreateAdmin/CreateAdminForm";
 import Requests from "views/Admin/Requests";
-import CartTable from "views/Patient/Medicine/components/Cart";
+import Cart from "views/Patient/Medicine/components/Cart";
 import Checkout from "views/Patient/Medicine/components/Checkout";
+import MakePayment from "views/Patient/makePayment";
 
 import {
   HomeIcon,
@@ -107,11 +108,19 @@ var dashRoutes = [
     layout: "/admin",
   },
   {
+    path: "/cardPayment",
+    name: "Credit Card Payment",
+    rtlName: "آرتيإل",
+    icon: <SupportIcon color="inherit" />,
+    component: MakePayment,
+    layout: "/patient",
+  },
+  {
     path: "/cart",
     name: "Cart",
     rtlName: "لوحة القيادة",
     icon: <StatsIcon color="inherit" />,
-    component: CartTable,
+    component: Cart,
     layout: "/patient",
   },
   {
@@ -138,14 +147,6 @@ var dashRoutes = [
     icon: <SupportIcon color="inherit" />,
     component: RTLPage,
     layout: "/rtl",
-  },
-  {
-    path: "/cardPayment",
-    name: "Credit Card Payment",
-    rtlName: "آرتيإل",
-    icon: <SupportIcon color="inherit" />,
-    component: RTLPage,
-    layout: "/Patient",
   },
   {
     name: "ACCOUNT PAGES",

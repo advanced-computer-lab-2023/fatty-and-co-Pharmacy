@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { API_PATHS } from "API/api_paths";
 import axios from "axios";
+import { BrowserRouter as Router, Route, Switch, useHistory } from 'react-router-dom';
 import { useAuthContext } from "hooks/useAuthContext";
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
@@ -22,13 +23,13 @@ import {
     Text,
 } from "@chakra-ui/react";
 
-function CartTable() {
+function Cart() {
     const { user } = useAuthContext();
     const Authorization = `Bearer ${user.token}`;
     const [cart, setCart] = useState([]);
     const [medicine, setMedicine] = useState([]);
     const [isModalOpen, setModalOpen] = useState(false);
-
+    const history = useHistory();
     const textColor = useColorModeValue("gray.700", "white");
 
     useEffect(() => {
@@ -98,24 +99,7 @@ function CartTable() {
     }
 
     const checkout = async () => {
-        try {
-            const url = API_PATHS.checkout;
-            const response = await axios.post(url, null, {
-                headers: { Authorization },
-            });
-            console.log(response);
-            fetchCart();
-        } catch (error) {
-            console.error("Error checking out:", error);
-        }
-    };
-
-    const closeModal = () => {
-        setModalOpen(false);
-    };
-
-    const openModal = () => {
-        setModalOpen(true);
+        history.push('/checkout');
     };
 
     return (
@@ -255,4 +239,4 @@ function CartTable() {
     );
 }
 
-export default CartTable;
+export default Cart;
