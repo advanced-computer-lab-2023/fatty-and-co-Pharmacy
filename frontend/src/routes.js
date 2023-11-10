@@ -15,6 +15,7 @@ import DeleteUser from "views/Admin/DeleteUser/DeleteUserForm";
 import CreateAdmin from "views/Admin/CreateAdmin/CreateAdminForm";
 import Requests from "views/Admin/Requests";
 import CartTable from "views/Patient/Medicine/components/Cart";
+import Checkout from "views/Patient/Medicine/components/Checkout";
 
 import {
   HomeIcon,
@@ -114,6 +115,15 @@ var dashRoutes = [
     layout: "/patient",
   },
   {
+    path: "/checkout",
+    name: "Checkout",
+    rtlName: "لوحة القيادة",
+    icon: <StatsIcon color="inherit" />,
+    component: Checkout,
+    layout: "/patient",
+  },
+
+  {
     path: "/billing",
     name: "Billing",
     rtlName: "لوحة القيادة",
@@ -173,4 +183,5 @@ var dashRoutes = [
     ],
   },
 ];
+
 export default dashRoutes;

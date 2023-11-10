@@ -9,25 +9,16 @@ import { IconButton } from "@chakra-ui/react"
 import { AddIcon, DeleteIcon, MinusIcon } from '@chakra-ui/icons'
 import {
     Box,
-    Grid,
-    Input,
     Flex,
-    FormControl,
     Table,
     Thead,
     Tbody,
     Tr,
     Th,
     Td,
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalCloseButton,
-    ModalBody,
     Button,
     useColorModeValue,
-    Select,
+    Heading,
     Text,
 } from "@chakra-ui/react";
 
@@ -36,6 +27,7 @@ function CartTable() {
     const Authorization = `Bearer ${user.token}`;
     const [cart, setCart] = useState([]);
     const [medicine, setMedicine] = useState([]);
+    const [isModalOpen, setModalOpen] = useState(false);
 
     const textColor = useColorModeValue("gray.700", "white");
 
@@ -118,15 +110,23 @@ function CartTable() {
         }
     };
 
+    const closeModal = () => {
+        setModalOpen(false);
+    };
+
+    const openModal = () => {
+        setModalOpen(true);
+    };
+
     return (
-        <Box pt="80px">
+        <Box pt="20px">
             <Flex
-                direction="column"
+                direction={{ base: "column", md: "row" }}
+                justifyContent="space-between"
                 alignItems="flex-start"
                 pt="50px"
-                justifyContent="flex-start"
             >
-                <Card my="22px" overflowX={{ sm: "scroll", xl: "hidden" }}>
+                <Card my={{ base: "22px", md: "0" }} mr={{ base: "0", md: "16px" }} overflowX={{ sm: "scroll", xl: "hidden" }} flex="3">
                     <CardHeader p="6px 0px 22px 0px">
                         <Flex direction="column">
                             <Text
@@ -200,7 +200,7 @@ function CartTable() {
                                         </Td>
                                     </Tr>
                                 ))}
-                                <Tr>
+                                {/* <Tr>
                                     <Td colSpan="2" />
                                     <Td color="teal.500">Total</Td>
                                     <Td color="teal.500" >{cart.TotalCost}</Td>
@@ -208,6 +208,43 @@ function CartTable() {
                                         Proceed to Checkout
                                     </Button></Td>
                                     <Td />
+                                </Tr> */}
+                            </Tbody>
+                        </Table>
+                    </CardBody>
+                </Card>
+                <Card my="22px" flex="1">
+                    <CardHeader p="6px 0px 22px 0px">
+                        <Flex direction="column">
+                            <Text
+                                fontSize="lg"
+                                fontWeight="bold"
+                                pb=".5rem"
+                            >
+                                Order Summary
+                            </Text>
+                        </Flex>
+                    </CardHeader>
+                    <CardBody>
+                        <Table variant="simple">
+                            <Tbody>
+                                <Tr>
+                                    <Td textAlign="right">
+                                        <Heading as="h3" size="lg" textAlign="right">
+                                            Total:
+                                        </Heading></Td>
+                                    <Td textAlign="left">
+                                        <Heading as="h3" size="lg" textAlign="left">
+                                            {cart.TotalCost ? cart.TotalCost : 0}
+                                        </Heading>
+                                    </Td>
+                                </Tr>
+                                <Tr>
+                                    <Td colSpan="4">
+                                        <Button colorScheme="blue" size="lg" variant="solid" onClick={checkout}>
+                                            Proceed to Checkout
+                                        </Button>
+                                    </Td>
                                 </Tr>
                             </Tbody>
                         </Table>

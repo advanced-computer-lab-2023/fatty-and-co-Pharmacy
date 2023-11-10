@@ -6,6 +6,7 @@ const ADMIN_BASE = "http://localhost:8000/admin/";
 const MEDICINE_BASE = "http://localhost:8000/medicine/";
 const GUEST_BASE = "http://localhost:8000/guest/";
 const CART_BASE = "http://localhost:8000/cart/";
+const DELIVERY_ADDRESS_BASE = "http://localhost:8000/deliveryAddress/";
 
 export const API_PATHS = {
   // Add paths here
@@ -37,13 +38,16 @@ export const API_PATHS = {
   // Patient paths
 
   // Order paths
+  checkout: ORDER_BASE + "checkout/",
 
   // Cart paths
   addItemToCart: CART_BASE + "addToCart/", // + medicineID
   viewCart: CART_BASE + "viewCart/",
-  // incrementItem: CART_BASE + "incrementItem/", // + medicineID
   decrementItem: CART_BASE + "decrementItem/", // + mdedicineID
   deleteItem: CART_BASE + "deleteItem/",
-  checkout: CART_BASE + "createOrder/",
+
+  // Delivery Address paths
+  viewDeliveryAddresses: DELIVERY_ADDRESS_BASE + "viewDeliveryAddresses/",
+  addDeliveryAddress: DELIVERY_ADDRESS_BASE + "addDeliveryAddress/",
 
 };
