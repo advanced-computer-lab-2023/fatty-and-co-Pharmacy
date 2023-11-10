@@ -7,6 +7,7 @@ const MEDICINE_BASE = "http://localhost:8000/medicine/";
 const GUEST_BASE = "http://localhost:8000/guest/";
 const CART_BASE = "http://localhost:8000/cart/";
 const DELIVERY_ADDRESS_BASE = "http://localhost:8000/deliveryAddress/";
+const PAYMENT_BASE = "http://localhost:8000/payment/";
 
 export const API_PATHS = {
   // Add paths here
@@ -49,5 +50,7 @@ export const API_PATHS = {
   // Delivery Address paths
   viewDeliveryAddresses: DELIVERY_ADDRESS_BASE + "viewDeliveryAddresses/",
   addDeliveryAddress: DELIVERY_ADDRESS_BASE + "addDeliveryAddress/",
+
+  cardPayment: PAYMENT_BASE + "cardPayment/",
 
 };

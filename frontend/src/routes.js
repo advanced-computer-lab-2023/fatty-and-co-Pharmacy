@@ -140,6 +140,14 @@ var dashRoutes = [
     layout: "/rtl",
   },
   {
+    path: "/cardPayment",
+    name: "Credit Card Payment",
+    rtlName: "آرتيإل",
+    icon: <SupportIcon color="inherit" />,
+    component: RTLPage,
+    layout: "/Patient",
+  },
+  {
     name: "ACCOUNT PAGES",
     category: "account",
     rtlName: "صفحات",
