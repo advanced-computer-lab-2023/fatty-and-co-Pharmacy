@@ -47,6 +47,59 @@ const checkout = async (req, res) => {
   }
 };
 
+const getOrders = async (req, res) => {
+  try {
+    const username = req.user.Username;
+    const orders = await orderModel
+      .find({ PatientUsername: username })
+      .populate("Medicine");
+    res.status(200).send(orders);
+  } catch (error) {
+    res.status(400).send({ message: error.message });
+  }
+};
+
+const getOrderDetailsandStatus = async (req, res) => {
+  try {
+    const OrderId = req.query.OrderId;
+    const order = await orderModel.findOne({ _id: OrderId });
+    delete order.PatientUsername;
+    res.status(200).send(order);
+  } catch (error) {
+    res.status(400).send({ message: error.message });
+  }
+};
+
+const cancelOrder = async (req, res) => {
+  try {
+    const { OrderId } = req.body;
+    const order = await orderModel.findOne({ _id: OrderId });
+    if (order.Status == "Completed") {
+      res.status(400).send({ message: "Order is already completed" });
+      return;
+    }
+    if (order.Status == "Cancelled") {
+      res.status(400).send({ message: "Order is already cancelled" });
+      return;
+    }
+    order.Status = "Cancelled";
+    await order.save();
+    const patient = await patientModel.findOne({
+      Username: order.PatientUsername,
+    });
+    const wallet = patient.Wallet;
+    const newWallet = wallet + order.TotalCost;
+    patient.Wallet = newWallet;
+    await patient.save();
+    res.status(200).send(order);
+  } catch (error) {
+    res.status(400).send({ message: error.message });
+  }
+};
+
 module.exports = {
   checkout,
+  getOrders,
+  getOrderDetailsandStatus,
+  cancelOrder,
 };

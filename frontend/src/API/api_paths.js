@@ -40,6 +40,8 @@ export const API_PATHS = {
 
   // Order paths
   checkout: ORDER_BASE + "checkout/",
+  getOrders: ORDER_BASE + "getOrders/",
+  cancelOrder: ORDER_BASE + "cancelOrder/",
 
   // Cart paths
   addItemToCart: CART_BASE + "addToCart/", // + medicineID
@@ -52,5 +54,4 @@ export const API_PATHS = {
   addDeliveryAddress: DELIVERY_ADDRESS_BASE + "addDeliveryAddress/",
 
   cardPayment: PAYMENT_BASE + "cardPayment/",
-
 };
