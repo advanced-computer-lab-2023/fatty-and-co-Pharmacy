@@ -1,4 +1,4 @@
-import { MedicineContextProvider } from "../../../hooks/MedicineContext";
+import { MedicineContextProvider } from "context/MedicineContext";
 import Index from "./index";
 
 function AdminMedicine() {
