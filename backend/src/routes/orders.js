@@ -1,10 +1,13 @@
 const express = require("express");
-const {} = require("../controllers/orderController");
+const { checkout } = require("../controllers/orderController");
+const { checkPatient } = require("../common/middleware/checkType");
 
 const router = express.Router();
 
 router.get("/", (req, res) => {
   res.send("orders");
 });
+
+router.post("/checkout", checkPatient, checkout);
 
 module.exports = router;

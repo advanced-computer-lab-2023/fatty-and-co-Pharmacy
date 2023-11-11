@@ -1,10 +1,13 @@
 const API_BASE = "http://localhost:8000/";
-const ORDER_BASE = "http://localhost:8000/package/";
+const ORDER_BASE = "http://localhost:8000/order/";
 const PHARMACIST_BASE = "http://localhost:8000/pharmacist/";
 const PATIENT_BASE = "http://localhost:8000/patient/";
 const ADMIN_BASE = "http://localhost:8000/admin/";
 const MEDICINE_BASE = "http://localhost:8000/medicine/";
 const GUEST_BASE = "http://localhost:8000/guest/";
+const CART_BASE = "http://localhost:8000/cart/";
+const DELIVERY_ADDRESS_BASE = "http://localhost:8000/deliveryAddress/";
+const PAYMENT_BASE = "http://localhost:8000/payment/";
 
 export const API_PATHS = {
   // Add paths here
@@ -36,4 +39,18 @@ export const API_PATHS = {
   // Patient paths
 
   // Order paths
+  checkout: ORDER_BASE + "checkout/",
+
+  // Cart paths
+  addItemToCart: CART_BASE + "addToCart/", // + medicineID
+  viewCart: CART_BASE + "viewCart/",
+  decrementItem: CART_BASE + "decrementItem/", // + mdedicineID
+  deleteItem: CART_BASE + "deleteItem/",
+
+  // Delivery Address paths
+  viewDeliveryAddresses: DELIVERY_ADDRESS_BASE + "viewDeliveryAddresses/",
+  addDeliveryAddress: DELIVERY_ADDRESS_BASE + "addDeliveryAddress/",
+
+  cardPayment: PAYMENT_BASE + "cardPayment/",
+
 };
