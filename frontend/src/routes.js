@@ -130,6 +130,7 @@ var dashRoutes = [
     icon: <StatsIcon color="inherit" />,
     component: Checkout,
     layout: "/patient",
+    show: false,
   },
 
   {
