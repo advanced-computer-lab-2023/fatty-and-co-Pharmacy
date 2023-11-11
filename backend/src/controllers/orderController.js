@@ -6,6 +6,10 @@ const checkout = async (req, res) => {
     try {
         const username = req.user.Username;
         const cart = await cartModel.findOne({ PatientUsername: username });
+        const patient = await patientModel.findOne({ Username: username });
+        console.log(patient);
+        console.log(username);
+        const wallet = patient.Wallet;
         const medicine = cart.Medicine;
         const totalCost = cart.TotalCost;
         console.log(cart);
@@ -13,7 +17,16 @@ const checkout = async (req, res) => {
         const paymentMethod = req.query.PaymentMethod;
         const details = req.query.Details;
         const deliveryAddress = req.query.DeliveryAddress;
-
+        if (paymentMethod == "Wallet") {
+            if (wallet < totalCost) {
+                res.status(400).send({ message: "Insufficient wallet balance" });
+                return;
+            } else {
+                const newWallet = wallet - totalCost;
+                patient.Wallet = newWallet;
+                await patient.save();
+            }
+        }
         const newOrder = await orderModel.create({
             PatientUsername: username,
             Date: new Date(),
@@ -23,18 +36,17 @@ const checkout = async (req, res) => {
             TotalCost: totalCost,
             PaymentMethod: paymentMethod,
             DeliveryAddress: deliveryAddress,
-
         });
         await newOrder.save();
-        const newmed = [];
-        const newcost = 0;
-        await cartModel.findOneAndUpdate({ PatientUsername: username, Medicine: newmed, TotalCost: newcost });
-        res.status(200).send({ message: newOrder });
+        cart.TotalCost = 0;
+        cart.Medicine = [];
+        await cart.save();
+        res.status(200).send(newOrder);
     } catch (error) {
         res.status(400).send({ message: error.message });
     }
 };
 
 module.exports = {
-    checkout
-}
+    checkout,
+};

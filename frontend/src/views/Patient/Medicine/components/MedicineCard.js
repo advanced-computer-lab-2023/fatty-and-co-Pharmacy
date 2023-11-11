@@ -67,9 +67,25 @@ const MedicineCard = ({ Medicine }) => {
       .post(API_PATHS.addItemToCart + `?Medicine=${medicine._id}`, null, {
         headers: { Authorization },
       })
-      .then((response) => { console.log(response); })
+      .then((response) => {
+        console.log(response);
+        toast({
+          title: "Added to cart",
+          description:
+            `We've added ${medicine.Name} to cart`,
+          status: "success",
+          duration: 9000,
+          isClosable: true,
+        });
+      })
       .catch((error) => {
-        console.error("Error Adding to cart:", error);
+        toast({
+          title: "Error",
+          description: "Error while adding medicine to cart.",
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        });
       });
   };
 

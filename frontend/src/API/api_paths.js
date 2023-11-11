@@ -1,5 +1,5 @@
 const API_BASE = "http://localhost:8000/";
-const ORDER_BASE = "http://localhost:8000/package/";
+const ORDER_BASE = "http://localhost:8000/order/";
 const PHARMACIST_BASE = "http://localhost:8000/pharmacist/";
 const PATIENT_BASE = "http://localhost:8000/patient/";
 const ADMIN_BASE = "http://localhost:8000/admin/";

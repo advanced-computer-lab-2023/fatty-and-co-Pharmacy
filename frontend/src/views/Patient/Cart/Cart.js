@@ -18,6 +18,7 @@ import {
     Th,
     Td,
     Button,
+    Link,
     useColorModeValue,
     Heading,
     Text,
@@ -225,8 +226,10 @@ function Cart() {
                                 </Tr>
                                 <Tr>
                                     <Td colSpan="4">
-                                        <Button colorScheme="blue" size="lg" variant="solid" onClick={checkout}>
-                                            Proceed to Checkout
+                                        <Button colorScheme="teal">
+                                            <Link href="./checkout" size="lg" variant="solid">
+                                                Proceed to Checkout
+                                            </Link>
                                         </Button>
                                     </Td>
                                 </Tr>
