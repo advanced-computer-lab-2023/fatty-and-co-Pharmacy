@@ -50,6 +50,7 @@ const MedicineCard = ({ Medicine }) => {
   const [message, setMessage] = useState("");
   const [use, setUse] = useState("");
   const [Ingredient, setIngredient] = useState("");
+  const [MedicationType, setMedicationType] = useState(Medicine.MedicationType);
 
   const isArchviedC = Archived === "archived" ? "red" : "green";
   const isArchvied = Archived === "archived" ? "Archived" : "Available";
@@ -98,10 +99,13 @@ const MedicineCard = ({ Medicine }) => {
           Quantity: {Quantity}
         </Text>
         <Text fontSize="sm" color="gray.500" fontWeight="400">
-          Price : {Price} EGP
+          Price: {Price} EGP
         </Text>
         <Text fontSize="sm" color="gray.500" fontWeight="400">
-          Sales : {Sales}
+          Sales: {Sales}
+        </Text>
+        <Text fontSize="sm" color="gray.500" fontWeight="400">
+          Medication Type: {MedicationType}
         </Text>
         <br />
         <Text fontSize="sm" color="gray.500" fontWeight="400" mb="10px">
@@ -309,6 +313,27 @@ const MedicineCard = ({ Medicine }) => {
                   </MenuItem>
                 </MenuList>
               </Menu>
+              <Menu>
+                <MenuButton as={Button}>{MedicationType}</MenuButton>
+                <MenuList>
+                  <MenuItem
+                    value={"Over the counter"}
+                    onClick={(e) => {
+                      setMedicationType(e.target.value);
+                    }}
+                  >
+                    Over the counter
+                  </MenuItem>
+                  <MenuItem
+                    value={"Prescribed"}
+                    onClick={(e) => {
+                      setMedicationType(e.target.value);
+                    }}
+                  >
+                    Prescribed
+                  </MenuItem>
+                </MenuList>
+              </Menu>
             </Stack>
           </ModalBody>
           <ModalFooter>
@@ -326,6 +351,7 @@ const MedicineCard = ({ Medicine }) => {
                 setImage(Medicine.Image);
                 setDescription(Medicine.Description);
                 setArchived(Medicine.State);
+                setMedicationType(Medicine.MedicationType);
                 onClose();
               }}
             >
@@ -419,6 +445,7 @@ const MedicineCard = ({ Medicine }) => {
                       Image: MImage,
                       Description,
                       State: Archived,
+                      MedicationType,
                     },
                     {
                       headers: {
@@ -455,6 +482,7 @@ const MedicineCard = ({ Medicine }) => {
                     setImage(Medicine.Image);
                     setDescription(Medicine.Description);
                     setArchived(Medicine.State);
+                    setMedicationType(Medicine.MedicationType);
 
                     toast({
                       title: "failed Medicine Update.",
