@@ -17,6 +17,7 @@ const patientSchema = new Schema(
     MobileNum: {
       type: Number,
       required: true,
+      unique: true,
     },
     DateOfBirth: {
       type: Date,
@@ -35,6 +36,11 @@ const patientSchema = new Schema(
     Prescriptions: {
       type: [String],
       required: false,
+    },
+    Wallet: {
+      type: Number,
+      required: true,
+      default: 10000,
     },
   },
   { timestamps: true }

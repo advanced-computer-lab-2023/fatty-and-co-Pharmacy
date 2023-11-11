@@ -14,6 +14,10 @@ import ViewPharmacistDetails from "views/Admin/ViewPharmacistDetails";
 import DeleteUser from "views/Admin/DeleteUser/DeleteUserForm";
 import CreateAdmin from "views/Admin/CreateAdmin/CreateAdminForm";
 import Requests from "views/Admin/Requests";
+import Cart from "views/Patient/Cart/Cart";
+import Checkout from "views/Patient/Cart/Checkout";
+import MakePayment from "views/Patient/makePayment";
+import ViewOrders from "views/Patient/viewOrders";
 
 import {
   HomeIcon,
@@ -105,6 +109,40 @@ var dashRoutes = [
     layout: "/admin",
   },
   {
+    path: "/cardPayment",
+    name: "Credit Card Payment",
+    rtlName: "آرتيإل",
+    icon: <SupportIcon color="inherit" />,
+    component: MakePayment,
+    layout: "/patient",
+  },
+  {
+    path: "/cart",
+    name: "Cart",
+    rtlName: "لوحة القيادة",
+    icon: <StatsIcon color="inherit" />,
+    component: Cart,
+    layout: "/patient",
+  },
+  {
+    path: "/checkout",
+    name: "Checkout",
+    rtlName: "لوحة القيادة",
+    icon: <StatsIcon color="inherit" />,
+    component: Checkout,
+    layout: "/patient",
+    show: false,
+  },
+  {
+    path: "/orders",
+    name: "Orders",
+    rtlName: "لوحة القيادة",
+    icon: <StatsIcon color="inherit" />,
+    component: ViewOrders,
+    layout: "/patient",
+  },
+
+  {
     path: "/billing",
     name: "Billing",
     rtlName: "لوحة القيادة",
@@ -164,4 +202,5 @@ var dashRoutes = [
     ],
   },
 ];
+
 export default dashRoutes;
