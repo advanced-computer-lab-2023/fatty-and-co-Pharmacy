@@ -10,10 +10,31 @@ const addMedicineToCart = async (req, res) => {
         const medicine = await medicineModel.findById(MedicineID);
         if (!medicine) {
             res.status(400).send({ message: "Medicine not found" });
+            return;
         }
+
+        // Check that medicination type is over the counter
+        if (medicine.MedicationType != "Over the counter") {
+            res.status(400).send({ message: "Medicine has to be prescribed." });
+            return;
+        }
+
         const cart = await cartModel.findOne({ PatientUsername: Username });
+
+        // Check availablity of the medicine.
+        let inCart = 0;
+        cart.Medicine.forEach((medicineId) => {
+            if (medicineId == MedicineID) {
+                inCart++;
+            }
+        });
+        if (medicine.Quantity <= inCart) {
+            res.status(400).send({ message: `Sorry, we only have ${medicine.Quantity} of ${medicine.Name} in stock.` });
+            return;
+        }
         if (!cart) {
-            return res.status(400).send({ message: "Cart not found" });
+            res.status(400).send({ message: "Cart not found" });
+            return;
         }
         cart.TotalCost += medicine.Price;
         cart.Medicine.push(MedicineID);
@@ -23,30 +44,6 @@ const addMedicineToCart = async (req, res) => {
         res.status(400).send({ message: error.message });
     }
 }
-
-// Unnecessary - just use `addMedicineToCart()`
-
-// const incrementItemCount = async (req, res) => {
-//     try {
-//         const Username = req.user.Username;
-//         const MedicineID = req.query.Medicine;
-//         const medicine = await medicineModel.findById(MedicineID);
-//         if (!medicine) {
-//             res.status(400).send({ message: "Medicine not found" });
-//         }
-//         const cart = await cartModel.findOne({ PatientUsername: Username });
-//         if (!cart) {
-//             return res.status(400).send({ message: "Cart not found" });
-//         }
-//         cart.Medicine.push(MedicineID);
-//         cart.TotalCost += medicine.Price;
-//         await cart.save();
-//         res.status(200).send(cart);
-//     } catch (error) {
-//         res.status(400).send({ message: error.message });
-//     }
-// }
-
 
 const decrementItemCount = async (req, res) => {
     try {
@@ -58,11 +55,13 @@ const decrementItemCount = async (req, res) => {
         }
         const cart = await cartModel.findOne({ PatientUsername: Username });
         if (!cart) {
-            return res.status(400).send({ message: "Cart not found" });
+            res.status(400).send({ message: "Cart not found" });
+            return;
         }
         const medicineIndex = cart.Medicine.indexOf(MedicineID);
         if (medicineIndex === -1) {
-            return res.status(400).send({ message: "Medicine not found in the cart" });
+            res.status(400).send({ message: "Medicine not found in the cart" });
+            return;
         }
         cart.Medicine.splice(medicineIndex, 1);
         cart.TotalCost -= medicine.Price;
@@ -78,15 +77,17 @@ const viewCart = async (req, res) => {
     try {
         const cart = await cartModel.findOne({ PatientUsername: username });
         if (!cart) {
-            return res.status(404).send({ message: 'Cart not found for the user.' });
+            res.status(404).send({ message: 'Cart not found for the user.' });
+            return;
         }
         const medicineQuantityMap = new Map();
 
         cart.Medicine.forEach((medicineId) => {
-            if (medicineQuantityMap.has(medicineId)) {
-                medicineQuantityMap.set(medicineId, medicineQuantityMap.get(medicineId) + 1);
+            const stringMedicineId = medicineId.toString();
+            if (medicineQuantityMap.has(stringMedicineId)) {
+                medicineQuantityMap.set(stringMedicineId, medicineQuantityMap.get(stringMedicineId) + 1);
             } else {
-                medicineQuantityMap.set(medicineId, 1);
+                medicineQuantityMap.set(stringMedicineId, 1);
             }
         });
 
@@ -109,9 +110,6 @@ const viewCart = async (req, res) => {
         res.status(500).send({ message: error.message });
     }
 };
-
-
-
 
 const deleteItem = async (req, res) => {
     try {
