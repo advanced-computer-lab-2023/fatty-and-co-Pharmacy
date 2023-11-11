@@ -12,8 +12,8 @@ export const ordersReducer = (state, action) => {
       return {
         ...state,
         orders: state.orders.map((order) =>
-          order.id === action.payload.id
-            ? { ...order, status: "Cancelled" }
+          order._id === action.payload._id
+            ? { ...order, Status: "Cancelled" }
             : order
         ),
       };

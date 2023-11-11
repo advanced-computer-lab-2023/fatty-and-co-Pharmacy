@@ -17,6 +17,7 @@ import Requests from "views/Admin/Requests";
 import Cart from "views/Patient/Cart/Cart";
 import Checkout from "views/Patient/Cart/Checkout";
 import MakePayment from "views/Patient/makePayment";
+import ViewOrders from "views/Patient/viewOrders";
 
 import {
   HomeIcon,
@@ -131,6 +132,14 @@ var dashRoutes = [
     component: Checkout,
     layout: "/patient",
     show: false,
+  },
+  {
+    path: "/orders",
+    name: "Orders",
+    rtlName: "لوحة القيادة",
+    icon: <StatsIcon color="inherit" />,
+    component: ViewOrders,
+    layout: "/patient",
   },
 
   {

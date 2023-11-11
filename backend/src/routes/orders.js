@@ -1,5 +1,10 @@
 const express = require("express");
-const { checkout } = require("../controllers/orderController");
+const {
+  checkout,
+  getOrders,
+  getOrderDetailsandStatus,
+  cancelOrder,
+} = require("../controllers/orderController");
 const { checkPatient } = require("../common/middleware/checkType");
 
 const router = express.Router();

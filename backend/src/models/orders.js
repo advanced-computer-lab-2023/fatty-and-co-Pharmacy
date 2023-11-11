@@ -32,7 +32,8 @@ const orderSchema = new Schema({
     required: true,
   },
   Medicine: {
-    type: [String],
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "Medicine",
     required: true,
   },
   DeliveryAddress: {

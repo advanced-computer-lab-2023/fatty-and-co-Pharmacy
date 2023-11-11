@@ -50,7 +50,9 @@ const checkout = async (req, res) => {
 const getOrders = async (req, res) => {
   try {
     const username = req.user.Username;
-    const orders = await orderModel.find({ PatientUsername: username });
+    const orders = await orderModel
+      .find({ PatientUsername: username })
+      .populate("Medicine");
     res.status(200).send(orders);
   } catch (error) {
     res.status(400).send({ message: error.message });
@@ -70,10 +72,14 @@ const getOrderDetailsandStatus = async (req, res) => {
 
 const cancelOrder = async (req, res) => {
   try {
-    const OrderId = req.query.OrderId;
+    const { OrderId } = req.body;
     const order = await orderModel.findOne({ _id: OrderId });
     if (order.Status == "Completed") {
       res.status(400).send({ message: "Order is already completed" });
+      return;
+    }
+    if (order.Status == "Cancelled") {
+      res.status(400).send({ message: "Order is already cancelled" });
       return;
     }
     order.Status = "Cancelled";

@@ -1,4 +1,4 @@
-import { MedicineContext } from "../context/MedicineContexteContext";
+import { MedicineContext } from "context/MedicineContext";
 import { useContext } from "react";
 
 export const useMedicineContext = () => {
