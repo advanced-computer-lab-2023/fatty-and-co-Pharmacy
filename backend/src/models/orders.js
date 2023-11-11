@@ -14,7 +14,8 @@ const orderSchema = new Schema({
   },
   Status: {
     type: String,
-    enum: ["Pending", "In Progress", "Cancelled", "Completed"],
+    enum: ["In Progress", "Cancelled", "Completed"],
+    default: "In Progress",
     required: true,
   },
   Details: {
@@ -37,7 +38,7 @@ const orderSchema = new Schema({
   DeliveryAddress: {
     type: String,
     required: true,
-  }
+  },
 });
 
 const Order = mongoose.model("Order", orderSchema);
