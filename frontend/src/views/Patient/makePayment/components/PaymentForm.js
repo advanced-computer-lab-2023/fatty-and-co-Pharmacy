@@ -24,7 +24,7 @@ const CARD_OPTIONS = {
   },
 };
 
-const PaymentForm = ({ amount }) => {
+const PaymentForm = ({ amount, onClickPay }) => {
   const { user } = useAuthContext();
   const Authorization = `Bearer ${user.token}`;
   const [success, setSuccess] = useState(false);
@@ -53,6 +53,7 @@ const PaymentForm = ({ amount }) => {
         if (response.data.success) {
           console.log("Successful payment");
           setSuccess(true);
+          onClickPay();
         }
       } catch (error) {
         console.log("Error", error);

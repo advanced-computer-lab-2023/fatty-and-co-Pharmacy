@@ -30,22 +30,8 @@ import {
     FormLabel,
     Button,
     Select,
-    Text,
+    useToast,
 } from "@chakra-ui/react";
-
-const AddDeliverySchema = Yup.object().shape({
-    Street: Yup.string().required("Required"),
-    Building: Yup.string().required("Required"),
-    City: Yup.string().required("Required"),
-    State: Yup.string().required("Required"),
-    Country: Yup.string().required("Required"),
-    PostalCode: Yup.string().required("Required"),
-});
-
-const CheckoutSchema = Yup.object().shape({
-    PaymentMethod: Yup.string().required("Required"),
-    DeliveryAddress: Yup.string().required("Required"),
-});
 
 function Checkout() {
     const { user } = useAuthContext();
@@ -56,6 +42,7 @@ function Checkout() {
     const [selectedAddress, setSelectedAddress] = useState(null);
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
     const [proceedToPayment, setProceedToPayment] = useState(false);
+    const toast = useToast();
 
     useEffect(() => {
         viewDeliveryAddresses();
@@ -96,29 +83,74 @@ function Checkout() {
     };
 
     const handleCheckout = async () => {
-        // try {
-        console.log("hello");
-        console.log(selectedPaymentMethod);
-        // const url = API_PATHS.checkout;
-        // const response = await axios.post(url, null, {
-        //     headers: { Authorization }
-        // });
-        // console.log(response);
-        // const data = response.data;
-        // console.log(data);
-        // if (response.ok) {
-        if (selectedPaymentMethod == "Credit Card") {
-            console.log("hi");
-            setProceedToPayment(true);
+        try {
+            if (selectedPaymentMethod == "Credit Card") {
+                setProceedToPayment(true);
+            } else {
+                onClickPay();
+                fetchCost();
+            }
+        } catch (error) {
+            toast({
+                title: "Error",
+                description: "Error checking out.",
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+            })
         }
-        //         console.log("Checkout successful!");
-        //     } else {
-        //         console.log("Error during checkout!");
-        //     }
-        // } catch (error) {
-        //     console.error("An error occurred during checkout:", error);
-        // }
     };
+
+    const onClickPay = async () => {
+        const url = API_PATHS.checkout;
+        if (cost == 0) {
+            toast({
+                title: "Error",
+                description: "Your cart is empty.",
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+            });
+            return;
+        }
+        if (!selectedPaymentMethod || !selectedAddress) {
+            toast({
+                title: "Error",
+                description: "Please enter payment method and select an address.",
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+            });
+            return;
+        }
+        const response = await axios.post(url, null, {
+            headers: { Authorization },
+            params: {
+                PaymentMethod: selectedPaymentMethod,
+                DeliveryAddress: selectedAddress._id,
+            }
+        }).then((response) => {
+            console.log(response.data);
+            fetchCost();
+            toast({
+                title: "Thank you for your order!",
+                description:
+                    "Your order will arrive shortly.",
+                status: "success",
+                duration: 9000,
+                isClosable: true,
+            });
+        }).catch((error) =>
+            toast({
+                title: "Error",
+                description: "Error checking out.",
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+            })
+        );
+    }
+
     const handleAddNewAddress = async (addressValues) => {
         try {
             console.log(addressValues);
@@ -130,13 +162,29 @@ function Checkout() {
             console.log(response);
             viewDeliveryAddresses();
             setShowAddAddressForm(false);
+            toast({
+                title: "Thank your for adding a new address.",
+                description:
+                    "We added your new shipping address.",
+                status: "success",
+                duration: 9000,
+                isClosable: true,
+            });
         } catch (error) {
-            console.error("Error adding new delivery address:", error);
+            toast({
+                title: "Error",
+                description: "Error adding a new address.",
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+            })
         }
     };
     const handleAddressSelect = (addressId) => {
-        const selected = deliveryAddresses.find((address) => address.id === addressId);
+        console.log(addressId);
+        const selected = deliveryAddresses.find((address) => address._id === addressId);
         setSelectedAddress(selected);
+        console.log(selected);
     };
 
     return (
@@ -169,7 +217,7 @@ function Checkout() {
                             initialValues={{
                                 Details: "",
                                 PaymentMethod: "",
-                                DeliveryAddres: {},
+                                DeliveryAddress: {},
                             }}
 
                             onSubmit={(values) => {
@@ -186,7 +234,7 @@ function Checkout() {
                                                 isInvalid={errors.Street && touched.Street}
                                             >
                                                 <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
-                                                    Additional Details <span style={{ color: "red" }}>*</span>
+                                                    Additional Details
                                                 </FormLabel>
                                                 <Input
                                                     {...field}
@@ -213,10 +261,11 @@ function Checkout() {
                                                 <RadioGroup
                                                     id="paymentMethod"
                                                     name="paymentMethod"
+                                                    required
                                                     value={selectedPaymentMethod}
                                                     onChange={(value) => setSelectedPaymentMethod(value)}
                                                 >
-                                                    <Stack direction="row">
+                                                    <Stack required direction="row">
                                                         <Radio value="Wallet">Wallet</Radio>
                                                         <Radio value="Cash">Cash</Radio>
                                                         <Radio value="Credit Card">Credit Card</Radio>
@@ -239,7 +288,11 @@ function Checkout() {
                                                     {...field}
                                                     id="DeliveryAddress"
                                                     name="DeliveryAddress"
-                                                    placeholder="Select an address"
+                                                    placeholder={
+                                                        selectedAddress
+                                                            ? `Selected Address: ${selectedAddress.Street}, ${selectedAddress.Building}, ${selectedAddress.City}, ${selectedAddress.State}, ${selectedAddress.Country}, ${selectedAddress.PostalCode}`
+                                                            : "Select an address"
+                                                    }
                                                     onChange={(e) => handleAddressSelect(e.target.value)}
                                                     mb="4"
                                                 >
@@ -249,19 +302,10 @@ function Checkout() {
                                                         </option>
                                                     ))}
                                                 </Select>
-                                                {selectedAddress && (
-                                                    <Box>
-                                                        <Text>Selected Address:</Text>
-                                                        <Text>{selectedAddress.Street}, {selectedAddress.Building},
-                                                            {selectedAddress.City}, {selectedAddress.State}, {selectedAddress.Country},
-                                                            {selectedAddress.PostalCode} </Text>
-                                                    </Box>
-                                                )}
                                                 <FormErrorMessage>{errors.DeliveryAddress}</FormErrorMessage>
                                             </FormControl>
                                         )}
                                     </Field>
-
 
                                     {showAddAddressForm ? (
                                         <Formik
@@ -442,7 +486,7 @@ function Checkout() {
                     </Flex>
                 ) : (
                     <Elements stripe={stripeTestPromise}>
-                        <PaymentForm amount={cost} />
+                        <PaymentForm amount={cost} onClickPay={onClickPay} />
                     </Elements>
                 )}
             </Flex>

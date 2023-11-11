@@ -14,8 +14,8 @@ import ViewPharmacistDetails from "views/Admin/ViewPharmacistDetails";
 import DeleteUser from "views/Admin/DeleteUser/DeleteUserForm";
 import CreateAdmin from "views/Admin/CreateAdmin/CreateAdminForm";
 import Requests from "views/Admin/Requests";
-import Cart from "views/Patient/Medicine/components/Cart";
-import Checkout from "views/Patient/Medicine/components/Checkout";
+import Cart from "views/Patient/Cart/Cart";
+import Checkout from "views/Patient/Cart/Checkout";
 import MakePayment from "views/Patient/makePayment";
 
 import {
