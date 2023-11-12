@@ -152,8 +152,9 @@ const MedicineGroup = ({
       },
       body: formData,
     })
-      .then((response) => {
-        dispatch({ type: "ADD_MEDICINE", payload: response.data });
+      .then(async(response) => {
+        const data = await response.json();
+        dispatch({ type: "ADD_MEDICINE", payload: data});
 
         toast({
           title: "Medicine Added.",
@@ -172,6 +173,7 @@ const MedicineGroup = ({
         setDescription("");
         setArchived("");
         onClose();
+        //location.reload();
       })
       .catch((err) => {
         return toast({

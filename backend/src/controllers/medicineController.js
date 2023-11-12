@@ -1,9 +1,7 @@
 // #Task route solution
 const medicineModel = require("../models/medicine");
 const { default: mongoose } = require("mongoose");
-const {
-  getFileByFilename,
-} = require("../common/middleware/upload");
+const { getFileByFilename } = require("../common/middleware/upload");
 
 const createMedicine = async (req, res) => {
   //add a new Medicine to the database with
@@ -16,7 +14,6 @@ const createMedicine = async (req, res) => {
     Sales,
     Medicinal_Use,
   } = req.body;
-  console.log(req.file);
   const filename = req.file.filename;
   const originalname = req.file.originalname;
   try {
@@ -66,9 +63,10 @@ const updateMedicine = async (req, res) => {
       State,
       Description,
       Price,
-      Image,
       Sales,
     } = req.body;
+    const filename = req.file.filename;
+    const originalname = req.file.originalname;
     if (!mongoose.Types.ObjectId.isValid(id))
       return res.status(404).send(`No Medicine with id: ${id}`);
 
@@ -80,7 +78,7 @@ const updateMedicine = async (req, res) => {
       Price,
       Medicinal_Use,
       State,
-      Image,
+      Image: { filename: filename, originalname: originalname },
       Sales,
       _id: id,
     };

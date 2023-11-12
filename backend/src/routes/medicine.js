@@ -24,15 +24,29 @@ router.get("/getMedicine/:Name", getMedicine);
 // POST create a new medicine
 const Medicine_middleware = {
   checkPharmacist,
-  upload
-}
-router.post("/addMedicine", [Medicine_middleware.checkPharmacist,Medicine_middleware.upload.single("MImage")], createMedicine);
+  upload,
+};
+router.post(
+  "/addMedicine",
+  [
+    Medicine_middleware.checkPharmacist,
+    Medicine_middleware.upload.single("MImage"),
+  ],
+  createMedicine
+);
 
 // DELETE a medicine
 router.delete("/deleteMedicine/:id", checkPharmacist, deleteMedicine);
 
 // update a medicine by id
-router.patch("/updateMedicine/:id", checkPharmacist, updateMedicine);
+router.patch(
+  "/updateMedicine/:id",
+  [
+    Medicine_middleware.checkPharmacist,
+    Medicine_middleware.upload.single("MImage"),
+  ],
+  updateMedicine
+);
 
 //filter Medicine by medicinal yse
 router.get("/filter", filterMedicine);
@@ -43,6 +57,6 @@ router.get("/filter", filterMedicine);
  * @access any user can access
  * @param {string} filename - The filename in the params
  */
-router.get("/downloadFile/:filename", downloadFile); 
+router.get("/downloadFile/:filename", downloadFile);
 
 module.exports = router;
