@@ -65,9 +65,15 @@ const MedicineCard = ({ Medicine }) => {
    // set file
    const [file, setFile] = useState(null);
    const downloadFile = async () => {
-    const {filename} = MImage;
-    console.log(filename);
-     const response = await fetch(API_PATHS.downloadFile + filename, {
+    let imageFilename = "";
+    try {
+      const { filename } = MImage;
+      imageFilename = filename;
+    } catch (err) {
+      setFile("fail");
+      return;
+    }
+     const response = await fetch(API_PATHS.downloadFile + imageFilename, {
        method: "GET",
        headers: {
          Authorization,
