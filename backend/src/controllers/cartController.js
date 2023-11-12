@@ -29,7 +29,7 @@ const addMedicineToCart = async (req, res) => {
             }
         });
         if (medicine.Quantity <= inCart) {
-            res.status(400).send({ message: `Sorry, ${medicine.Name} is out of stock.` });
+            res.status(400).send({ message: `Sorry, we only have ${medicine.Quantity} of ${medicine.Name} in stock.` });
             return;
         }
         if (!cart) {

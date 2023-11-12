@@ -44,10 +44,8 @@ function Cart() {
                 headers: { Authorization },
             })
             .then((response) => {
-                console.log(response);
                 setCart(response.data.cart);
                 setMedicine(response.data.medicine);
-                console.log(medicine);
             })
             .catch((error) => {
                 console.error("Error fetching cart:", error);
@@ -56,9 +54,7 @@ function Cart() {
 
     const deleteItem = async (medicineId) => {
         try {
-            console.log(medicineId);
             const url = API_PATHS.deleteItem + `?Medicine=${medicineId}`;
-            console.log(url);
             const response = await axios.post(url, null, {
                 headers: { Authorization },
             });
@@ -71,9 +67,7 @@ function Cart() {
 
     const incrementItem = async (medicineId) => {
         try {
-            console.log(medicineId);
             const url = API_PATHS.addItemToCart + `?Medicine=${medicineId}`;
-            console.log(url);
             const response = await axios.post(url, null, {
                 headers: { Authorization },
             });
@@ -88,6 +82,7 @@ function Cart() {
                 isClosable: true,
             });
         }
+        fetchCart();
     };
 
     const decrementItem = async (medicineId) => {
