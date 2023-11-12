@@ -1,6 +1,9 @@
 // #Task route solution
 const medicineModel = require("../models/medicine");
 const { default: mongoose } = require("mongoose");
+const {
+  getFileByFilename,
+} = require("../common/middleware/upload");
 
 const createMedicine = async (req, res) => {
   //add a new Medicine to the database with
@@ -10,11 +13,12 @@ const createMedicine = async (req, res) => {
     Active_Ingredients,
     Description,
     Price,
-    Image,
     Sales,
     Medicinal_Use,
   } = req.body;
-
+  console.log(req.file);
+  const filename = req.file.filename;
+  const originalname = req.file.originalname;
   try {
     const newMedicine = new medicineModel({
       Name: Name,
@@ -22,7 +26,7 @@ const createMedicine = async (req, res) => {
       Active_Ingredients: Active_Ingredients,
       Description: Description,
       Price: Price,
-      Image: Image,
+      Image: { filename: filename, originalname: originalname },
       Sales: Sales,
       Medicinal_Use: Medicinal_Use,
     });
@@ -139,6 +143,13 @@ const getMedicine = async (req, res) => {
   }
 };
 
+// retrive the image of a specific Medicine by filename
+const downloadFile = async (req, res) => {
+  const { filename } = req.params;
+  const downloadStream = await getFileByFilename(filename);
+  downloadStream.pipe(res);
+};
+
 module.exports = {
   createMedicine,
   getMedicines,
@@ -146,4 +157,5 @@ module.exports = {
   deleteMedicine,
   filterMedicine,
   getMedicine,
+  downloadFile,
 };

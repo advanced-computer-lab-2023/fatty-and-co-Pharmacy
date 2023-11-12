@@ -25,7 +25,7 @@ const medicineSchema = new Schema(
       required: true,
     },
     Image: {
-      type: String,
+      type: { filename: String, originalname: String }, 
     },
     Medicinal_Use: [
       {

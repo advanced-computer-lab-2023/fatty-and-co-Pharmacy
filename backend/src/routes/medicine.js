@@ -6,9 +6,11 @@ const {
   deleteMedicine,
   filterMedicine,
   getMedicine,
+  downloadFile,
 } = require("../controllers/medicineController");
 
 const { checkPharmacist } = require("../common/middleware/checkType");
+const { upload } = require("../common/middleware/upload");
 
 // Create the router
 const router = express.Router();
@@ -20,7 +22,11 @@ router.get("/getMedicines", getMedicines);
 router.get("/getMedicine/:Name", getMedicine);
 
 // POST create a new medicine
-router.post("/addMedicine", checkPharmacist, createMedicine);
+const Medicine_middleware = {
+  checkPharmacist,
+  upload
+}
+router.post("/addMedicine", [Medicine_middleware.checkPharmacist,Medicine_middleware.upload.single("MImage")], createMedicine);
 
 // DELETE a medicine
 router.delete("/deleteMedicine/:id", checkPharmacist, deleteMedicine);
@@ -30,5 +36,13 @@ router.patch("/updateMedicine/:id", checkPharmacist, updateMedicine);
 
 //filter Medicine by medicinal yse
 router.get("/filter", filterMedicine);
+
+/**
+ * @route GET /patients/downloadFile
+ * @desc Downloads a image
+ * @access any user can access
+ * @param {string} filename - The filename in the params
+ */
+router.get("/downloadFile/:filename", downloadFile); 
 
 module.exports = router;

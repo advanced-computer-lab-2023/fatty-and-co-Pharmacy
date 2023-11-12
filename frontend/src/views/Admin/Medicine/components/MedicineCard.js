@@ -26,8 +26,10 @@ import {
   TagLabel,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
+import { useEffect } from "react";
 import { useMedicineContext } from "../../../../hooks/useMedicineContext";
 import { API_PATHS } from "API/api_paths";
+import { useAuthContext } from "hooks/useAuthContext";
 
 const MedicineCard = ({ Medicine }) => {
   // Chakra color mode
@@ -55,11 +57,38 @@ const MedicineCard = ({ Medicine }) => {
   // handle edit
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
+  const { user } = useAuthContext();
+  const Authorization = `Bearer ${user.token}`;
+
+  // set file
+  const [file, setFile] = useState(null);
+  const downloadFile = async () => {
+    let imageFilename = "";
+    try {
+      const { filename } = MImage;
+      imageFilename = filename;
+    } catch (err) {
+      setFile("fail");
+      return;
+    }
+    const response = await fetch(API_PATHS.downloadFile + imageFilename, {
+      method: "GET",
+      headers: {
+        Authorization,
+      },
+    });
+    const file = await response.blob();
+    const fileUrl = URL.createObjectURL(file);
+    setFile(fileUrl);
+  };
+  useEffect(() => {
+    downloadFile();
+  }, []);
 
   return (
     <Flex direction="column">
       <Box mb="20px" position="relative" borderRadius="15px">
-        <Image src={MImage} alt={Name} borderRadius="15px" boxSize="200px" />
+        <Image src={file} alt={Name} borderRadius="15px" boxSize="200px" />
         <Box
           w="100%"
           h="100%"

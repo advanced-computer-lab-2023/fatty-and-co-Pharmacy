@@ -29,6 +29,7 @@ import React, { useState } from "react";
 import { useMedicineContext } from "../../../../hooks/useMedicineContext";
 import { API_PATHS } from "API/api_paths";
 import axios from "axios";
+import { useEffect } from "react";
 import { useAuthContext } from "hooks/useAuthContext";
 
 const MedicineCard = ({ Medicine }) => {
@@ -61,10 +62,29 @@ const MedicineCard = ({ Medicine }) => {
   const { user } = useAuthContext();
   const Authorization = `Bearer ${user.token}`;
 
+   // set file
+   const [file, setFile] = useState(null);
+   const downloadFile = async () => {
+    const {filename} = MImage;
+    console.log(filename);
+     const response = await fetch(API_PATHS.downloadFile + filename, {
+       method: "GET",
+       headers: {
+         Authorization,
+       },
+     });
+     const file = await response.blob();
+     const fileUrl = URL.createObjectURL(file);
+     setFile(fileUrl);
+   };
+   useEffect(() => {
+     downloadFile();
+   }, []);
+
   return (
     <Flex direction="column">
       <Box mb="20px" position="relative" borderRadius="15px">
-        <Image src={MImage} alt={Name} borderRadius="15px" boxSize="200px" />
+        <Image src={file} alt={Name} borderRadius="15px" boxSize="200px" />
         <Box
           w="100%"
           h="100%"
@@ -121,7 +141,7 @@ const MedicineCard = ({ Medicine }) => {
           </Button>
         </Flex>
       </Flex>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Edit {Name}</ModalHeader>
