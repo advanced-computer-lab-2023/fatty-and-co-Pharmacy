@@ -42,8 +42,10 @@ const checkout = async (req, res) => {
           const indexToRemove = cart.Medicine.indexOf(medicineId);
           if (indexToRemove !== -1) {
             cart.Medicine.splice(indexToRemove, 1);
+            cart.TotalCost -= medicine.Price;
           }
         }
+        await cart.save();
         res.status(400).send({ message: `Sorry, we only have ${medicine.Quantity} of ${medicine.Name} in stock.` });
         return;
       }
