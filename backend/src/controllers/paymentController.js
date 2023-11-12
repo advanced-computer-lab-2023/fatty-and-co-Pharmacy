@@ -8,7 +8,7 @@ const payWithCard = async (req, res) => {
         const payment = await stripe.paymentIntents.create({
             amount,
             currency: "USD",
-            description: "Doctor's Appointment",
+            description: "Friday's Pharmacy",
             payment_method: id,
             confirm: true,
             return_url: 'http://localhost:3000/'

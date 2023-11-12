@@ -22,6 +22,7 @@ import {
     useColorModeValue,
     Heading,
     Text,
+    useToast,
 } from "@chakra-ui/react";
 
 function Cart() {
@@ -29,9 +30,8 @@ function Cart() {
     const Authorization = `Bearer ${user.token}`;
     const [cart, setCart] = useState([]);
     const [medicine, setMedicine] = useState([]);
-    const [isModalOpen, setModalOpen] = useState(false);
-    const history = useHistory();
     const textColor = useColorModeValue("gray.700", "white");
+    const toast = useToast();
 
     useEffect(() => {
         fetchCart();
@@ -80,7 +80,13 @@ function Cart() {
             setCart(response.data);
             fetchCart();
         } catch (error) {
-            console.error("Error incrementing item:", error);
+            toast({
+                title: "Error",
+                description: error.response.data.message,
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+            });
         }
     };
 

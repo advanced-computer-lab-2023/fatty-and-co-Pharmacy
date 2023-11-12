@@ -64,6 +64,7 @@ const updateMedicine = async (req, res) => {
       Price,
       Image,
       Sales,
+      MedicationType,
     } = req.body;
     if (!mongoose.Types.ObjectId.isValid(id))
       return res.status(404).send(`No Medicine with id: ${id}`);
@@ -78,6 +79,7 @@ const updateMedicine = async (req, res) => {
       State,
       Image,
       Sales,
+      MedicationType,
       _id: id,
     };
     const newMed = await medicineModel.findByIdAndUpdate(id, updatedMedicine, {

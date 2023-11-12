@@ -183,6 +183,7 @@ function generateMedicineDetails() {
       image: "https://www.drugs.com/images/pills/fio/AAS00310.JPG",
       medicinalUse: ["painkiller", "fever", "anti-inflammatory"],
       sales: Math.floor(Math.random() * 1000),
+      medicationType: "Over the counter",
     },
     {
       name: "Paracetamol",
@@ -193,6 +194,7 @@ function generateMedicineDetails() {
       image: "https://www.drugs.com/images/pills/fio/paracetamol-500mg-1.jpg",
       medicinalUse: ["painkiller", "fever"],
       sales: Math.floor(Math.random() * 1000),
+      medicationType: "Over the counter",
     },
     {
       name: "Ibuprofen",
@@ -204,6 +206,7 @@ function generateMedicineDetails() {
       image: "https://www.drugs.com/images/pills/fio/ibuprofen-200mg-1.jpg",
       medicinalUse: ["painkiller", "fever", "anti-inflammatory"],
       sales: Math.floor(Math.random() * 1000),
+      medicationType: "Over the counter",
     },
     {
       name: "Acetaminophen",
@@ -214,6 +217,7 @@ function generateMedicineDetails() {
       image: "https://www.drugs.com/images/pills/fio/acetaminophen-500mg-1.jpg",
       medicinalUse: ["painkiller", "fever"],
       sales: Math.floor(Math.random() * 1000),
+      medicationType: "Over the counter",
     },
     {
       name: "Naproxen",
@@ -225,6 +229,7 @@ function generateMedicineDetails() {
       image: "https://www.drugs.com/images/pills/fio/naproxen-500mg-1.jpg",
       medicinalUse: ["painkiller", "fever", "anti-inflammatory"],
       sales: Math.floor(Math.random() * 1000),
+      medicationType: "Over the counter",
     },
     {
       name: "Codeine",
@@ -236,6 +241,7 @@ function generateMedicineDetails() {
       image: "https://www.drugs.com/images/pills/fio/codeine-30mg-1.jpg",
       medicinalUse: ["painkiller", "pain"],
       sales: Math.floor(Math.random() * 1000),
+      medicationType: "Prescribed",
     },
     {
       name: "Morphine",
@@ -247,6 +253,7 @@ function generateMedicineDetails() {
       image: "https://www.drugs.com/images/pills/fio/morphine-30mg-1.jpg",
       medicinalUse: ["painkiller", "pain"],
       sales: Math.floor(Math.random() * 1000),
+      medicationType: "Prescribed",
     },
     {
       name: "Tramadol",
@@ -258,6 +265,7 @@ function generateMedicineDetails() {
       image: "https://www.drugs.com/images/pills/fio/tramadol-50mg-1.jpg",
       medicinalUse: ["painkiller", "pain"],
       sales: Math.floor(Math.random() * 1000),
+      medicationType: "Prescribed",
     },
     {
       name: "Diazepam",
@@ -269,6 +277,7 @@ function generateMedicineDetails() {
       image: "https://www.drugs.com/images/pills/fio/diazepam-10mg-1.jpg",
       medicinalUse: ["anxiety"],
       sales: Math.floor(Math.random() * 1000),
+      medicationType: "Prescribed",
     },
     {
       name: "Lorazepam",
@@ -280,6 +289,7 @@ function generateMedicineDetails() {
       image: "https://www.drugs.com/images/pills/fio/lorazepam-1mg-1.jpg",
       medicinalUse: ["anxiety", "pain"],
       sales: Math.floor(Math.random() * 1000),
+      medicationType: "Prescribed",
     },
     {
       name: "Alprazolam",
@@ -291,6 +301,7 @@ function generateMedicineDetails() {
       image: "https://www.drugs.com/images/pills/fio/alprazolam-1mg-1.jpg",
       medicinalUse: ["anxiety"],
       sales: Math.floor(Math.random() * 1000),
+      medicationType: "Prescribed",
     },
     {
       name: "Cetirizine",
@@ -302,6 +313,7 @@ function generateMedicineDetails() {
       image: "https://www.drugs.com/images/pills/fio/cetirizine-10mg-1.jpg",
       medicinalUse: ["fever"],
       sales: Math.floor(Math.random() * 1000),
+      medicationType: "Over the counter",
     },
     {
       name: "Loratadine",
@@ -312,6 +324,7 @@ function generateMedicineDetails() {
       image: "https://www.drugs.com/images/pills/fio/loratadine-10mg-1.jpg",
       medicinalUse: ["fever"],
       sales: Math.floor(Math.random() * 1000),
+      medicationType: "Over the counter",
     },
     {
       name: "Fexofenadine",
@@ -322,6 +335,7 @@ function generateMedicineDetails() {
       image: "https://www.drugs.com/images/pills/fio/fexofenadine-180mg-1.jpg",
       medicinalUse: ["fever"],
       sales: Math.floor(Math.random() * 1000),
+      medicationType: "Over the counter",
     },
     {
       name: "Omeprazole",
@@ -333,6 +347,7 @@ function generateMedicineDetails() {
       image: "https://www.drugs.com/images/pills/fio/omeprazole-20mg-1.jpg",
       medicinalUse: ["painkiller"],
       sales: Math.floor(Math.random() * 1000),
+      medicationType: "Over the counter",
     },
     {
       name: "Pantoprazole",
@@ -344,6 +359,7 @@ function generateMedicineDetails() {
       image: "https://www.drugs.com/images/pills/fio/pantoprazole-40mg-1.jpg",
       medicinalUse: ["painkiller"],
       sales: Math.floor(Math.random() * 1000),
+      medicationType: "Over the counter",
     },
     {
       name: "Esomeprazole",
@@ -355,6 +371,7 @@ function generateMedicineDetails() {
       image: "https://www.drugs.com/images/pills/fio/esomeprazole-40mg-1.jpg",
       medicinalUse: ["painkiller"],
       sales: Math.floor(Math.random() * 1000),
+      medicationType: "Over the counter",
     },
   ];
   return medicines[Math.floor(Math.random() * medicines.length)];
