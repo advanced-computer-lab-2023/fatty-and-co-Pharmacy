@@ -82,8 +82,11 @@ const cancelOrder = async (req, res) => {
       res.status(400).send({ message: "Order is already cancelled" });
       return;
     }
+    // set order status to cancelled
     order.Status = "Cancelled";
     await order.save();
+
+    // refund patient wallet
     const patient = await patientModel.findOne({
       Username: order.PatientUsername,
     });
@@ -91,6 +94,20 @@ const cancelOrder = async (req, res) => {
     const newWallet = wallet + order.TotalCost;
     patient.Wallet = newWallet;
     await patient.save();
+
+    // update medicine sales and quantity
+    const medicines = order.Medicine;
+    for (let i = 0; i < medicines.length; i++) {
+      const medicine = await medicineModel.findOne({ _id: medicines[i] });
+      const sales = medicine.Sales;
+      const quantity = medicine.Quantity;
+      const newSales = sales - 1;
+      const newQuantity = quantity + 1;
+      medicine.Sales = newSales;
+      medicine.Quantity = newQuantity;
+      await medicine.save();
+    }
+
     res.status(200).send(order);
   } catch (error) {
     res.status(400).send({ message: error.message });
