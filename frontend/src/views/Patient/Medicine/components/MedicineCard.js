@@ -167,7 +167,9 @@ const MedicineCard = ({ Medicine }) => {
         </Text>
         {MedicationType == "Over the counter" &&
           <Flex justifyContent="space-between">
-            <Button colorScheme="teal" onClick={() => addToCart(Medicine)}>Add to Cart</Button>
+            <Button disabled={Quantity === 0} colorScheme={Quantity === 0 ? "red" : "teal"} onClick={() => addToCart(Medicine)}>
+              {Quantity === 0 ? "Out of Stock" : "Add to Cart"}
+            </Button>
           </Flex>
         }
       </Flex>
