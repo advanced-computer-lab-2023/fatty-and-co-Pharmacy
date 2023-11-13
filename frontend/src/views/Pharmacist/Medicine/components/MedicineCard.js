@@ -52,7 +52,7 @@ const MedicineCard = ({ Medicine }) => {
   const [use, setUse] = useState("");
   const [Ingredient, setIngredient] = useState("");
   const [MedicationType, setMedicationType] = useState(Medicine.MedicationType);
-  const [updateImage , setUpdateImage] = useState(null);
+  const [updateImage, setUpdateImage] = useState(null);
   const [id, setId] = useState(Medicine._id);
   const isArchviedC = Archived === "archived" ? "red" : "green";
   const isArchvied = Archived === "archived" ? "Archived" : "Available";
@@ -465,8 +465,8 @@ const MedicineCard = ({ Medicine }) => {
                 const formData = new FormData();
                 formData.append("Name", Name);
                 formData.append("Price", Price);
-                formData.append("Active_Ingredients", Active_Ingredients);
-                formData.append("Medicinal_Use", Medicinal_Use);
+                formData.append("Active_Ingredients", [...Active_Ingredients]);
+                formData.append("Medicinal_Use", [...Medicinal_Use]);
                 formData.append("Quantity", Quantity);
                 formData.append("Sales", Sales);
                 formData.append("MImage", updateImage);
@@ -480,7 +480,7 @@ const MedicineCard = ({ Medicine }) => {
                   },
                   body: formData,
                 })
-                  .then(async(response) => {
+                  .then(async (response) => {
                     // Handle success
                     const data = await response.json();
                     dispatch({
@@ -496,7 +496,7 @@ const MedicineCard = ({ Medicine }) => {
                       isClosable: true,
                     });
                     onClose();
-                    location.reload();
+                    const timer = setTimeout(() => { location.reload(); }, 1000); // 1000ms delay
                   })
                   .catch((error) => {
                     // Handle error
@@ -504,8 +504,8 @@ const MedicineCard = ({ Medicine }) => {
                     setMessage(error.response.data.message);
                     setName(Medicine.Name);
                     setPrice(Medicine.Price);
-                    setActive_Ingredients(Medicine.Active_Ingredients);
-                    setMedicinal_Use(Medicine.Medicinal_Use);
+                    setActive_Ingredients([...Medicine.Active_Ingredients]);
+                    setMedicinal_Use([...Medicine.Medicinal_Use]);
                     setQuantity(Medicine.Quantity);
                     setSales(Medicine.Sales);
                     //setImage(Medicine.Image);
