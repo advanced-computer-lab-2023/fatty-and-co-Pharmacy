@@ -129,7 +129,7 @@ const deleteItem = async (req, res) => {
         }
 
         // Calculate the updated TotalCost by finding the prices of removed medicines.
-        const removedMedicine = cart.Medicine.filter(itemID => itemID.toString() == MedicineID.toString());
+        const removedMedicine = cart.Medicine.filter(itemID => itemID.toString() === MedicineID.toString());
         let totalPriceToRemove = 0;
 
         for (const itemID of removedMedicine) {
