@@ -22,6 +22,7 @@ import {
     useColorModeValue,
     Heading,
     Text,
+    useToast,
 } from "@chakra-ui/react";
 
 function Cart() {
@@ -29,9 +30,8 @@ function Cart() {
     const Authorization = `Bearer ${user.token}`;
     const [cart, setCart] = useState([]);
     const [medicine, setMedicine] = useState([]);
-    const [isModalOpen, setModalOpen] = useState(false);
-    const history = useHistory();
     const textColor = useColorModeValue("gray.700", "white");
+    const toast = useToast();
 
     useEffect(() => {
         fetchCart();
@@ -44,10 +44,8 @@ function Cart() {
                 headers: { Authorization },
             })
             .then((response) => {
-                console.log(response);
                 setCart(response.data.cart);
                 setMedicine(response.data.medicine);
-                console.log(medicine);
             })
             .catch((error) => {
                 console.error("Error fetching cart:", error);
@@ -56,9 +54,7 @@ function Cart() {
 
     const deleteItem = async (medicineId) => {
         try {
-            console.log(medicineId);
             const url = API_PATHS.deleteItem + `?Medicine=${medicineId}`;
-            console.log(url);
             const response = await axios.post(url, null, {
                 headers: { Authorization },
             });
@@ -71,17 +67,22 @@ function Cart() {
 
     const incrementItem = async (medicineId) => {
         try {
-            console.log(medicineId);
             const url = API_PATHS.addItemToCart + `?Medicine=${medicineId}`;
-            console.log(url);
             const response = await axios.post(url, null, {
                 headers: { Authorization },
             });
             setCart(response.data);
             fetchCart();
         } catch (error) {
-            console.error("Error incrementing item:", error);
+            toast({
+                title: "Error",
+                description: error.response.data.message,
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+            });
         }
+        fetchCart();
     };
 
     const decrementItem = async (medicineId) => {

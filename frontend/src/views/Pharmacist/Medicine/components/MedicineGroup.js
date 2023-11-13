@@ -62,6 +62,7 @@ const MedicineGroup = ({
   const [MImage, setImage] = useState("");
   const [use, setUse] = useState("");
   const [Medicinal_Use, setMedicinal_Use] = useState([]);
+  const [MedicationType, setMedicationType] = useState("Over the counter");
   const [Sales, setSales] = useState(0);
   const [Archived, setArchived] = useState("unarchived");
   const [message, setMessage] = useState("");
@@ -144,6 +145,7 @@ const MedicineGroup = ({
     formData.append("MImage", MImage);
     formData.append("Description", Description);
     formData.append("state", Archived);
+    formData.append("MedicationType", MedicationType);
 
     await fetch(API_PATHS.addMedicine, {
       method: "POST",
@@ -172,6 +174,7 @@ const MedicineGroup = ({
         setImage("");
         setDescription("");
         setArchived("");
+        setMedicationType("");
         onClose();
         //location.reload();
       })
@@ -435,6 +438,27 @@ const MedicineGroup = ({
                       </MenuItem>
                     </MenuList>
                   </Menu>
+                  <Menu>
+                    <MenuButton as={Button}>{MedicationType}</MenuButton>
+                    <MenuList>
+                      <MenuItem
+                        value={"Over the counter"}
+                        onClick={(e) => {
+                          setMedicationType(e.target.value);
+                        }}
+                      >
+                        Over the counter
+                      </MenuItem>
+                      <MenuItem
+                        value={"Prescribed"}
+                        onClick={(e) => {
+                          setMedicationType(e.target.value);
+                        }}
+                      >
+                        Prescribed
+                      </MenuItem>
+                    </MenuList>
+                  </Menu>
                 </Stack>
               </ModalBody>
               <ModalFooter>
@@ -451,6 +475,7 @@ const MedicineGroup = ({
                     setImage("");
                     setDescription("");
                     setArchived("unarchived");
+                    setMedicationType("Over the counter");
                     onClose();
                   }}
                 >

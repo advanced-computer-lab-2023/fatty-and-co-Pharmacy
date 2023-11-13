@@ -46,6 +46,7 @@ const MedicineCard = ({ Medicine }) => {
   const [Price, setPrice] = useState(Medicine.Price);
   const [MImage, setImage] = useState(Medicine.Image);
   const [Medicinal_Use, setMedicinal_Use] = useState(Medicine.Medicinal_Use);
+  const [MedicationType, setMedicationType] = useState(Medicine.MedicationType);
   const [Sales, setSales] = useState(Medicine.Sales);
   const [Archived, setArchived] = useState(Medicine.State);
   const [message, setMessage] = useState("");
@@ -106,7 +107,7 @@ const MedicineCard = ({ Medicine }) => {
       .catch((error) => {
         toast({
           title: "Error",
-          description: "Error while adding medicine to cart.",
+          description: error.response.data.message,
           status: "error",
           duration: 9000,
           isClosable: true,
@@ -151,20 +152,24 @@ const MedicineCard = ({ Medicine }) => {
           Quantity: {Quantity}
         </Text> */}
         <Text fontSize="sm" color="gray.500" fontWeight="400">
-          Price : {Price} EGP
+          Price: {Price} EGP
         </Text>
         {/* <Text fontSize="sm" color="gray.500" fontWeight="400">
           Sales : {Sales}
         </Text> */}
+        <Text fontSize="sm" color="gray.500" fontWeight="400">
+          Medication Type: {MedicationType}
+        </Text>
         <br />
+
         <Text fontSize="sm" color="gray.500" fontWeight="400" mb="10px">
           {Description}
         </Text>
-        <Flex justifyContent="space-between">
-          <Button colorScheme="green" onClick={() => addToCart(Medicine)}>
-            Add to Cart
-          </Button>
-        </Flex>
+        {MedicationType == "Over the counter" &&
+          <Flex justifyContent="space-between">
+            <Button colorScheme="teal" onClick={() => addToCart(Medicine)}>Add to Cart</Button>
+          </Flex>
+        }
       </Flex>
     </Flex>
   );

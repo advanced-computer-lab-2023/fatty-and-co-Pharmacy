@@ -64,6 +64,7 @@ const updateMedicine = async (req, res) => {
       Description,
       Price,
       Sales,
+      MedicationType,
     } = req.body;
     const filename = req.file.filename;
     const originalname = req.file.originalname;
@@ -80,6 +81,7 @@ const updateMedicine = async (req, res) => {
       State,
       Image: { filename: filename, originalname: originalname },
       Sales,
+      MedicationType,
       _id: id,
     };
     const newMed = await medicineModel.findByIdAndUpdate(id, updatedMedicine, {

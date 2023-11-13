@@ -93,7 +93,7 @@ function Checkout() {
         } catch (error) {
             toast({
                 title: "Error",
-                description: "Error checking out.",
+                description: error.response.data.message,
                 status: "error",
                 duration: 9000,
                 isClosable: true,
@@ -140,15 +140,16 @@ function Checkout() {
                 duration: 9000,
                 isClosable: true,
             });
-        }).catch((error) =>
+        }).catch((error) => {
+            fetchCost();
             toast({
                 title: "Error",
-                description: "Error checking out.",
+                description: error.response.data.message,
                 status: "error",
                 duration: 9000,
                 isClosable: true,
             })
-        );
+        });
     }
 
     const handleAddNewAddress = async (addressValues) => {

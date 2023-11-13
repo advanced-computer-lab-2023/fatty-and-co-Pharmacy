@@ -1,22 +1,59 @@
 const patientModel = require("../models/patients");
 const orderModel = require("../models/orders");
 const cartModel = require("../models/cart");
+const medicineModel = require("../models/medicine");
 
 const checkout = async (req, res) => {
   try {
     const username = req.user.Username;
     const cart = await cartModel.findOne({ PatientUsername: username });
     const patient = await patientModel.findOne({ Username: username });
-    console.log(patient);
-    console.log(username);
     const wallet = patient.Wallet;
     const medicine = cart.Medicine;
     const totalCost = cart.TotalCost;
-    console.log(cart);
 
     const paymentMethod = req.query.PaymentMethod;
     const details = req.query.Details;
     const deliveryAddress = req.query.DeliveryAddress;
+
+    if (totalCost == 0) {
+      res.status(400).send({ message: `Your cart is empty. Please add your items to cart before checking out.` });
+      return;
+    }
+
+    // Get quantity of each medicine and remove it from medicine model.
+    const medicineQuantityMap = new Map();
+
+    cart.Medicine.forEach((medicineId) => {
+      const stringMedicineId = medicineId.toString();
+      if (medicineQuantityMap.has(stringMedicineId)) {
+        medicineQuantityMap.set(stringMedicineId, medicineQuantityMap.get(stringMedicineId) + 1);
+      } else {
+        medicineQuantityMap.set(stringMedicineId, 1);
+      }
+    });
+
+    for (const [medicineId, quantity] of medicineQuantityMap.entries()) {
+      const medicine = await medicineModel.findById(medicineId);
+      if (medicine.Quantity < quantity) {
+        // Remove extra meds in the cart.
+        const instancesToRemove = quantity - medicine.Quantity;
+        for (let i = 0; i < instancesToRemove; i++) {
+          const indexToRemove = cart.Medicine.indexOf(medicineId);
+          if (indexToRemove !== -1) {
+            cart.Medicine.splice(indexToRemove, 1);
+            cart.TotalCost -= medicine.Price;
+          }
+        }
+        await cart.save();
+        res.status(400).send({ message: `Sorry, we only have ${medicine.Quantity} of ${medicine.Name} in stock.` });
+        return;
+      }
+      medicine.Quantity -= quantity;
+      medicine.Sales += quantity;
+      await medicine.save();
+    }
+
     if (paymentMethod == "Wallet") {
       if (wallet < totalCost) {
         res.status(400).send({ message: "Insufficient wallet balance" });
@@ -30,7 +67,6 @@ const checkout = async (req, res) => {
     const newOrder = await orderModel.create({
       PatientUsername: username,
       Date: new Date(),
-      // Status: "In Progress",
       Medicine: medicine,
       Details: details,
       TotalCost: totalCost,
@@ -41,6 +77,7 @@ const checkout = async (req, res) => {
     cart.TotalCost = 0;
     cart.Medicine = [];
     await cart.save();
+
     res.status(200).send(newOrder);
   } catch (error) {
     res.status(400).send({ message: error.message });

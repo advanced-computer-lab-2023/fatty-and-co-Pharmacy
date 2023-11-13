@@ -148,6 +148,7 @@ const createMedicine = async (req, res) => {
     Image,
     Medicinal_Use,
     Sales,
+    MedicationType,
   } = req.body;
 
   const {
@@ -159,6 +160,7 @@ const createMedicine = async (req, res) => {
     image,
     medicinalUse,
     sales,
+    medicationType,
   } = generateMedicineDetails();
 
   const finalName = Name || name;
@@ -169,6 +171,7 @@ const createMedicine = async (req, res) => {
   const finalImage = Image || image;
   const finalMedicinal_Use = Medicinal_Use || medicinalUse;
   const finalSales = Sales || sales;
+  const finalMedicationType = MedicationType || medicationType;
 
   try {
     const newMedicine = await medicineModel.create({
@@ -180,6 +183,7 @@ const createMedicine = async (req, res) => {
       Image: finalImage,
       Medicinal_Use: finalMedicinal_Use,
       Sales: finalSales,
+      MedicationType: finalMedicationType,
     });
     res.status(201).json(newMedicine);
   } catch (error) {
