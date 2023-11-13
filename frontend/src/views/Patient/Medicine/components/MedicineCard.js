@@ -29,6 +29,7 @@ import React, { useState } from "react";
 import { useMedicineContext } from "../../../../hooks/useMedicineContext";
 import { API_PATHS } from "API/api_paths";
 import axios from "axios";
+import { useEffect } from "react";
 import { useAuthContext } from "hooks/useAuthContext";
 
 const MedicineCard = ({ Medicine }) => {
@@ -61,6 +62,31 @@ const MedicineCard = ({ Medicine }) => {
   const { user } = useAuthContext();
   const Authorization = `Bearer ${user.token}`;
 
+  // set file
+  const [file, setFile] = useState(null);
+  const downloadFile = async () => {
+    let imageFilename = "";
+    try {
+      const { filename } = MImage;
+      imageFilename = filename;
+    } catch (err) {
+      setFile("fail");
+      return;
+    }
+    const response = await fetch(API_PATHS.downloadFile + imageFilename, {
+      method: "GET",
+      headers: {
+        Authorization,
+      },
+    });
+    const file = await response.blob();
+    const fileUrl = URL.createObjectURL(file);
+    setFile(fileUrl);
+  };
+  useEffect(() => {
+    downloadFile();
+  }, []);
+
   const addToCart = (medicine) => {
     console.log(Authorization);
     console.log(medicine._id);
@@ -72,8 +98,7 @@ const MedicineCard = ({ Medicine }) => {
         console.log(response);
         toast({
           title: "Added to cart",
-          description:
-            `We've added ${medicine.Name} to cart`,
+          description: `We've added ${medicine.Name} to cart`,
           status: "success",
           duration: 9000,
           isClosable: true,
@@ -93,7 +118,7 @@ const MedicineCard = ({ Medicine }) => {
   return (
     <Flex direction="column">
       <Box mb="20px" position="relative" borderRadius="15px">
-        <Image src={MImage} alt={Name} borderRadius="15px" boxSize='200px' />
+        <Image src={file} alt={Name} borderRadius="15px" boxSize="200px" />
         <Box
           w="100%"
           h="100%"
@@ -146,7 +171,6 @@ const MedicineCard = ({ Medicine }) => {
           </Flex>
         }
       </Flex>
-
     </Flex>
   );
 };

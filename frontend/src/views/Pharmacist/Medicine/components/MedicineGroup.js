@@ -135,25 +135,28 @@ const MedicineGroup = ({
     //     isClosable: true,
     //   });
     // }
-    axios
-      .post(
-        API_PATHS.addMedicine,
-        {
-          Name,
-          Price,
-          Active_Ingredients,
-          Medicinal_Use,
-          Quantity,
-          Sales,
-          Image: MImage,
-          Description,
-          state: Archived,
-          MedicationType: MedicationType,
-        },
-        { headers: { Authorization } }
-      )
-      .then((response) => {
-        dispatch({ type: "ADD_MEDICINE", payload: response.data });
+    const formData = new FormData();
+    formData.append("Name", Name);
+    formData.append("Price", Price);
+    formData.append("Active_Ingredients", Active_Ingredients);
+    formData.append("Medicinal_Use", Medicinal_Use);
+    formData.append("Quantity", Quantity);
+    formData.append("Sales", Sales);
+    formData.append("MImage", MImage);
+    formData.append("Description", Description);
+    formData.append("state", Archived);
+    formData.append("MedicationType", MedicationType);
+
+    await fetch(API_PATHS.addMedicine, {
+      method: "POST",
+      headers: {
+        Authorization: Authorization,
+      },
+      body: formData,
+    })
+      .then(async(response) => {
+        const data = await response.json();
+        dispatch({ type: "ADD_MEDICINE", payload: data});
 
         toast({
           title: "Medicine Added.",
@@ -173,6 +176,7 @@ const MedicineGroup = ({
         setArchived("");
         setMedicationType("");
         onClose();
+        //location.reload();
       })
       .catch((err) => {
         return toast({
@@ -268,7 +272,7 @@ const MedicineGroup = ({
             </Flex>
           </Button>
         </Grid>
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent>
             <ModalHeader>Add New Medicine</ModalHeader>
@@ -397,12 +401,12 @@ const MedicineGroup = ({
                   </Box>
                   <Input
                     variant="filled"
-                    type="text"
-                    placeholder="Image"
+                    type="file"
+                    id="MImage"
+                    name="MImage"
+                    accept="image/png, image/jpeg ,image/jpg"
                     required
-                    onChange={(e) => {
-                      setImage(e.target.value);
-                    }}
+                    onChange={(e) => setImage(e.target.files[0])}
                   />
                   <Input
                     variant="filled"
