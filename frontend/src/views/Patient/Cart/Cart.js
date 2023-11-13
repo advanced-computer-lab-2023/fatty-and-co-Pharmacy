@@ -61,7 +61,13 @@ function Cart() {
             setCart(response.data);
             fetchCart();
         } catch (error) {
-            console.error("Error deleting item:", error);
+            toast({
+                title: "Error",
+                description: error.response.data.message,
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+            });
         }
     };
 
@@ -136,7 +142,7 @@ function Cart() {
                                 </Tr>
                             </Thead>
                             <Tbody>
-                                {medicine.map((med) => (
+                                {medicine?.map((med) => (
                                     <Tr
                                         key={med._id}
                                     >
