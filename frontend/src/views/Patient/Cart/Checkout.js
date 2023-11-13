@@ -297,7 +297,7 @@ function Checkout() {
                                                     onChange={(e) => handleAddressSelect(e.target.value)}
                                                     mb="4"
                                                 >
-                                                    {deliveryAddresses.map((address) => (
+                                                    {deliveryAddresses?.map((address) => (
                                                         <option key={address._id} value={address._id}>
                                                             {address.Street}, {address.Building}, {address.City}, {address.State}, {address.Country}, {address.PostalCode}
                                                         </option>

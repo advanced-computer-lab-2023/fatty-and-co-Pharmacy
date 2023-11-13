@@ -118,22 +118,22 @@ const deleteItem = async (req, res) => {
         const cart = await cartModel.findOne({ PatientUsername: Username });
 
         if (!cart) {
-            return res.status(400).send({ message: "Cart not found" });
+            res.status(400).send({ message: "Cart not found" });
+            return;
         }
 
-        const updatedMedicine = cart.Medicine.filter(itemID => itemID !== MedicineID);
-
+        const updatedMedicine = cart.Medicine.filter(itemID => itemID.toString() !== MedicineID.toString());
         if (updatedMedicine.length === cart.Medicine.length) {
-            return res.status(400).send({ message: "Medicine not found in the cart" });
+            res.status(400).send({ message: "Medicine not found in the cart" });
+            return;
         }
 
         // Calculate the updated TotalCost by finding the prices of removed medicines.
-        const removedMedicine = cart.Medicine.filter(itemID => itemID === MedicineID);
+        const removedMedicine = cart.Medicine.filter(itemID => itemID.toString() === MedicineID.toString());
         let totalPriceToRemove = 0;
 
         for (const itemID of removedMedicine) {
             const medicine = await medicineModel.findById(itemID);
-
             if (medicine) {
                 totalPriceToRemove += medicine.Price;
             }

@@ -29,6 +29,7 @@ import React, { useState } from "react";
 import { useMedicineContext } from "../../../../hooks/useMedicineContext";
 import { API_PATHS } from "API/api_paths";
 import axios from "axios";
+import { useEffect } from "react";
 import { useAuthContext } from "hooks/useAuthContext";
 
 const MedicineCard = ({ Medicine }) => {
@@ -51,7 +52,8 @@ const MedicineCard = ({ Medicine }) => {
   const [use, setUse] = useState("");
   const [Ingredient, setIngredient] = useState("");
   const [MedicationType, setMedicationType] = useState(Medicine.MedicationType);
-
+  const [updateImage , setUpdateImage] = useState(null);
+  const [id, setId] = useState(Medicine._id);
   const isArchviedC = Archived === "archived" ? "red" : "green";
   const isArchvied = Archived === "archived" ? "Archived" : "Available";
 
@@ -62,10 +64,35 @@ const MedicineCard = ({ Medicine }) => {
   const { user } = useAuthContext();
   const Authorization = `Bearer ${user.token}`;
 
+  // set image
+  const [file, setFile] = useState(null);
+  const downloadFile = async () => {
+    let imageFilename = "";
+    try {
+      const { filename } = MImage;
+      imageFilename = filename;
+    } catch (err) {
+      setFile("fail");
+      return;
+    }
+    const response = await fetch(API_PATHS.downloadFile + imageFilename, {
+      method: "GET",
+      headers: {
+        Authorization,
+      },
+    });
+    const file = await response.blob();
+    const fileUrl = URL.createObjectURL(file);
+    setFile(fileUrl);
+  };
+  useEffect(() => {
+    downloadFile();
+  }, []);
+
   return (
     <Flex direction="column">
       <Box mb="20px" position="relative" borderRadius="15px">
-        <Image src={MImage} alt={Name} borderRadius="15px" boxSize="200px" />
+        <Image src={file} alt={Name} borderRadius="15px" boxSize="200px" />
         <Box
           w="100%"
           h="100%"
@@ -125,7 +152,7 @@ const MedicineCard = ({ Medicine }) => {
           </Button>
         </Flex>
       </Flex>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Edit {Name}</ModalHeader>
@@ -270,13 +297,16 @@ const MedicineCard = ({ Medicine }) => {
               </Box>
               <Input
                 variant="filled"
-                type="text"
-                placeholder="Image"
+                type="file"
+                id="MImage"
+                name="MImage"
+                accept="image/png, image/jpeg ,image/jpg"
+                required
                 onChange={(e) => {
                   if (e.target.value.length == 0) {
-                    setImage(Medicine.Image);
+                    //setImage(Medicine.Image);
                   } else {
-                    setImage(e.target.value);
+                    setUpdateImage(e.target.files[0]);
                   }
                 }}
               />
@@ -348,7 +378,7 @@ const MedicineCard = ({ Medicine }) => {
                 setMedicinal_Use([...Medicine.Medicinal_Use]);
                 setQuantity(Medicine.Quantity);
                 setSales(Medicine.Sales);
-                setImage(Medicine.Image);
+                //setImage(Medicine.Image);
                 setDescription(Medicine.Description);
                 setArchived(Medicine.State);
                 setMedicationType(Medicine.MedicationType);
@@ -432,32 +462,30 @@ const MedicineCard = ({ Medicine }) => {
                 //     isClosable: true,
                 //   });
                 // }
-                axios
-                  .patch(
-                    API_PATHS.updateMedicine + Medicine._id,
-                    {
-                      Name,
-                      Price,
-                      Active_Ingredients,
-                      Medicinal_Use,
-                      Quantity,
-                      Sales,
-                      Image: MImage,
-                      Description,
-                      State: Archived,
-                      MedicationType,
-                    },
-                    {
-                      headers: {
-                        Authorization,
-                      },
-                    }
-                  )
-                  .then((response) => {
+                const formData = new FormData();
+                formData.append("Name", Name);
+                formData.append("Price", Price);
+                formData.append("Active_Ingredients", Active_Ingredients);
+                formData.append("Medicinal_Use", Medicinal_Use);
+                formData.append("Quantity", Quantity);
+                formData.append("Sales", Sales);
+                formData.append("MImage", updateImage);
+                formData.append("Description", Description);
+                formData.append("State", Archived);
+                formData.append("MedicationType", MedicationType);
+                await fetch(API_PATHS.updateMedicine + id, {
+                  method: "PATCH",
+                  headers: {
+                    Authorization: Authorization,
+                  },
+                  body: formData,
+                })
+                  .then(async(response) => {
                     // Handle success
+                    const data = await response.json();
                     dispatch({
                       type: "UPDATE_MEDICINE",
-                      payload: response.data,
+                      payload: data,
                     });
 
                     toast({
@@ -468,6 +496,7 @@ const MedicineCard = ({ Medicine }) => {
                       isClosable: true,
                     });
                     onClose();
+                    location.reload();
                   })
                   .catch((error) => {
                     // Handle error
@@ -479,7 +508,7 @@ const MedicineCard = ({ Medicine }) => {
                     setMedicinal_Use(Medicine.Medicinal_Use);
                     setQuantity(Medicine.Quantity);
                     setSales(Medicine.Sales);
-                    setImage(Medicine.Image);
+                    //setImage(Medicine.Image);
                     setDescription(Medicine.Description);
                     setArchived(Medicine.State);
                     setMedicationType(Medicine.MedicationType);
