@@ -48,7 +48,7 @@ const SignUpSchema = Yup.object().shape({
     ),
   DateOfBirth: Yup.date()
     .required("Required")
-    .min(eighteenYearsAgo, "You must be at least 18 years old"),
+    .max(eighteenYearsAgo, "You must be at least 18 years old"),
   MobileNum: Yup.string()
     .required("Required")
     .length(11, "Invalid Mobile Number"),
