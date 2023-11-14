@@ -17,7 +17,11 @@ const checkout = async (req, res) => {
     const deliveryAddress = req.query.DeliveryAddress;
 
     if (totalCost == 0) {
-      res.status(400).send({ message: `Your cart is empty. Please add your items to cart before checking out.` });
+      res
+        .status(400)
+        .send({
+          message: `Your cart is empty. Please add your items to cart before checking out.`,
+        });
       return;
     }
 
@@ -27,7 +31,10 @@ const checkout = async (req, res) => {
     cart.Medicine.forEach((medicineId) => {
       const stringMedicineId = medicineId.toString();
       if (medicineQuantityMap.has(stringMedicineId)) {
-        medicineQuantityMap.set(stringMedicineId, medicineQuantityMap.get(stringMedicineId) + 1);
+        medicineQuantityMap.set(
+          stringMedicineId,
+          medicineQuantityMap.get(stringMedicineId) + 1
+        );
       } else {
         medicineQuantityMap.set(stringMedicineId, 1);
       }
@@ -46,7 +53,11 @@ const checkout = async (req, res) => {
           }
         }
         await cart.save();
-        res.status(400).send({ message: `Sorry, we only have ${medicine.Quantity} of ${medicine.Name} in stock.` });
+        res
+          .status(400)
+          .send({
+            message: `Sorry, we only have ${medicine.Quantity} of ${medicine.Name} in stock.`,
+          });
         return;
       }
       medicine.Quantity -= quantity;
