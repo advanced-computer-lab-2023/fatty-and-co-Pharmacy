@@ -16,16 +16,18 @@ const createMedicine = async (req, res) => {
   } = req.body;
   const filename = req.file.filename;
   const originalname = req.file.originalname;
+  const UpdatedMedicinalUse = Medicinal_Use.split(",");
+  const UpdatedActiveIngredients = Active_Ingredients.split(",");
   try {
     const newMedicine = new medicineModel({
       Name: Name,
       Quantity: Quantity,
-      Active_Ingredients: Active_Ingredients,
+      Active_Ingredients: UpdatedActiveIngredients,
       Description: Description,
       Price: Price,
       Image: { filename: filename, originalname: originalname },
       Sales: Sales,
-      Medicinal_Use: Medicinal_Use,
+      Medicinal_Use: UpdatedMedicinalUse,
     });
 
     await newMedicine.save();
@@ -66,28 +68,36 @@ const updateMedicine = async (req, res) => {
       Sales,
       MedicationType,
     } = req.body;
-    const filename = req.file.filename;
-    const originalname = req.file.originalname;
+    let filename;
+    let originalname;
+    let isImage = true;
+    try {
+      filename = req.file.filename;
+      originalname = req.file.originalname;
+    } catch (error) {
+      isImage = false;
+    }
     if (!mongoose.Types.ObjectId.isValid(id))
       return res.status(404).send(`No Medicine with id: ${id}`);
 
+    const UpdatedMedicinalUse = Medicinal_Use.split(",");
+    const UpdatedActiveIngredients = Active_Ingredients.split(",");
     const updatedMedicine = {
       Name,
       Quantity,
-      Active_Ingredients,
+      Active_Ingredients: UpdatedActiveIngredients,
       Description,
       Price,
-      Medicinal_Use,
+      Medicinal_Use: UpdatedMedicinalUse,
       State,
-      Image: { filename: filename, originalname: originalname },
       Sales,
       MedicationType,
       _id: id,
+      ...(isImage && { Image: { filename: filename, originalname: originalname } }),
     };
     const newMed = await medicineModel.findByIdAndUpdate(id, updatedMedicine, {
       new: true,
     });
-
     res.status(200).json(newMed);
   } catch (err) {
     res.status(500).json({ message: err.message });
