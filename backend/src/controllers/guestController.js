@@ -41,7 +41,7 @@ const createPatient = async (req, res) => {
       PatientUsername: Username,
       TotalCost: 0,
       Medicine: [],
-    })
+    });
     res.status(200).send({ patient, user, cart });
   } catch (error) {
     res.status(400).send({ message: error.message });
@@ -60,6 +60,11 @@ const createRequest = async (req, res) => {
     EducationalBackground,
   } = req.body;
 
+  const { IdFile, WorkingLicense, PharmacyDegree } = req.files;
+  const IdFileName = IdFile[0].filename;
+  const WorkingLicenseName = WorkingLicense[0].filename;
+  const PharmacyDegreeName = PharmacyDegree[0].filename;
+  
   try {
     const request = await requestModel.create({
       Username,
@@ -71,6 +76,9 @@ const createRequest = async (req, res) => {
       Affiliation,
       EducationalBackground,
       Status: "Pending",
+      IdFileName,
+      WorkingLicenseName,
+      PharmacyDegreeName,
     });
     res.status(200).send({ request });
   } catch (error) {

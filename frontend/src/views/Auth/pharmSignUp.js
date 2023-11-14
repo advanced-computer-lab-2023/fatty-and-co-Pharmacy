@@ -26,13 +26,15 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
+  Progress,
 } from "@chakra-ui/react";
+import { AttachmentIcon } from "@chakra-ui/icons";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Formik, Field, Form } from "formik";
 import * as Yup from "yup";
 import React, { useState } from "react";
 import { API_PATHS } from "API/api_paths";
-
+import axios from "axios";
 import BgSignUp from "assets/img/BgSignUp.png";
 
 const eighteenYearsAgo = new Date();
@@ -68,21 +70,29 @@ function pharmSignUp() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(null);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   const toast = useToast();
 
   const handleShowClick = () => setShowPassword(!showPassword);
 
   const handleSubmit = async (values, { setSubmitting }) => {
-    try {
-      const response = await fetch(API_PATHS.pharmSignUp, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
-      });
-      const data = await response.json();
-      console.log(data);
-      if (response.ok) {
+    setError(null);
+    let formData = new FormData();
+    for (let key in values) {
+      formData.append(key, values[key]);
+    }
+
+    axios
+      .post(API_PATHS.pharmSignUp, formData, {
+        onUploadProgress: (progressEvent) => {
+          const percentCompleted = Math.round(
+            (progressEvent.loaded * 100) / progressEvent.total
+          );
+          setUploadProgress(percentCompleted);
+        },
+      })
+      .then(async (response) => {
         console.log("Phamacist request submitted successfully!");
         toast({
           title: "Request Submitted Successfully.",
@@ -93,8 +103,11 @@ function pharmSignUp() {
           isClosable: true,
         });
         // window.location.href = "/auth/signin";
-        setSubmitting(false);
-      } else {
+        //setSubmitting(false);
+      })
+      .catch((error) => {
+        setError(error);
+        console.log(error);
         console.log("Error submitting pharmacist request!");
         setError(data.message);
         toast({
@@ -104,15 +117,10 @@ function pharmSignUp() {
           duration: 9000,
           isClosable: true,
         });
+      })
+      .finally(() => {
         setSubmitting(false);
-      }
-    } catch {
-      setError(error);
-      console.log(error);
-      setSubmitting(false);
-    } finally {
-      setSubmitting(false);
-    }
+      });
   };
 
   return (
@@ -182,11 +190,14 @@ function pharmSignUp() {
               HourlyRate: 1.0,
               Affiliation: "",
               EducationalBackground: "",
+              IdFile: null,
+              WorkingLicense: null,
+              PharmacyDegree: null,
             }}
             validationSchema={PharmSignUpSchema}
             onSubmit={handleSubmit}
           >
-            {({ isSubmitting, errors, touched }) => (
+            {({ isSubmitting, errors, touched, setFieldValue }) => (
               <Form id="pharmSignUp">
                 <Field name="Username">
                   {({ field }) => (
@@ -407,6 +418,162 @@ function pharmSignUp() {
                     </FormControl>
                   )}
                 </Field>
+                {/* //////// Upload files ///////// */}
+
+                <Field name="IdFile">
+                  {({ field }) => (
+                    <FormControl
+                      mb="24px"
+                      isInvalid={errors.IdFile && touched.IdFile}
+                    >
+                      <FormLabel
+                        htmlFor="IdFile"
+                        ms="4px"
+                        fontSize="sm"
+                        bg="teal.300"
+                        color="white"
+                        fontWeight="xsmall"
+                        w="60%"
+                        h="45"
+                        // mb="24px"
+                        borderRadius="15px"
+                        style={{
+                          cursor: "pointer",
+                          textAlign: "center",
+                          paddingTop: "10px",
+                        }}
+                      >
+                        Upload Id <span style={{ color: "red" }}>*</span>{" "}
+                        <AttachmentIcon boxSize={3} />
+                      </FormLabel>
+                      <Input
+                        type="file"
+                        placeholder="..."
+                        id="IdFile"
+                        name="IdFile"
+                        accept=".pdf,.jpg,.jpeg,.png"
+                        style={{ display: "none" }}
+                        onChange={(event) => {
+                          setFieldValue("IdFile", event.target.files[0]);
+                        }}
+                      />
+                      <FormErrorMessage>{errors.IdFile}</FormErrorMessage>
+                      <Text>{field.value && field.value.name}</Text>
+                    </FormControl>
+                  )}
+                </Field>
+
+                <Field name="WorkingLicense">
+                  {({ field   }) => (
+                    <FormControl
+                      mb="24px"
+                      isInvalid={
+                        errors.WorkingLicense && touched.WorkingLicense
+                      }
+                    >
+                      <FormLabel
+                        htmlFor="WorkingLicense"
+                        ms="4px"
+                        fontSize="sm"
+                        bg="teal.300"
+                        color="white"
+                        fontWeight="xsmall"
+                        w="60%"
+                        h="45"
+                        // mb="24px"
+                        borderRadius="15px"
+                        style={{
+                          cursor: "pointer",
+                          textAlign: "center",
+                          paddingTop: "10px",
+                        }}
+                      >
+                        Upload Working License{" "}
+                        <span style={{ color: "red" }}>*</span>{" "}
+                        <AttachmentIcon boxSize={3} />{" "}
+                      </FormLabel>
+                      <Input
+                        type="file"
+                        placeholder="..."
+                        id="WorkingLicense"
+                        name="WorkingLicense"
+                        accept=".pdf,.jpg,.jpeg,.png"
+                        style={{ display: "none" }}
+                        onChange={(event) => {
+                          setFieldValue(
+                            "WorkingLicense",
+                            event.target.files[0]
+                          );
+                        }}
+                      />
+                      <FormErrorMessage>
+                        {errors.WorkingLicense}
+                      </FormErrorMessage>
+                      <Text>{field.value && field.value.name}</Text>
+                    </FormControl>
+                  )}
+                </Field>
+
+                <Field name="PharmacyDegree">
+                  {({ field }) => (
+                    <FormControl
+                      mb="24px"
+                      isInvalid={
+                        errors.PharmacyDegree && touched.PharmacyDegree
+                      }
+                    >
+                      <FormLabel
+                        htmlFor="PharmacyDegree"
+                        ms="4px"
+                        fontSize="sm"
+                        bg="teal.300"
+                        color="white"
+                        fontWeight="xsmall"
+                        w="60%"
+                        h="45"
+                        // mb="24px"
+                        borderRadius="15px"
+                        style={{
+                          cursor: "pointer",
+                          textAlign: "center",
+                          paddingTop: "10px",
+                        }}
+                      >
+                        Upload Pharmacy Degree{" "}
+                        <span style={{ color: "red" }}>*</span>{" "}
+                        <AttachmentIcon boxSize={3} />{" "}
+                      </FormLabel>
+                      <Input
+                        type="file"
+                        placeholder="..."
+                        id="PharmacyDegree"
+                        name="PharmacyDegree"
+                        accept=".pdf,.jpg,.jpeg,.png"
+                        style={{ display: "none" }}
+                        // required
+                        // onChange={(e) => setMedicalDegree(e.target.files[0])}
+                        onChange={(event) => {
+                          setFieldValue(
+                            "PharmacyDegree",
+                            event.target.files[0]
+                          );
+                        }}
+                      />
+                      <FormErrorMessage>
+                        {errors.PharmacyDegree}
+                      </FormErrorMessage>
+                      <Text>{field.value && field.value.name}</Text>
+                    </FormControl>
+                  )}
+                </Field>
+                {uploadProgress > 0 && (
+                  <Progress
+                    colorScheme="teal"
+                    value={uploadProgress}
+                    mb="24px"
+                  />
+                )}
+                {/* ////////////end of upload files //////////// */}
                 <Button
                   type="submit"
                   bg="teal.300"

@@ -6,6 +6,7 @@ const {
   login,
 } = require("../controllers/guestController");
 const requireAuth = require("../common/middleware/requireAuth");
+const { pharmUpload } = require("../common/middleware/pharmUpload");
 
 const router = express.Router();
 
@@ -45,8 +46,11 @@ router.post("/addPatient", createPatient);
  * @prop {string} Affiliation - The affiliation of the pharmacist
  * @prop {string} EducationalBackground - The educational background of the pharmacist
  * @prop {string} Speciality - The speciality of the pharmacist
+ * @prop {file} IdFile - The id file of the pharmacist
+ * @prop {file} WorkingLicense - The working license of the pharmacist
+ * @prop {file} PharmacyDegree - The pharmacy degree of the pharmacist
  */
-router.post("/addRequest", createRequest);
+router.post("/addRequest", pharmUpload, createRequest);
 
 // the following routes require authentication
 router.use(requireAuth);
