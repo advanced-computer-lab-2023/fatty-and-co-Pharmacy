@@ -232,6 +232,7 @@ export default function HeaderLinks(props) {
           </Flex>
         </MenuList>
       </Menu>
+      {user.userType === "Patient" && (
       <ChakraProvider theme={theme}>
         <Icon
           as={MdAttachMoney}
@@ -242,6 +243,7 @@ export default function HeaderLinks(props) {
           mb="2px"
         />
       </ChakraProvider>
+      )}
       <ChakraProvider theme={theme}>
         <Text
           fontSize="sm"
@@ -250,7 +252,7 @@ export default function HeaderLinks(props) {
           w="100px"
           h="27px"
         >
-          {Wallet !== null ? `${Wallet}` : "Loading..."}
+          {Wallet !== null ? `${Wallet}` : ""}
         </Text>
       </ChakraProvider>
     </Flex>
