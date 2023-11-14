@@ -116,6 +116,7 @@ var dashRoutes = [
     icon: <SupportIcon color="inherit" />,
     component: MakePayment,
     layout: "/patient",
+    show: false,
   },
   {
     path: "/cart",
