@@ -4,6 +4,7 @@ import axios from "axios";
 import { useAuthContext } from "hooks/useAuthContext";
 import { API_PATHS } from "API/api_paths";
 import { Input } from "@chakra-ui/react";
+import { useHistory } from "react-router-dom";
 
 const CARD_OPTIONS = {
   iconStyle: "solid",
@@ -30,11 +31,12 @@ const PaymentForm = ({ amount, onClickPay }) => {
   const [success, setSuccess] = useState(false);
   const stripe = useStripe();
   const elements = useElements();
+  const history = useHistory();
 
   useEffect(() => {
     if (success) {
       const redirectTimeout = setTimeout(() => {
-        window.location.href = "././Medicine/components/ThankYou.js";
+        history.push("./thankyou");
       }, 3000);
 
       return () => clearTimeout(redirectTimeout);

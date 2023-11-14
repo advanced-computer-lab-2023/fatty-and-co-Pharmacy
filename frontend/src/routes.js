@@ -20,6 +20,7 @@ import Cart from "views/Patient/Cart/Cart";
 import Checkout from "views/Patient/Cart/Checkout";
 import MakePayment from "views/Patient/makePayment";
 import ViewOrders from "views/Patient/viewOrders";
+import ThankYouCard from "views/Patient/Medicine/components/ThankYou";
 
 import {
   HomeIcon,
@@ -141,6 +142,7 @@ var dashRoutes = [
     icon: <SupportIcon color="inherit" />,
     component: MakePayment,
     layout: "/patient",
+    show: false,
   },
   {
     path: "/cart",
@@ -156,6 +158,15 @@ var dashRoutes = [
     rtlName: "لوحة القيادة",
     icon: <StatsIcon color="inherit" />,
     component: Checkout,
+    layout: "/patient",
+    show: false,
+  },
+  {
+    path: "/thankyou",
+    name: "Thank you",
+    rtlName: "لوحة القيادة",
+    icon: <StatsIcon color="inherit" />,
+    component: ThankYouCard,
     layout: "/patient",
     show: false,
   },
