@@ -12,6 +12,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import PaymentForm from "views/Patient/makePayment/components/PaymentForm";
 import { useWalletContext } from "hooks/useWalletContext";
+import { useHistory } from "react-router-dom";
 
 const PUBLIC_KEY =
   "pk_test_51O9tZeDlw6jDceOALILn3gb3eOAzBSHSuIQKUqUxTX8eSdJn36QpsxAqKWskgVA5TNzo5Zx3OAQbn3I7ZjZHxSZX00M5RKDnCM";
@@ -44,6 +45,7 @@ function Checkout() {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
   const [proceedToPayment, setProceedToPayment] = useState(false);
   const toast = useToast();
+  const history = useHistory();
   const { Wallet, dispatch } = useWalletContext();
 
   useEffect(() => {
@@ -89,7 +91,7 @@ function Checkout() {
       if (selectedPaymentMethod == "Credit Card") {
         setProceedToPayment(true);
       } else {
-        if (selectedPaymentMethod == "Credit Card") {
+        if (selectedPaymentMethod == "Wallet") {
           dispatch({ type: "DEDUCT_FROM_WALLET", payload: cost });
         }
         onClickPay();
@@ -146,6 +148,9 @@ function Checkout() {
           duration: 9000,
           isClosable: true,
         });
+        const redirectTimeout = setTimeout(() => {
+            history.push("./thankyou");
+        }, 3000);
       })
       .catch((error) => {
         fetchCost();
