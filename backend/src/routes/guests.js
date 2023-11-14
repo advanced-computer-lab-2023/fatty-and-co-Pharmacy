@@ -4,6 +4,10 @@ const {
   updateRequest,
   createPatient,
   login,
+  updatePass,
+  sendOTP,
+  validateOTP,
+  resetPass,
 } = require("../controllers/guestController");
 const requireAuth = require("../common/middleware/requireAuth");
 const { pharmUpload } = require("../common/middleware/pharmUpload");
@@ -16,6 +20,8 @@ router.get("/", (req, res) => {
 });
 
 router.post("/login", login);
+router.post("/sendOTP", sendOTP);
+router.post("/validateOTP", validateOTP);
 
 /**
  * @route POST /patients/addPatient
@@ -51,11 +57,16 @@ router.post("/addPatient", createPatient);
  * @prop {file} PharmacyDegree - The pharmacy degree of the pharmacist
  */
 router.post("/addRequest", pharmUpload, createRequest);
+router.patch("/resetPass/", resetPass);
+
 
 // the following routes require authentication
 router.use(requireAuth);
 
 // TODO: add type check as middleware if needed
 router.put("/updateRequest/:id", updateRequest);
+
+router.patch("/updatePass/", updatePass);
+
 
 module.exports = router;

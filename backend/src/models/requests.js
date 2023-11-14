@@ -56,15 +56,12 @@ const requestSchema = new Schema(
     },
     IdFileName: {
       type: String,
-      required: true,
     },
     WorkingLicenseName: {
       type: String,
-      required: true,
     },
     PharmacyDegreeName: {
       type: String,
-      required: true,
     },
   },
   { timestamps: true }

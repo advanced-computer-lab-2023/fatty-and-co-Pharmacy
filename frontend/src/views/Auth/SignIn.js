@@ -162,6 +162,15 @@ function SignIn() {
                             )}
                           </InputRightElement>
                         </InputGroup>
+                        <Flex justify="flex-end">
+                          <Box>
+                            <a href="./resetPass">
+                              <Button type="button" size="xs" mt="2">
+                                Forgot Password?
+                              </Button>
+                            </a>
+                          </Box>
+                        </Flex>
                         <FormErrorMessage>{errors.Password}</FormErrorMessage>
                       </FormControl>
                     )}

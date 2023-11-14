@@ -52,9 +52,8 @@ const PharmSignUpSchema = Yup.object().shape({
     ),
   Email: Yup.string().email("Invalid Email").required("Required").lowercase(),
   Name: Yup.string().required("Required"),
-  DateOfBirth: Yup.date()
-    .required("Required")
-    .min(eighteenYearsAgo, "You must be at least 18 years old"),
+  DateOfBirth: Yup.date().required("Required"),
+    // .min(eighteenYearsAgo, "You must be at least 18 years old"),
   HourlyRate: Yup.number().required("Required"),
   Affiliation: Yup.string().required("Required"),
   EducationalBackground: Yup.string().required("Required"),

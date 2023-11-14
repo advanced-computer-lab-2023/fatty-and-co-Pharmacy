@@ -55,11 +55,11 @@ const getRequests = async (req, res) => {
 const acceptRequest = async (req, res) => {
   const { Username } = req.body;
   try {
-    const request = await requestModel.findOneAndUpdate({
-      Username: Username,
-      Status: "Accepted",
-    });
-    const user = await systemUserModel.addEntry(
+    const request = await requestModel.findOneAndUpdate(
+      { Username: Username, Status: { $ne: "Accepted" } },
+    { $set: { Status: "Accepted" } },
+    { new: true });
+    const user = await systemUserModel.create(
       Username,
       request.Password,
       request.Email,
@@ -73,6 +73,7 @@ const acceptRequest = async (req, res) => {
       Affiliation: request.Affiliation,
       EducationalBackground: request.EducationalBackground,
     });
+    
     res.status(200).json(request);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -82,10 +83,10 @@ const acceptRequest = async (req, res) => {
 const rejectRequest = async (req, res) => {
   const { Username } = req.body;
   try {
-    const request = await requestModel.findOneAndUpdate({
-      Username: Username,
-      Status: "Rejected",
-    });
+    const request = await requestModel.findOneAndUpdate(
+      { Username: Username, Status: { $ne: "Rejected" } },
+    { $set: { Status: "Rejected" } },
+    { new: true });
     res.status(200).json(request);
   } catch (error) {
     res.status(400).json({ error: error.message });

@@ -43,10 +43,4 @@ router.get("/viewPharmacist/:username", viewPharmacist);
 
 router.get("/viewPatient/:username", viewPatient);
 
-router.get("/getRequest", getRequest);
-
-router.post("/acceptRequest", acceptRequest);
-
-router.put("/rejectRequest", rejectRequest);
-
 module.exports = router;

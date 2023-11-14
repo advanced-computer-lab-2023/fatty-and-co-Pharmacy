@@ -6,6 +6,8 @@ import RTLPage from "views/Dashboard/RTL";
 import Profile from "views/Dashboard/Profile";
 import SignIn from "views/Auth/SignIn.js";
 import SignUp from "views/Auth/SignUp.js";
+import resetPass from "views/Auth/resetPass";
+import UpdatePass from "views/Auth/UpdatePass";
 import ViewPatientDetails from "views/Admin/ViewPatientDetails";
 import AdminMedicine from "views/Admin/Medicine/adminMedicine";
 import PharmacistMedicine from "views/Pharmacist/Medicine/pharmacistMedicine";
@@ -91,6 +93,30 @@ var dashRoutes = [
     icon: <StatsIcon color="inherit" />,
     component: ViewPatientDetails,
     layout: "/admin",
+  },
+  {
+    path: "/updatePass",
+    name: "Change Password",
+    rtlName: "لوحة القيادة",
+    icon: <PersonIcon color="inherit" />,
+    component: UpdatePass,
+    layout: "/pharmacist",
+  },
+  {
+    path: "/updatePass",
+    name: "Change Password",
+    rtlName: "لوحة القيادة",
+    icon: <HomeIcon color="inherit" />,
+    component: UpdatePass,
+    layout: "/admin",
+  },
+  {
+    path: "/updatePass",
+    name: "Change Password",
+    rtlName: "لوحة القيادة",
+    icon: <HomeIcon color="inherit" />,
+    component: UpdatePass,
+    layout: "/patient",
   },
   {
     path: "/viewpharmacist",
@@ -197,6 +223,13 @@ var dashRoutes = [
         icon: <RocketIcon color="inherit" />,
         secondaryNavbar: true,
         component: pharmSignUp,
+        layout: "/auth",
+      },
+      {
+        path: "/resetPass",
+        name: "Password Reset",
+        icon: <RocketIcon color="inherit" />,
+        component: resetPass,
         layout: "/auth",
       },
     ],

@@ -19,6 +19,10 @@ export const API_PATHS = {
   signup: GUEST_BASE + "addPatient/",
   pharmSignUp: GUEST_BASE + "addRequest/",
   login: GUEST_BASE + "login/",
+  updatePass: GUEST_BASE + "updatePass/",
+  resetPass: GUEST_BASE + "resetPass/",
+  sendOTP: GUEST_BASE + "sendOTP/",
+  validateOTP: GUEST_BASE + "validateOTP/",
 
   // Medicine paths
   addMedicine: MEDICINE_BASE + "addMedicine/",
@@ -38,6 +42,8 @@ export const API_PATHS = {
   adminViewPharmacist: ADMIN_BASE + "viewpharmacist/", // + username
   adminViewPatient: ADMIN_BASE + "viewpatient/", // + username
   getRequestFile: ADMIN_BASE + "getRequestFile/", // + filename
+  acceptRequest: ADMIN_BASE + "acceptRequest/",
+  rejectRequest: ADMIN_BASE + "rejectRequest/",
   // Pharmacist paths
 
   // Patient paths
