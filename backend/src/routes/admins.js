@@ -8,6 +8,7 @@ const {
   deleteUser,
   acceptRequest,
   rejectRequest,
+  getRequestFile
 } = require("../controllers/adminController");
 
 const { checkAdmin } = require("../common/middleware/checkType");
@@ -29,6 +30,8 @@ router.get("/requests", getRequests);
 router.post("/addAdmin", createAdmin);
 
 router.get("/getRequest", getRequest);
+
+router.get("/getRequestFile/:filename", getRequestFile);
 
 router.post("/acceptRequest", acceptRequest);
 
