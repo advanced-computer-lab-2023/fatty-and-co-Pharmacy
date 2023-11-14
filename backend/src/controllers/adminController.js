@@ -3,6 +3,7 @@ const patientModel = require("../models/patients");
 const requestModel = require("../models/requests");
 const orderModel = require("../models/orders");
 const systemUserModel = require("../models/systemusers");
+const { getFileByFilename } = require("../common/middleware/pharmUpload");
 
 const { default: mongoose } = require("mongoose");
 
@@ -27,6 +28,16 @@ const getRequest = async (req, res) => {
   try {
     const request = await requestModel.find({ Username: Username });
     res.status(200).json(request);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const getRequestFile = async (req, res) => {
+  try {
+    const { filename } = req.params;
+    const downloadStream = await getFileByFilename(filename);
+    downloadStream.pipe(res);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -155,4 +166,5 @@ module.exports = {
   acceptRequest,
   rejectRequest,
   getRequests,
+  getRequestFile,
 };

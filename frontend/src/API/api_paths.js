@@ -12,6 +12,9 @@ const PAYMENT_BASE = "http://localhost:8000/payment/";
 export const API_PATHS = {
   // Add paths here
 
+  // Patient paths
+  getWalletAmount: PATIENT_BASE + "getWalletAmount/", // + username
+
   // Guest paths
   signup: GUEST_BASE + "addPatient/",
   pharmSignUp: GUEST_BASE + "addRequest/",
@@ -34,7 +37,7 @@ export const API_PATHS = {
   createAdmin: ADMIN_BASE + "addAdmin/",
   adminViewPharmacist: ADMIN_BASE + "viewpharmacist/", // + username
   adminViewPatient: ADMIN_BASE + "viewpatient/", // + username
-
+  getRequestFile: ADMIN_BASE + "getRequestFile/", // + filename
   // Pharmacist paths
 
   // Patient paths

@@ -6,6 +6,7 @@ const {
   updatePatient,
   getPatientUsername,
   getEmergencyContact,
+  getWalletAmount
 } = require("../controllers/patientController");
 
 const router = express.Router();
@@ -27,5 +28,6 @@ router.get("/getPatientUsername/:Username", getPatientUsername);
 
 // TODO: add type check as middleware if needed
 router.get("/getEmergencyContact/:Username", getEmergencyContact);
+router.get("/getWalletAmount", getWalletAmount);
 
 module.exports = router;
