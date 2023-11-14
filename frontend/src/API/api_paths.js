@@ -34,7 +34,7 @@ export const API_PATHS = {
   createAdmin: ADMIN_BASE + "addAdmin/",
   adminViewPharmacist: ADMIN_BASE + "viewpharmacist/", // + username
   adminViewPatient: ADMIN_BASE + "viewpatient/", // + username
-
+  getRequestFile: ADMIN_BASE + "getRequestFile/", // + filename
   // Pharmacist paths
 
   // Patient paths
