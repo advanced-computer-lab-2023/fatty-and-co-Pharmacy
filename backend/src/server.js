@@ -20,7 +20,7 @@ const paymentRoutes = require("./routes/payments");
 const requireAuth = require("./common/middleware/requireAuth");
 
 // ENV Variables
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 7000;
 const mongoURI = process.env.MONGO_URI;
 
 // App Variables

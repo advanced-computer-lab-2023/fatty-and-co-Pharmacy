@@ -1,13 +1,13 @@
-const API_BASE = "http://localhost:8000/";
-const ORDER_BASE = "http://localhost:8000/order/";
-const PHARMACIST_BASE = "http://localhost:8000/pharmacist/";
-const PATIENT_BASE = "http://localhost:8000/patient/";
-const ADMIN_BASE = "http://localhost:8000/admin/";
-const MEDICINE_BASE = "http://localhost:8000/medicine/";
-const GUEST_BASE = "http://localhost:8000/guest/";
-const CART_BASE = "http://localhost:8000/cart/";
-const DELIVERY_ADDRESS_BASE = "http://localhost:8000/deliveryAddress/";
-const PAYMENT_BASE = "http://localhost:8000/payment/";
+const API_BASE = "http://localhost:7000/";
+const ORDER_BASE = "http://localhost:7000/order/";
+const PHARMACIST_BASE = "http://localhost:7000/pharmacist/";
+const PATIENT_BASE = "http://localhost:7000/patient/";
+const ADMIN_BASE = "http://localhost:7000/admin/";
+const MEDICINE_BASE = "http://localhost:7000/medicine/";
+const GUEST_BASE = "http://localhost:7000/guest/";
+const CART_BASE = "http://localhost:7000/cart/";
+const DELIVERY_ADDRESS_BASE = "http://localhost:7000/deliveryAddress/";
+const PAYMENT_BASE = "http://localhost:7000/payment/";
 
 export const API_PATHS = {
   // Add paths here
