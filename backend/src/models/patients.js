@@ -19,6 +19,11 @@ const patientSchema = new Schema(
       required: true,
       unique: true,
     },
+    NationalId: {
+      type: String,
+      required: true,
+      unique: true,
+    },
     DateOfBirth: {
       type: Date,
       required: true,
@@ -30,17 +35,26 @@ const patientSchema = new Schema(
     },
     EmergencyContact: {
       type: { FullName: String, PhoneNumber: Number, Relation: String }, //NOT SURE OF THIS SYNTAX
-      required: false,
-    },
-    // TODO: properly add prescriptions
-    Prescriptions: {
-      type: [String],
-      required: false,
+      required: true,
     },
     Wallet: {
       type: Number,
       required: true,
-      default: 10000,
+      default: 5000,
+    },
+    LinkedPatients: {
+      type: [
+        {
+          type: mongoose.Types.ObjectId,
+          ref: "Patient",
+        },
+      ],
+      required: true,
+    },
+    MedicalHistory: {
+      // i want medical history to be a array of pairs of strings
+      type: [{ filename: String, originalname: String, note: String }],
+      required: false,
     },
   },
   { timestamps: true }

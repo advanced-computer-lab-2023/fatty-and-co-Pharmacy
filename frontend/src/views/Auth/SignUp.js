@@ -52,6 +52,9 @@ const SignUpSchema = Yup.object().shape({
   MobileNum: Yup.string()
     .required("Required")
     .length(11, "Invalid Mobile Number"),
+  NationalId: Yup.string()
+    .required("Required")
+    .length(16, "Invalid National ID"),
   Gender: Yup.string()
     .required("Required")
     .oneOf(genders, "Gender must be M or F"),
@@ -186,6 +189,7 @@ function SignUp() {
               Email: "",
               Password: "",
               DateOfBirth: "",
+              NationalId: "",
               MobileNum: "",
               Gender: "",
               EmergencyContactName: "",
@@ -363,6 +367,39 @@ function SignUp() {
                         // onChange={(e) => setMobileNumber(e.target.value)}
                       />
                       <FormErrorMessage>{errors.MobileNum}</FormErrorMessage>
+                    </FormControl>
+                  )}
+                </Field>
+
+                <Field name="NationalId">
+                  {({ field }) => (
+                    <FormControl
+                      mb="24px"
+                      isInvalid={errors.NationalId && touched.NationalId}
+                    >
+                      <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
+                        National ID <span style={{ color: "red" }}>*</span>
+                      </FormLabel>
+                      <Input
+                        {...field}
+                        fontSize="sm"
+                        ms="4px"
+                        borderRadius="15px"
+                        type="text"
+                        placeholder="..."
+                        // mb="24px"
+                        size="lg"
+                        onKeyPress={(event) => {
+                          const pattern = /[0-9]/;
+                          const inputChar = String.fromCharCode(event.charCode);
+                          if (!pattern.test(inputChar)) {
+                            event.preventDefault();
+                          }
+                        }}
+                        // required
+                        // onChange={(e) => setDateOfBirth(e.target.value)}
+                      />
+                      <FormErrorMessage>{errors.NationalId}</FormErrorMessage>
                     </FormControl>
                   )}
                 </Field>
