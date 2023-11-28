@@ -89,6 +89,21 @@ const MedicineCard = ({ Medicine }) => {
     downloadFile();
   }, []);
 
+  const closeEdit = (e) => {
+    console.log(Medicine);
+    setName(Medicine.Name);
+    setPrice(Medicine.Price);
+    setActive_Ingredients([...Medicine.Active_Ingredients]);
+    setMedicinal_Use([...Medicine.Medicinal_Use]);
+    setQuantity(Medicine.Quantity);
+    setSales(Medicine.Sales);
+    //setImage(Medicine.Image);
+    setDescription(Medicine.Description);
+    setArchived(Medicine.State);
+    setMedicationType(Medicine.MedicationType);
+    onClose();
+  };
+
   return (
     <Flex direction="column">
       <Box mb="20px" position="relative" borderRadius="15px">
@@ -152,7 +167,7 @@ const MedicineCard = ({ Medicine }) => {
           </Button>
         </Flex>
       </Flex>
-      <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
+      <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={closeEdit}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Edit {Name}</ModalHeader>
@@ -270,7 +285,9 @@ const MedicineCard = ({ Medicine }) => {
                 <Button
                   style={{ width: "20%", marginLeft: "10px" }}
                   onClick={(e) => {
-                    setMedicinal_Use([...Medicinal_Use, use]);
+                    if (use.length > 0) {
+                      setMedicinal_Use([...Medicinal_Use, use]);
+                    }
                   }}
                 >
                   add
@@ -367,24 +384,7 @@ const MedicineCard = ({ Medicine }) => {
             </Stack>
           </ModalBody>
           <ModalFooter>
-            <Button
-              variant="ghost"
-              mr={3}
-              onClick={(e) => {
-                console.log(Medicine);
-                setName(Medicine.Name);
-                setPrice(Medicine.Price);
-                setActive_Ingredients([...Medicine.Active_Ingredients]);
-                setMedicinal_Use([...Medicine.Medicinal_Use]);
-                setQuantity(Medicine.Quantity);
-                setSales(Medicine.Sales);
-                //setImage(Medicine.Image);
-                setDescription(Medicine.Description);
-                setArchived(Medicine.State);
-                setMedicationType(Medicine.MedicationType);
-                onClose();
-              }}
-            >
+            <Button variant="ghost" mr={3} onClick={closeEdit}>
               Close
             </Button>
             <Button
@@ -487,7 +487,6 @@ const MedicineCard = ({ Medicine }) => {
                       type: "UPDATE_MEDICINE",
                       payload: data,
                     });
-
                     toast({
                       title: "Medicine Updated.",
                       description: "You updated the Medicine successfully.",
@@ -496,7 +495,9 @@ const MedicineCard = ({ Medicine }) => {
                       isClosable: true,
                     });
                     onClose();
-                    const timer = setTimeout(() => { location.reload(); }, 1000); // 1000ms delay
+                    const timer = setTimeout(() => {
+                      location.reload();
+                    }, 1000); // 1000ms delay
                   })
                   .catch((error) => {
                     // Handle error
