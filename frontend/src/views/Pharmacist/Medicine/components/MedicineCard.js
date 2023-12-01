@@ -462,6 +462,22 @@ const MedicineCard = ({ Medicine }) => {
                 //     isClosable: true,
                 //   });
                 // }
+
+                if (
+                  Active_Ingredients.length === 0 ||
+                  Medicinal_Use.length === 0
+                ) {
+                  return toast({
+                    title: "failed update Medicine.",
+                    description:
+                      Active_Ingredients.length === 0
+                        ? "Please add at least one ingredient."
+                        : "Please add at least one use.",
+                    status: "error",
+                    duration: 5000,
+                    isClosable: true,
+                  });
+                }
                 const formData = new FormData();
                 formData.append("Name", Name);
                 formData.append("Price", Price);

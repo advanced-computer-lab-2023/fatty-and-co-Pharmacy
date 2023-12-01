@@ -135,6 +135,20 @@ const MedicineGroup = ({
     //     isClosable: true,
     //   });
     // }
+
+    if (Active_Ingredients.length === 0 || Medicinal_Use.length === 0) {
+      return toast({
+        title: "failed Add Medicine.",
+        description:
+          Active_Ingredients.length === 0
+            ? "Please add at least one ingredient."
+            : "Please add at least one use.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+
     const formData = new FormData();
     formData.append("Name", Name);
     formData.append("Price", Price);
@@ -154,9 +168,9 @@ const MedicineGroup = ({
       },
       body: formData,
     })
-      .then(async(response) => {
+      .then(async (response) => {
         const data = await response.json();
-        dispatch({ type: "ADD_MEDICINE", payload: data});
+        dispatch({ type: "ADD_MEDICINE", payload: data });
 
         toast({
           title: "Medicine Added.",
@@ -331,10 +345,12 @@ const MedicineGroup = ({
                     <Button
                       style={{ width: "20%", marginLeft: "10px" }}
                       onClick={(e) => {
-                        setActive_Ingredients([
-                          ...Active_Ingredients,
-                          Ingredient,
-                        ]);
+                        if (Ingredient.length > 0) {
+                          setActive_Ingredients([
+                            ...Active_Ingredients,
+                            Ingredient,
+                          ]);
+                        }
                       }}
                     >
                       add
@@ -348,7 +364,11 @@ const MedicineGroup = ({
                           size={"sm"}
                           borderRadius="full"
                           variant="solid"
-                          style={{ width: "fit-content", marginRight: "5px" }}
+                          // add css hover effect color red
+                          style={{
+                            width: "fit-content",
+                            marginRight: "5px",
+                          }}
                           onClick={(e) => {
                             setActive_Ingredients(
                               Active_Ingredients.filter(
@@ -374,7 +394,9 @@ const MedicineGroup = ({
                     <Button
                       style={{ width: "20%", marginLeft: "10px" }}
                       onClick={(e) => {
-                        setMedicinal_Use([...Medicinal_Use, use]);
+                        if (use.length > 0) {
+                          setMedicinal_Use([...Medicinal_Use, use]);
+                        }
                       }}
                     >
                       add
