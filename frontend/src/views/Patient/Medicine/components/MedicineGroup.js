@@ -45,6 +45,8 @@ import { SearchBar } from "components/Navbars/SearchBar/SearchBar";
 import axios from "axios";
 import { useAuthContext } from "hooks/useAuthContext";
 
+import MultiSelect from "components/Selections/MultiSelect";
+
 const MedicineGroup = ({
   medicines,
   searchAndFilterParams,
@@ -176,9 +178,16 @@ const MedicineGroup = ({
       });
   };
 
+  const [selectedUses, setSelectedUses] = useState([]);
+
+  const medicinalUses = Array.from(
+    new Set(medicines.map((medicine) => medicine.Medicinal_Use).flat())
+  ).map((use) => ({ use: use }));
+
   const handleNameValueChange = (value) => {
     setSearchAndFilterParams({ ...searchAndFilterParams, Name: value });
   };
+
   const handleMedicinalUseValueChange = (value) => {
     setSearchAndFilterParams({
       ...searchAndFilterParams,
@@ -187,14 +196,6 @@ const MedicineGroup = ({
     console.log(searchAndFilterParams);
   };
 
-  const [selectedUses, setSelectedUses] = useState([]);
-  const medicinalUses = [
-    "painkiller",
-    "fever",
-    "anti-inflammatory",
-    "anxiety",
-    "pain",
-  ];
   const handleMedicinalUseChange = (values) => {
     setSelectedUses(values);
   };
@@ -211,24 +212,27 @@ const MedicineGroup = ({
               "Medicine Group Description"
             </Text>
           </Flex>
-          <SearchBar
-            placeholder="Medicine Name..."
-            onChange={handleNameValueChange}
-          />
-          <Box>
-            <CheckboxGroup
-              colorScheme="green"
-              defaultValue={selectedUses}
-              onChange={handleMedicinalUseChange}
-            >
-              {medicinalUses.map((use, index) => (
-                <Checkbox key={index} value={use}>
-                  {use}
-                </Checkbox>
-              ))}
-            </CheckboxGroup>
-            <Button onClick={handleMedicinalUseValueChange}>Submit</Button>
-          </Box>
+          <Flex direction={"row"} justifyContent={"flex-end"} marginLeft={20}>
+            <Flex direction={"row"} marginLeft="10px">
+              <SearchBar
+                placeholder="Medicine Name..."
+                onChange={handleNameValueChange}
+                marginLeft="10px"
+              />
+              <MultiSelect
+                marginLeft={10}
+                placeholder="Medicinal Use..."
+                initialItems={medicinalUses || []}
+                initialSelectedItems={selectedUses}
+                onSelectedItemsChange={handleMedicinalUseChange}
+                labelKey="use"
+                valueKey="use"
+              ></MultiSelect>
+              <Button marginLeft={10} onClick={handleMedicinalUseValueChange}>
+                Submit
+              </Button>
+            </Flex>
+          </Flex>
         </Flex>
       </CardHeader>
       <CardBody px="5px">
