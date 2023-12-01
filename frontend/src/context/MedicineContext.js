@@ -25,6 +25,16 @@ export const medicinesReducer = (state, action) => {
           (Medicine) => Medicine._id !== action.payload
         ),
       };
+    case "FILTER_MEDICINES":
+      return {
+        medicines: state.medicines.filter(
+          (Medicine) =>
+            Medicine.Active_Ingredients.some(
+              (ingredient) =>
+                ingredient.toLowerCase() === action.payload.toLowerCase()
+            ) && Medicine.Quantity > 0
+        ),
+      };
     default:
       return state;
   }
