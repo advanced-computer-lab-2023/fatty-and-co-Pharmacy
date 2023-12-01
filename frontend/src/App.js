@@ -21,7 +21,6 @@ import PatientLayout from "layouts/Patient.js";
 import PharmacistLayout from "layouts/Pharmacist.js";
 import RTLLayout from "layouts/RTL.js";
 
-// TODO: add patient and pharmacist layouts
 function App() {
   const { user } = useAuthContext();
   const [isLoading, setIsLoading] = useState(true);
