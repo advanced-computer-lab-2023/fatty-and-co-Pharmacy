@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useMultipleSelection, useCombobox } from "downshift";
 import {
   Box,
@@ -14,7 +14,8 @@ import {
 
 function MultiSelect({
   initialItems,
-  initialSelectedItems,
+  selectedItems,
+  setSelectedItems,
   onSelectedItemsChange,
   placeholder,
   labelKey,
@@ -22,7 +23,7 @@ function MultiSelect({
   ...rest
 }) {
   const [inputValue, setInputValue] = useState("");
-  const [selectedItems, setSelectedItems] = useState(initialSelectedItems);
+  //   const [selectedItems, setSelectedItems] = useState(initialSelectedItems);
 
   const items = useMemo(() => {
     return initialItems.filter(
@@ -41,7 +42,6 @@ function MultiSelect({
     onStateChange({ selectedItems: newSelectedItems }) {
       if (newSelectedItems) {
         setSelectedItems(newSelectedItems);
-        onSelectedItemsChange(newSelectedItems);
       }
     },
   });
@@ -68,7 +68,7 @@ function MultiSelect({
         case useCombobox.stateChangeTypes.InputKeyDownEnter:
         case useCombobox.stateChangeTypes.ItemClick:
         case useCombobox.stateChangeTypes.InputBlur:
-          if (newSelectedItem && !selectedItems.includes(newSelectedItem)) {
+          if (newSelectedItem) {
             setSelectedItems([...selectedItems, newSelectedItem]);
             setInputValue("");
           }
