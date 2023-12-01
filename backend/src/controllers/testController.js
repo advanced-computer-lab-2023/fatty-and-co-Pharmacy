@@ -149,6 +149,7 @@ const createMedicine = async (req, res) => {
     Medicinal_Use,
     Sales,
     MedicationType,
+    State,
   } = req.body;
 
   const {
@@ -163,8 +164,10 @@ const createMedicine = async (req, res) => {
     medicationType,
   } = generateMedicineDetails();
 
+  console.log(req.body);
+
   const finalName = Name || name;
-  const finalQuantity = Quantity || quantity;
+  const finalQuantity = Quantity != null ? Quantity : quantity;
   const finalActive_Ingredients = Active_Ingredients || activeIngredients;
   const finalDescription = Description || description;
   const finalPrice = Price || price;
@@ -172,6 +175,7 @@ const createMedicine = async (req, res) => {
   const finalMedicinal_Use = Medicinal_Use || medicinalUse;
   const finalSales = Sales || sales;
   const finalMedicationType = MedicationType || medicationType;
+  const finalState = State || "unarchived";
 
   try {
     const newMedicine = await medicineModel.create({
@@ -182,6 +186,7 @@ const createMedicine = async (req, res) => {
       Price: finalPrice,
       Image: finalImage,
       Medicinal_Use: finalMedicinal_Use,
+      State: finalState,
       Sales: finalSales,
       MedicationType: finalMedicationType,
     });
