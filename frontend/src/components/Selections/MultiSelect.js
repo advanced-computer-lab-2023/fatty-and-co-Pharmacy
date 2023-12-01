@@ -46,6 +46,7 @@ function MultiSelect({
     },
   });
 
+  // FIXME: removing an item from the selected items doesnt allow me to pick that item again
   const {
     isOpen,
     getToggleButtonProps,
