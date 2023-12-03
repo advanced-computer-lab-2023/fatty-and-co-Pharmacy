@@ -364,6 +364,7 @@ const MedicineGroup = ({
                           size={"sm"}
                           borderRadius="full"
                           variant="solid"
+                          _hover={{ cursor: "pointer", backgroundColor: "red" }}
                           // add css hover effect color red
                           style={{
                             width: "fit-content",
@@ -410,6 +411,7 @@ const MedicineGroup = ({
                           size={"sm"}
                           borderRadius="full"
                           variant="solid"
+                          _hover={{ cursor: "pointer", backgroundColor: "red" }}
                           style={{ width: "fit-content", marginRight: "5px" }}
                           onClick={(e) => {
                             setMedicinal_Use(

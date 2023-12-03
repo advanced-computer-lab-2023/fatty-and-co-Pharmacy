@@ -258,6 +258,7 @@ const MedicineCard = ({ Medicine }) => {
                       size={"sm"}
                       borderRadius="full"
                       variant="solid"
+                      _hover={{ cursor: "pointer"  , backgroundColor:"red"}}
                       style={{ width: "fit-content", marginRight: "5px" }}
                       onClick={(e) => {
                         setActive_Ingredients(
@@ -301,6 +302,7 @@ const MedicineCard = ({ Medicine }) => {
                       size={"sm"}
                       borderRadius="full"
                       variant="solid"
+                      _hover={{ cursor: "pointer"  , backgroundColor:"red"}}
                       style={{ width: "fit-content", marginRight: "5px" }}
                       onClick={(e) => {
                         setMedicinal_Use(
