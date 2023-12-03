@@ -37,7 +37,7 @@ import CardHeader from "components/Card/CardHeader";
 import React from "react";
 import { FaPlus } from "react-icons/fa";
 import MedicineCard from "./MedicineCard";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { API_PATHS } from "../../../../API/api_paths";
 import { useMedicineContext } from "../../../../hooks/useMedicineContext";
 import { SearchBar } from "components/Navbars/SearchBar/SearchBar";
@@ -154,9 +154,9 @@ const MedicineGroup = ({
       },
       body: formData,
     })
-      .then(async(response) => {
+      .then(async (response) => {
         const data = await response.json();
-        dispatch({ type: "ADD_MEDICINE", payload: data});
+        dispatch({ type: "ADD_MEDICINE", payload: data });
 
         toast({
           title: "Medicine Added.",
@@ -201,13 +201,12 @@ const MedicineGroup = ({
   };
 
   const [selectedUses, setSelectedUses] = useState([]);
-  const medicinalUses = [
-    "painkiller",
-    "fever",
-    "anti-inflammatory",
-    "anxiety",
-    "pain",
-  ];
+
+  const medicinalUses = useMemo(() => {
+    return Array.from(
+      new Set(medicines.map((medicine) => medicine.Medicinal_Use).flat())
+    ).map((use) => ({ use: use }));
+  }, []); // Empty array means it will only compute the value on the first render
   const handleMedicinalUseChange = (values) => {
     setSelectedUses(values);
   };
