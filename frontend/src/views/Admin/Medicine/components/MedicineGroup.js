@@ -38,12 +38,13 @@ import CardHeader from "components/Card/CardHeader";
 import React from "react";
 import { FaPlus } from "react-icons/fa";
 import MedicineCard from "./MedicineCard";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useAuthContext } from "hooks/useAuthContext";
 import axios from "axios";
 import { API_PATHS } from "API/api_paths";
 import { useMedicineContext } from "../../../../hooks/useMedicineContext";
 import { SearchBar } from "components/Navbars/SearchBar/SearchBar";
+import MultiSelect from "components/Selections/MultiSelect";
 
 const MedicineGroup = ({
   medicines,
@@ -72,129 +73,25 @@ const MedicineGroup = ({
 
   const { user } = useAuthContext();
   const Authorization = `Bearer ${user.token}`;
+  const [selectedUses, setSelectedUses] = useState([]);
 
-  const handleSubmit = async (e) => {
-    // API_PATHS.addMedicine
-    // "medicine/addMedicine"
-    e.preventDefault();
-
-    // const response = await fetch(API_PATHS.addMedicine, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     Name,
-    //     Price,
-    //     Active_Ingredients,
-    //     Medicinal_Use,
-    //     Quantity,
-    //     Sales,
-    //     Image: MImage,
-    //     Description,
-    //     state: Archived,
-    //   }),
-    // });
-    // const data = await response.json();
-
-    // if (response.status === 200) {
-    //   dispatch({ type: "ADD_MEDICINE", payload: data });
-
-    //   toast({
-    //     title: "Medicine Added.",
-    //     description: "You Added the Medicine succsefuly.",
-    //     status: "success",
-    //     duration: 9000,
-    //     isClosable: true,
-    //   });
-
-    //   setName("");
-    //   setPrice("");
-    //   setActive_Ingredients("");
-    //   setMedicinal_Use("");
-    //   setQuantity("");
-    //   setSales("");
-    //   setImage("");
-    //   setDescription("");
-    //   setArchived("");
-    //   onClose();
-    // } else {
-    //   return toast({
-    //     title: "failed Medi Update.",
-    //     description: message,
-    //     status: "error",
-    //     duration: 9000,
-    //     isClosable: true,
-    //   });
-    // }
-
-    axios
-      .post(
-        API_PATHS.addMedicine,
-        {
-          Name,
-          Price,
-          Active_Ingredients,
-          Medicinal_Use,
-          Quantity,
-          Sales,
-          Image: MImage,
-          Description,
-          state: Archived,
-        },
-        { headers: { Authorization } }
-      )
-      .then((response) => {
-        dispatch({ type: "ADD_MEDICINE", payload: response.data });
-
-        toast({
-          title: "Medicine Added.",
-          description: "Medicine Added Successfully.",
-          status: "success",
-          duration: 9000,
-          isClosable: true,
-        });
-        setName("");
-        setPrice("");
-        setActive_Ingredients("");
-        setMedicinal_Use("");
-        setQuantity("");
-        setSales("");
-        setImage("");
-        setDescription("");
-        setArchived("");
-        onClose();
-      })
-      .catch((err) => {
-        return toast({
-          title: "Failed to add Medicine",
-          description: err.response.data.message,
-          status: "error",
-          duration: 9000,
-          isClosable: true,
-        });
-      });
-  };
+  const medicinalUses = useMemo(() => {
+    return Array.from(
+      new Set(medicines.map((medicine) => medicine.Medicinal_Use).flat())
+    ).map((use) => ({ use: use }));
+  }, []); // Empty array means it will only compute the value on the first render
 
   const handleNameValueChange = (value) => {
+    if (typeof value !== "string") return;
     setSearchAndFilterParams({ ...searchAndFilterParams, Name: value });
   };
-  const handleMedicinalUseValueChange = (value) => {
+  const handleMedicinalUseValueChange = () => {
     setSearchAndFilterParams({
       ...searchAndFilterParams,
-      Medicinal_Use: selectedUses,
+      Medicinal_Use: selectedUses.map((item) => item.use),
     });
-    console.log(searchAndFilterParams);
   };
 
-  const [selectedUses, setSelectedUses] = useState([]);
-  const medicinalUses = [
-    "painkiller",
-    "fever",
-    "anti-inflammatory",
-    "anxiety",
-    "pain",
-  ];
   const handleMedicinalUseChange = (values) => {
     setSelectedUses(values);
   };
@@ -211,24 +108,39 @@ const MedicineGroup = ({
               "Medicine Group Description"
             </Text>
           </Flex>
-          <SearchBar
-            placeholder="Medicine Name..."
-            onChange={handleNameValueChange}
-          />
-          <Box>
-            <CheckboxGroup
-              colorScheme="green"
-              defaultValue={selectedUses}
-              onChange={handleMedicinalUseChange}
-            >
-              {medicinalUses.map((use, index) => (
-                <Checkbox key={index} value={use}>
-                  {use}
-                </Checkbox>
-              ))}
-            </CheckboxGroup>
-            <Button onClick={handleMedicinalUseValueChange}>Submit</Button>
-          </Box>
+          <Flex direction={"row"} justifyContent={"flex-end"} marginLeft={20}>
+            <Flex direction={"row"} marginLeft="10px">
+              <SearchBar
+                placeholder="Medicine Name..."
+                onChange={handleNameValueChange}
+                marginLeft="10px"
+              />
+              <MultiSelect
+                marginLeft={10}
+                placeholder="Medicinal Use..."
+                initialItems={medicinalUses}
+                selectedItems={selectedUses}
+                setSelectedItems={setSelectedUses}
+                onSelectedItemsChange={handleMedicinalUseChange}
+                labelKey="use"
+                valueKey="use"
+              ></MultiSelect>
+              <Button marginLeft={10} onClick={handleMedicinalUseValueChange}>
+                Submit
+              </Button>
+              <Button
+                marginLeft={10}
+                onClick={() =>
+                  setSearchAndFilterParams({
+                    Name: "",
+                    Medicinal_Use: [],
+                  })
+                }
+              >
+                Clear
+              </Button>
+            </Flex>
+          </Flex>
         </Flex>
       </CardHeader>
       <CardBody px="5px">

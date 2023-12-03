@@ -43,6 +43,7 @@ import { useMedicineContext } from "../../../../hooks/useMedicineContext";
 import { SearchBar } from "components/Navbars/SearchBar/SearchBar";
 import axios from "axios";
 import { useAuthContext } from "hooks/useAuthContext";
+import MultiSelect from "components/Selections/MultiSelect";
 
 const MedicineGroup = ({
   medicines,
@@ -190,12 +191,13 @@ const MedicineGroup = ({
   };
 
   const handleNameValueChange = (value) => {
+    if (typeof value !== "string") return;
     setSearchAndFilterParams({ ...searchAndFilterParams, Name: value });
   };
-  const handleMedicinalUseValueChange = (value) => {
+  const handleMedicinalUseValueChange = () => {
     setSearchAndFilterParams({
       ...searchAndFilterParams,
-      Medicinal_Use: selectedUses,
+      Medicinal_Use: selectedUses.map((item) => item.use),
     });
     console.log(searchAndFilterParams);
   };
@@ -223,24 +225,39 @@ const MedicineGroup = ({
               "Medicine Group Description"
             </Text>
           </Flex>
-          <SearchBar
-            placeholder="Medicine Name..."
-            onChange={handleNameValueChange}
-          />
-          <Box>
-            <CheckboxGroup
-              colorScheme="green"
-              defaultValue={selectedUses}
-              onChange={handleMedicinalUseChange}
-            >
-              {medicinalUses.map((use, index) => (
-                <Checkbox key={index} value={use}>
-                  {use}
-                </Checkbox>
-              ))}
-            </CheckboxGroup>
-            <Button onClick={handleMedicinalUseValueChange}>Submit</Button>
-          </Box>
+          <Flex direction={"row"} justifyContent={"flex-end"} marginLeft={20}>
+            <Flex direction={"row"} marginLeft="10px">
+              <SearchBar
+                placeholder="Medicine Name..."
+                onChange={handleNameValueChange}
+                marginLeft="10px"
+              />
+              <MultiSelect
+                marginLeft={10}
+                placeholder="Medicinal Use..."
+                initialItems={medicinalUses}
+                selectedItems={selectedUses}
+                setSelectedItems={setSelectedUses}
+                onSelectedItemsChange={handleMedicinalUseChange}
+                labelKey="use"
+                valueKey="use"
+              ></MultiSelect>
+              <Button marginLeft={10} onClick={handleMedicinalUseValueChange}>
+                Submit
+              </Button>
+              <Button
+                marginLeft={10}
+                onClick={() =>
+                  setSearchAndFilterParams({
+                    Name: "",
+                    Medicinal_Use: [],
+                  })
+                }
+              >
+                Clear
+              </Button>
+            </Flex>
+          </Flex>
         </Flex>
       </CardHeader>
       <CardBody px="5px">

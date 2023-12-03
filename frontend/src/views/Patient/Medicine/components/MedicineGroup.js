@@ -29,11 +29,11 @@ const MedicineGroup = ({
   }, []); // Empty array means it will only compute the value on the first render
 
   const handleNameValueChange = (value) => {
+    if (typeof value !== "string") return;
     setSearchAndFilterParams({ ...searchAndFilterParams, Name: value });
   };
 
   const handleMedicinalUseValueChange = () => {
-    console.log(selectedUses);
     setSearchAndFilterParams({
       ...searchAndFilterParams,
       Medicinal_Use: selectedUses.map((item) => item.use),
@@ -76,6 +76,17 @@ const MedicineGroup = ({
               ></MultiSelect>
               <Button marginLeft={10} onClick={handleMedicinalUseValueChange}>
                 Submit
+              </Button>
+              <Button
+                marginLeft={10}
+                onClick={() =>
+                  setSearchAndFilterParams({
+                    Name: "",
+                    Medicinal_Use: [],
+                  })
+                }
+              >
+                Clear
               </Button>
             </Flex>
           </Flex>
