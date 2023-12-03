@@ -204,6 +204,13 @@ const MedicineGroup = ({
 
   const [selectedUses, setSelectedUses] = useState([]);
 
+  useEffect(() => {
+    setSearchAndFilterParams({
+      ...searchAndFilterParams,
+      Medicinal_Use: selectedUses.map((item) => item.use),
+    });
+  }, [selectedUses]);
+
   const medicinalUses = useMemo(() => {
     return Array.from(
       new Set(medicines.map((medicine) => medicine.Medicinal_Use).flat())
@@ -242,9 +249,6 @@ const MedicineGroup = ({
                 labelKey="use"
                 valueKey="use"
               ></MultiSelect>
-              <Button marginLeft={10} onClick={handleMedicinalUseValueChange}>
-                Submit
-              </Button>
               <Button
                 marginLeft={10}
                 onClick={() => {

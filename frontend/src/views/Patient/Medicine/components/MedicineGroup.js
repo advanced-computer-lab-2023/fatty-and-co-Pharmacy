@@ -6,7 +6,7 @@ import CardBody from "components/Card/CardBody";
 import CardHeader from "components/Card/CardHeader";
 import React from "react";
 import MedicineCard from "./MedicineCard";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { SearchBar } from "components/Navbars/SearchBar/SearchBar";
 import axios from "axios";
 
@@ -20,6 +20,7 @@ const MedicineGroup = ({
   // Chakra color mode
   const textColor = useColorModeValue("gray.700", "white");
 
+  const [name, setName] = useState("All Medicine");
   const [selectedUses, setSelectedUses] = useState([]);
 
   const medicinalUses = useMemo(() => {
@@ -33,13 +34,12 @@ const MedicineGroup = ({
     setSearchAndFilterParams({ ...searchAndFilterParams, Name: value });
   };
 
-  const handleMedicinalUseValueChange = () => {
+  useEffect(() => {
     setSearchAndFilterParams({
       ...searchAndFilterParams,
       Medicinal_Use: selectedUses.map((item) => item.use),
     });
-    console.log(searchAndFilterParams);
-  };
+  }, [selectedUses]);
 
   const handleMedicinalUseChange = (values) => {
     setSelectedUses(values);
@@ -51,32 +51,44 @@ const MedicineGroup = ({
         <Flex direction="row" alignItems="flex-start">
           <Flex direction="column">
             <Text fontSize="lg" color={textColor} fontWeight="bold">
-              "Medicine Group"
+              Now showing
             </Text>
             <Text fontSize="sm" color="gray.500" fontWeight="400">
-              "Medicine Group Description"
+              {name}
             </Text>
           </Flex>
           <Flex direction={"row"} justifyContent={"flex-end"} marginLeft={20}>
-            <Flex direction={"row"} marginLeft="10px">
-              <SearchBar
-                placeholder="Medicine Name..."
-                onChange={handleNameValueChange}
-                marginLeft="10px"
-              />
-              <MultiSelect
-                marginLeft={10}
-                placeholder="Medicinal Use..."
-                initialItems={medicinalUses}
-                selectedItems={selectedUses}
-                setSelectedItems={setSelectedUses}
-                onSelectedItemsChange={handleMedicinalUseChange}
-                labelKey="use"
-                valueKey="use"
-              ></MultiSelect>
-              <Button marginLeft={10} onClick={handleMedicinalUseValueChange}>
-                Submit
-              </Button>
+            {(name === "All Medicine" && (
+              <Flex direction={"row"} marginLeft="10px">
+                <SearchBar
+                  placeholder="Medicine Name..."
+                  onChange={handleNameValueChange}
+                  marginLeft="10px"
+                />
+                <MultiSelect
+                  marginLeft={10}
+                  placeholder="Medicinal Use..."
+                  initialItems={medicinalUses}
+                  selectedItems={selectedUses}
+                  setSelectedItems={setSelectedUses}
+                  onSelectedItemsChange={handleMedicinalUseChange}
+                  labelKey="use"
+                  valueKey="use"
+                ></MultiSelect>
+                <Button
+                  marginLeft={10}
+                  onClick={() => {
+                    setSearchAndFilterParams({
+                      Name: "",
+                      Medicinal_Use: [],
+                    });
+                    setSelectedUses([]);
+                  }}
+                >
+                  Clear Filters
+                </Button>
+              </Flex>
+            )) || (
               <Button
                 marginLeft={10}
                 onClick={() => {
@@ -85,11 +97,12 @@ const MedicineGroup = ({
                     Medicinal_Use: [],
                   });
                   setSelectedUses([]);
+                  setName("All Medicine");
                 }}
               >
-                Clear
+                Return
               </Button>
-            </Flex>
+            )}
           </Flex>
         </Flex>
       </CardHeader>
@@ -103,7 +116,11 @@ const MedicineGroup = ({
             medicines
               .filter((medicine) => medicine.State === "unarchived")
               .map((medicine) => (
-                <MedicineCard key={medicine._id} Medicine={medicine} />
+                <MedicineCard
+                  key={medicine._id}
+                  Medicine={medicine}
+                  setName={setName}
+                />
               ))}
         </Grid>
       </CardBody>

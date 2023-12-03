@@ -10,6 +10,10 @@ import {
   TagLabel,
   TagCloseButton,
   Flex,
+  InputGroup,
+  IconButton,
+  InputLeftElement,
+  useColorModeValue,
 } from "@chakra-ui/react";
 
 function MultiSelect({
@@ -20,8 +24,11 @@ function MultiSelect({
   placeholder,
   labelKey,
   valueKey,
-  ...rest
+  ...props
 }) {
+  const rest = props;
+  const mainTeal = useColorModeValue("teal.300", "teal.300");
+  const inputBg = useColorModeValue("white", "gray.800");
   const [inputValue, setInputValue] = useState("");
   //   const [selectedItems, setSelectedItems] = useState(initialSelectedItems);
 
@@ -84,46 +91,57 @@ function MultiSelect({
     },
   });
 
-  // Render component...
+  // TODO: lots of styling issues here I cant fix
   return (
-    <Box w="592px">
-      <Box d="flex" flexDirection="column" gap="1">
-        <Box
-          d="flex"
-          gap="2"
-          alignItems="center"
-          flexWrap="wrap"
-          p="1.5"
-          shadow="sm"
-          bg="white"
-        >
-          <Flex direction={"row"} wrap="wrap">
-            {selectedItems.map((selectedItem, index) => (
-              <Tag
-                key={`selected-item-${index}`}
-                borderRadius="md"
-                bg="gray.100"
-                mr="2"
-                mb="2"
-              >
-                <TagLabel>{selectedItem[labelKey]}</TagLabel>
-                <TagCloseButton
-                  onClick={() => removeSelectedItem(selectedItem)}
-                />
-              </Tag>
-            ))}
-            <Box flexShrink={0}>
-              <Input
-                placeholder={placeholder}
-                {...getInputProps(
-                  getDropdownProps({ preventKeyAction: isOpen })
-                )}
-                border="none" // Remove border from the input field
-              />
-            </Box>
-          </Flex>
-        </Box>
-      </Box>
+    <Flex
+      direction="column"
+      marginRight={props.marginRight || "auto"}
+      marginLeft={props.marginLeft || "auto"}
+      marginTop={props.marginTop || "auto"}
+      marginBottom={props.marginBottom || "auto"}
+    >
+      <InputGroup
+        borderRadius="15px"
+        w="300px"
+        h="auto"
+        p="1"
+        m="1"
+        marginLeft="-10px"
+        _focus={{
+          borderColor: { mainTeal },
+        }}
+        _active={{
+          borderColor: { mainTeal },
+        }}
+        {...rest}
+      >
+        <Input
+          placeholder={placeholder}
+          {...getInputProps(getDropdownProps({ preventKeyAction: isOpen }))}
+          fontSize="md" // Increase the font size
+          py="2" // Increase the padding
+          borderRadius={props.borderRadius || "inherit"}
+        />
+      </InputGroup>
+      <Flex
+        direction="row" // Change this line
+        wrap="wrap"
+      >
+        {selectedItems.map((selectedItem, index) => (
+          <Tag
+            key={`selected-item-${index}`}
+            pos="relative"
+            borderRadius="15px"
+            mr="2"
+            mb="2"
+            p="1"
+            maxWidth="100px"
+          >
+            <TagLabel>{selectedItem[labelKey]}</TagLabel>
+            <TagCloseButton onClick={() => removeSelectedItem(selectedItem)} />
+          </Tag>
+        ))}
+      </Flex>
       <List
         pos="absolute"
         w="inherit"
@@ -152,7 +170,7 @@ function MultiSelect({
             </ListItem>
           ))}
       </List>
-    </Box>
+    </Flex>
   );
 }
 

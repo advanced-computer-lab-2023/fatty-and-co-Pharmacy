@@ -85,13 +85,12 @@ const MedicineGroup = ({
     if (typeof value !== "string") return;
     setSearchAndFilterParams({ ...searchAndFilterParams, Name: value });
   };
-  const handleMedicinalUseValueChange = () => {
+  useEffect(() => {
     setSearchAndFilterParams({
       ...searchAndFilterParams,
       Medicinal_Use: selectedUses.map((item) => item.use),
     });
-  };
-
+  }, [selectedUses]);
   const handleMedicinalUseChange = (values) => {
     setSelectedUses(values);
   };
@@ -125,9 +124,6 @@ const MedicineGroup = ({
                 labelKey="use"
                 valueKey="use"
               ></MultiSelect>
-              <Button marginLeft={10} onClick={handleMedicinalUseValueChange}>
-                Submit
-              </Button>
               <Button
                 marginLeft={10}
                 onClick={() => {

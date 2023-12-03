@@ -32,7 +32,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useAuthContext } from "hooks/useAuthContext";
 
-const MedicineCard = ({ Medicine }) => {
+const MedicineCard = ({ Medicine, ...rest }) => {
   // Chakra color mode
   const textColor = useColorModeValue("gray.700", "white");
   const { dispatch } = useMedicineContext();
@@ -124,6 +124,7 @@ const MedicineCard = ({ Medicine }) => {
   // TODO: Needs editing to improve the UX
   const viewAlternatives = () => {
     dispatch({ type: "FILTER_MEDICINES", payload: Active_Ingredients[0] });
+    rest.setName("Alternatives to " + Name);
   };
 
   return (
