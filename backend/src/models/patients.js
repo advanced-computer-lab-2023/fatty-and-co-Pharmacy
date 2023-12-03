@@ -39,7 +39,7 @@ const patientSchema = new Schema(
     },
     Wallet: {
       type: Number,
-      required: true,
+      required: false,
       default: 5000,
     },
     LinkedPatients: {
