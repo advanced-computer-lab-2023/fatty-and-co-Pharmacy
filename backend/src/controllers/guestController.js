@@ -2,6 +2,7 @@ const systemUserModel = require("../models/systemusers");
 const patientModel = require("../models/patients");
 const requestModel = require("../models/requests.js");
 const cartModel = require("../models/cart");
+const subscriptionModel = require("../models/subscriptions");
 
 const bcrypt = require("bcrypt");
 const { validatePassword } = require("../common/utils/validators");
@@ -17,11 +18,13 @@ const createPatient = async (req, res) => {
     Password,
     Email,
     MobileNum,
+    NationalId,
     DateOfBirth,
     Gender,
     EmergencyContactNumber,
     EmergencyContactName,
     EmergencyContactRelation,
+    Wallet,
   } = req.body;
   try {
     const user = await systemUserModel.addEntry(
@@ -34,6 +37,7 @@ const createPatient = async (req, res) => {
       Username: Username,
       Name: Name,
       MobileNum: MobileNum,
+      NationalId: NationalId,
       DateOfBirth: DateOfBirth,
       Gender: Gender,
       EmergencyContact: {
@@ -41,7 +45,10 @@ const createPatient = async (req, res) => {
         PhoneNumber: EmergencyContactNumber,
         Relation: EmergencyContactRelation,
       },
+      LinkedPatients: [],
+      Wallet: Wallet,
     });
+    await subscriptionModel.addEntry(patient, "Unsubscribed");
     const cart = await cartModel.create({
       PatientUsername: Username,
       TotalCost: 0,
@@ -69,7 +76,7 @@ const createRequest = async (req, res) => {
   const IdFileName = IdFile[0].filename;
   const WorkingLicenseName = WorkingLicense[0].filename;
   const PharmacyDegreeName = PharmacyDegree[0].filename;
-  
+
   try {
     const request = await requestModel.create({
       Username,
