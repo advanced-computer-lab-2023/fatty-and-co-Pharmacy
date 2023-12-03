@@ -247,12 +247,13 @@ const MedicineGroup = ({
               </Button>
               <Button
                 marginLeft={10}
-                onClick={() =>
+                onClick={() => {
                   setSearchAndFilterParams({
                     Name: "",
                     Medicinal_Use: [],
-                  })
-                }
+                  });
+                  setSelectedUses([]);
+                }}
               >
                 Clear
               </Button>
