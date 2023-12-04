@@ -113,7 +113,7 @@ const MedicineCard = ({ Medicine }) => {
           </Badge>
         </Text>
         <Text fontSize="sm" color="gray.500" fontWeight="400">
-        Active Ing:
+          Active Ing:
           {Active_Ingredients.map((use) => (
             <text>{" " + use} </text>
           ))}

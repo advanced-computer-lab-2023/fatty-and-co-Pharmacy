@@ -1,5 +1,5 @@
 // Chakra imports
-import { Flex, Grid, useColorModeValue } from "@chakra-ui/react";
+import { Flex, Grid, useColorModeValue, Spinner } from "@chakra-ui/react";
 import avatar4 from "assets/img/avatars/avatar4.png";
 import ProfileBgImage from "assets/img/ProfileBackground.png";
 import React from "react";
@@ -43,11 +43,15 @@ function Index() {
 
   return (
     <Flex direction="column">
-      <MedicineGroup
-        medicines={medicines}
-        searchAndFilterParams={searchAndFilterParams}
-        setSearchAndFilterParams={setSearchAndFilterParams}
-      />
+      {medicines ? (
+        <MedicineGroup
+          medicines={medicines}
+          searchAndFilterParams={searchAndFilterParams}
+          setSearchAndFilterParams={setSearchAndFilterParams}
+        />
+      ) : (
+        <Spinner></Spinner>
+      )}
 
       {
         // medicines && medicines.map((medicine)=>(

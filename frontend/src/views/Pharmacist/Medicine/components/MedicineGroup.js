@@ -37,12 +37,13 @@ import CardHeader from "components/Card/CardHeader";
 import React from "react";
 import { FaPlus } from "react-icons/fa";
 import MedicineCard from "./MedicineCard";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { API_PATHS } from "../../../../API/api_paths";
 import { useMedicineContext } from "../../../../hooks/useMedicineContext";
 import { SearchBar } from "components/Navbars/SearchBar/SearchBar";
 import axios from "axios";
 import { useAuthContext } from "hooks/useAuthContext";
+import MultiSelect from "components/Selections/MultiSelect";
 
 const MedicineGroup = ({
   medicines,
@@ -204,24 +205,31 @@ const MedicineGroup = ({
   };
 
   const handleNameValueChange = (value) => {
+    if (typeof value !== "string") return;
     setSearchAndFilterParams({ ...searchAndFilterParams, Name: value });
   };
-  const handleMedicinalUseValueChange = (value) => {
+  const handleMedicinalUseValueChange = () => {
     setSearchAndFilterParams({
       ...searchAndFilterParams,
-      Medicinal_Use: selectedUses,
+      Medicinal_Use: selectedUses.map((item) => item.use),
     });
     console.log(searchAndFilterParams);
   };
 
   const [selectedUses, setSelectedUses] = useState([]);
-  const medicinalUses = [
-    "painkiller",
-    "fever",
-    "anti-inflammatory",
-    "anxiety",
-    "pain",
-  ];
+
+  useEffect(() => {
+    setSearchAndFilterParams({
+      ...searchAndFilterParams,
+      Medicinal_Use: selectedUses.map((item) => item.use),
+    });
+  }, [selectedUses]);
+
+  const medicinalUses = useMemo(() => {
+    return Array.from(
+      new Set(medicines.map((medicine) => medicine.Medicinal_Use).flat())
+    ).map((use) => ({ use: use }));
+  }, []); // Empty array means it will only compute the value on the first render
   const handleMedicinalUseChange = (values) => {
     setSelectedUses(values);
   };
@@ -238,24 +246,37 @@ const MedicineGroup = ({
               "Medicine Group Description"
             </Text>
           </Flex>
-          <SearchBar
-            placeholder="Medicine Name..."
-            onChange={handleNameValueChange}
-          />
-          <Box>
-            <CheckboxGroup
-              colorScheme="green"
-              defaultValue={selectedUses}
-              onChange={handleMedicinalUseChange}
-            >
-              {medicinalUses.map((use, index) => (
-                <Checkbox key={index} value={use}>
-                  {use}
-                </Checkbox>
-              ))}
-            </CheckboxGroup>
-            <Button onClick={handleMedicinalUseValueChange}>Submit</Button>
-          </Box>
+          <Flex direction={"row"} justifyContent={"flex-end"} marginLeft={20}>
+            <Flex direction={"row"} marginLeft="10px">
+              <SearchBar
+                placeholder="Medicine Name..."
+                onChange={handleNameValueChange}
+                marginLeft="10px"
+              />
+              <MultiSelect
+                marginLeft={10}
+                placeholder="Medicinal Use..."
+                initialItems={medicinalUses}
+                selectedItems={selectedUses}
+                setSelectedItems={setSelectedUses}
+                onSelectedItemsChange={handleMedicinalUseChange}
+                labelKey="use"
+                valueKey="use"
+              ></MultiSelect>
+              <Button
+                marginLeft={10}
+                onClick={() => {
+                  setSearchAndFilterParams({
+                    Name: "",
+                    Medicinal_Use: [],
+                  });
+                  setSelectedUses([]);
+                }}
+              >
+                Clear
+              </Button>
+            </Flex>
+          </Flex>
         </Flex>
       </CardHeader>
       <CardBody px="5px">
