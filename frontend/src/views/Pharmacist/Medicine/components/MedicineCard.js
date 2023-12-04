@@ -258,7 +258,7 @@ const MedicineCard = ({ Medicine }) => {
                       size={"sm"}
                       borderRadius="full"
                       variant="solid"
-                      _hover={{ cursor: "pointer", backgroundColor: "red" }}
+                      _hover={{ cursor: "pointer"  , backgroundColor:"red"}}
                       style={{ width: "fit-content", marginRight: "5px" }}
                       onClick={(e) => {
                         setActive_Ingredients(
@@ -302,7 +302,7 @@ const MedicineCard = ({ Medicine }) => {
                       size={"sm"}
                       borderRadius="full"
                       variant="solid"
-                      _hover={{ cursor: "pointer", backgroundColor: "red" }}
+                      _hover={{ cursor: "pointer"  , backgroundColor:"red"}}
                       style={{ width: "fit-content", marginRight: "5px" }}
                       onClick={(e) => {
                         setMedicinal_Use(
@@ -329,32 +329,6 @@ const MedicineCard = ({ Medicine }) => {
                   }
                 }}
               />
-              <style>
-                {`
-                      #MImage::-webkit-file-upload-button {
-                        visibility: hidden;
-                      }
-                      #MImage::before {
-                        content: 'Select Image';
-                        display: inline-block;
-                        background: linear-gradient(top, #f9f9f9, #e3e3e3);
-                        padding: 5px 0px;
-                        outline: none;
-                        white-space: nowrap;
-                        -webkit-user-select: none;
-                        cursor: pointer;
-                        font-weight: 400;
-                        font-size: 12pt;
-                        color: #A0AEC0;
-                      }
-                      #MImage:hover::before {
-                        
-                      }
-                      #MImage:active::before {
-                        background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
-                      }
-                    `}
-              </style>
               <Input
                 variant="filled"
                 type="text"
