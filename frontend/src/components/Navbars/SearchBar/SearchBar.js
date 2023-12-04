@@ -32,6 +32,9 @@ export function SearchBar(props) {
       }}
       marginRight={props.marginRight || "auto"}
       marginLeft={props.marginLeft || "auto"}
+      marginTop={props.marginTop || "auto"}
+      marginBottom={props.marginBottom || "auto"}
+      {...rest}
     >
       <InputLeftElement
         children={

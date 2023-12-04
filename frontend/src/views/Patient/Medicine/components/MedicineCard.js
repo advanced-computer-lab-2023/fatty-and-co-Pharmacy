@@ -32,7 +32,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useAuthContext } from "hooks/useAuthContext";
 
-const MedicineCard = ({ Medicine }) => {
+const MedicineCard = ({ Medicine, ...rest }) => {
   // Chakra color mode
   const textColor = useColorModeValue("gray.700", "white");
   const { dispatch } = useMedicineContext();
@@ -53,8 +53,14 @@ const MedicineCard = ({ Medicine }) => {
   const [use, setUse] = useState("");
   const [Ingredient, setIngredient] = useState("");
 
-  const isArchviedC = Archived === "archived" ? "red" : "green";
-  const isArchvied = Archived === "archived" ? "Not Available" : "Available";
+  const isArchviedC =
+    Archived === "archived" || Quantity <= 0 ? "red" : "green";
+  const isArchvied =
+    Archived === "archived"
+      ? "Not Available"
+      : Quantity <= 0
+      ? "Out Of Stock"
+      : "Available";
 
   // handle edit
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -115,6 +121,12 @@ const MedicineCard = ({ Medicine }) => {
       });
   };
 
+  // TODO: Needs editing to improve the UX
+  const viewAlternatives = () => {
+    dispatch({ type: "FILTER_MEDICINES", payload: Active_Ingredients[0] });
+    rest.setName("Alternatives to " + Name);
+  };
+
   return (
     <Flex direction="column">
       <Box mb="20px" position="relative" borderRadius="15px">
@@ -165,13 +177,21 @@ const MedicineCard = ({ Medicine }) => {
         <Text fontSize="sm" color="gray.500" fontWeight="400" mb="10px">
           {Description}
         </Text>
-        {MedicationType == "Over the counter" &&
-          <Flex justifyContent="space-between">
-            <Button disabled={Quantity === 0} colorScheme={Quantity === 0 ? "red" : "teal"} onClick={() => addToCart(Medicine)}>
-              {Quantity === 0 ? "Out of Stock" : "Add to Cart"}
-            </Button>
-          </Flex>
-        }
+        <Flex justifyContent="space-between">
+          <Button
+            disabled={MedicationType === "Prescribed"}
+            colorScheme={"teal"}
+            onClick={() => {
+              if (Quantity === 0) {
+                viewAlternatives();
+              } else {
+                addToCart(Medicine);
+              }
+            }}
+          >
+            {Quantity === 0 ? "View Alternatives" : "Add to Cart"}
+          </Button>
+        </Flex>
       </Flex>
     </Flex>
   );

@@ -163,19 +163,22 @@ function SignIn() {
                           </InputRightElement>
                         </InputGroup>
                         <Flex justify="flex-end">
-                          <Box>
-                            <a href="./resetPass">
-                              <Button type="button" size="xs" mt="2">
-                                Forgot Password?
-                              </Button>
-                            </a>
-                          </Box>
+                          <Text color={textColor} fontWeight="medium">
+                            <Link
+                              href="./resetPass"
+                              type="button"
+                              size="xs"
+                              mt="2"
+                            >
+                              Forgot Password?
+                            </Link>
+                          </Text>
                         </Flex>
                         <FormErrorMessage>{errors.Password}</FormErrorMessage>
                       </FormControl>
                     )}
                   </Field>
-                  <FormControl display="flex" alignItems="center">
+                  {/* <FormControl display="flex" alignItems="center">
                     <Switch id="remember-login" colorScheme="teal" me="10px" />
                     <FormLabel
                       htmlFor="remember-login"
@@ -184,9 +187,8 @@ function SignIn() {
                       fontWeight="normal"
                     >
                       Remember me
-                      {/* TODO: Handle remember me later */}
                     </FormLabel>
-                  </FormControl>
+                  </FormControl> */}
                   <Button
                     fontSize="10px"
                     isLoading={isSubmitting || loading}
@@ -231,6 +233,16 @@ function SignIn() {
                   href="./signup"
                 >
                   Sign Up
+                </Link>
+              </Text>
+              <Text color={textColor} fontWeight="medium">
+                <Link
+                  color={titleColor}
+                  ms="5px"
+                  fontWeight="bold"
+                  href="./pharmsignup"
+                >
+                  Register as a Pharmacist
                 </Link>
               </Text>
             </Flex>
