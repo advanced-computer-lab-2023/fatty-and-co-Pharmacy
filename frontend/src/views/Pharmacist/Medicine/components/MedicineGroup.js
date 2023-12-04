@@ -423,6 +423,7 @@ const MedicineGroup = ({
                         </Tag>
                       ))}
                   </Box>
+                  
                   <Input
                     variant="filled"
                     type="file"
@@ -430,8 +431,35 @@ const MedicineGroup = ({
                     name="MImage"
                     accept="image/png, image/jpeg ,image/jpg"
                     required
+                    // style={{ display:"none"}}
                     onChange={(e) => setImage(e.target.files[0])}
                   />
+                  <style>
+                    {`
+                      #MImage::-webkit-file-upload-button {
+                        visibility: hidden;
+                      }
+                      #MImage::before {
+                        content: 'Select Image';
+                        display: inline-block;
+                        background: linear-gradient(top, #f9f9f9, #e3e3e3);
+                        padding: 5px 0px;
+                        outline: none;
+                        white-space: nowrap;
+                        -webkit-user-select: none;
+                        cursor: pointer;
+                        font-weight: 400;
+                        font-size: 12pt;
+                        color: #A0AEC0;
+                      }
+                      #MImage:hover::before {
+                        
+                      }
+                      #MImage:active::before {
+                        background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+                      }
+                    `}
+                  </style>
                   <Input
                     variant="filled"
                     type="text"
