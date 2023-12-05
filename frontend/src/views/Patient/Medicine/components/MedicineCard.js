@@ -180,13 +180,13 @@ const MedicineCard = ({ Medicine, ...rest }) => {
         </Text>
 
         <Tooltip
-          isDisabled={MedicationType !== "Prescribed"}
+          isDisabled={MedicationType !== "Prescribed" || Quantity === 0}
           label="This medicine needs a prescription to order"
           bg="red.500"
         >
           <Flex justifyContent="space-between">
             <Button
-              disabled={MedicationType === "Prescribed"}
+              disabled={MedicationType === "Prescribed" && Quantity !== 0}
               colorScheme={"teal"}
               onClick={() => {
                 if (Quantity === 0) {
