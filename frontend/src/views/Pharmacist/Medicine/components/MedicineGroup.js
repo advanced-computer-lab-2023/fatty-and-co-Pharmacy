@@ -136,6 +136,20 @@ const MedicineGroup = ({
     //     isClosable: true,
     //   });
     // }
+
+    if (Active_Ingredients.length === 0 || Medicinal_Use.length === 0) {
+      return toast({
+        title: "failed Add Medicine.",
+        description:
+          Active_Ingredients.length === 0
+            ? "Please add at least one ingredient."
+            : "Please add at least one use.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+
     const formData = new FormData();
     formData.append("Name", Name);
     formData.append("Price", Price);
@@ -352,10 +366,12 @@ const MedicineGroup = ({
                     <Button
                       style={{ width: "20%", marginLeft: "10px" }}
                       onClick={(e) => {
-                        setActive_Ingredients([
-                          ...Active_Ingredients,
-                          Ingredient,
-                        ]);
+                        if (Ingredient.length > 0) {
+                          setActive_Ingredients([
+                            ...Active_Ingredients,
+                            Ingredient,
+                          ]);
+                        }
                       }}
                     >
                       add
@@ -369,7 +385,12 @@ const MedicineGroup = ({
                           size={"sm"}
                           borderRadius="full"
                           variant="solid"
-                          style={{ width: "fit-content", marginRight: "5px" }}
+                          _hover={{ cursor: "pointer", backgroundColor: "red" }}
+                          // add css hover effect color red
+                          style={{
+                            width: "fit-content",
+                            marginRight: "5px",
+                          }}
                           onClick={(e) => {
                             setActive_Ingredients(
                               Active_Ingredients.filter(
@@ -395,7 +416,9 @@ const MedicineGroup = ({
                     <Button
                       style={{ width: "20%", marginLeft: "10px" }}
                       onClick={(e) => {
-                        setMedicinal_Use([...Medicinal_Use, use]);
+                        if (use.length > 0) {
+                          setMedicinal_Use([...Medicinal_Use, use]);
+                        }
                       }}
                     >
                       add
@@ -409,6 +432,7 @@ const MedicineGroup = ({
                           size={"sm"}
                           borderRadius="full"
                           variant="solid"
+                          _hover={{ cursor: "pointer", backgroundColor: "red" }}
                           style={{ width: "fit-content", marginRight: "5px" }}
                           onClick={(e) => {
                             setMedicinal_Use(
@@ -420,6 +444,7 @@ const MedicineGroup = ({
                         </Tag>
                       ))}
                   </Box>
+                  
                   <Input
                     variant="filled"
                     type="file"
@@ -427,8 +452,35 @@ const MedicineGroup = ({
                     name="MImage"
                     accept="image/png, image/jpeg ,image/jpg"
                     required
+                    // style={{ display:"none"}}
                     onChange={(e) => setImage(e.target.files[0])}
                   />
+                  <style>
+                    {`
+                      #MImage::-webkit-file-upload-button {
+                        visibility: hidden;
+                      }
+                      #MImage::before {
+                        content: 'Select Image';
+                        display: inline-block;
+                        background: linear-gradient(top, #f9f9f9, #e3e3e3);
+                        padding: 5px 0px;
+                        outline: none;
+                        white-space: nowrap;
+                        -webkit-user-select: none;
+                        cursor: pointer;
+                        font-weight: 400;
+                        font-size: 12pt;
+                        color: #A0AEC0;
+                      }
+                      #MImage:hover::before {
+                        
+                      }
+                      #MImage:active::before {
+                        background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+                      }
+                    `}
+                  </style>
                   <Input
                     variant="filled"
                     type="text"

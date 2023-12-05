@@ -24,6 +24,7 @@ import {
   MenuItem,
   Tag,
   TagLabel,
+  Tooltip,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useMedicineContext } from "../../../../hooks/useMedicineContext";
@@ -177,21 +178,28 @@ const MedicineCard = ({ Medicine, ...rest }) => {
         <Text fontSize="sm" color="gray.500" fontWeight="400" mb="10px">
           {Description}
         </Text>
-        <Flex justifyContent="space-between">
-          <Button
-            disabled={MedicationType === "Prescribed"}
-            colorScheme={"teal"}
-            onClick={() => {
-              if (Quantity === 0) {
-                viewAlternatives();
-              } else {
-                addToCart(Medicine);
-              }
-            }}
-          >
-            {Quantity === 0 ? "View Alternatives" : "Add to Cart"}
-          </Button>
-        </Flex>
+
+        <Tooltip
+          isDisabled={MedicationType !== "Prescribed" || Quantity === 0}
+          label="This medicine needs a prescription to order"
+          bg="red.500"
+        >
+          <Flex justifyContent="space-between">
+            <Button
+              disabled={MedicationType === "Prescribed" && Quantity !== 0}
+              colorScheme={"teal"}
+              onClick={() => {
+                if (Quantity === 0) {
+                  viewAlternatives();
+                } else {
+                  addToCart(Medicine);
+                }
+              }}
+            >
+              {Quantity === 0 ? "View Alternatives" : "Add to Cart"}
+            </Button>
+          </Flex>
+        </Tooltip>
       </Flex>
     </Flex>
   );
