@@ -142,20 +142,23 @@ const MedicineCard = ({ Medicine, ...rest }) => {
           bg="linear-gradient(360deg, rgba(49, 56, 96, 0.16) 0%, rgba(20, 25, 40, 0.38) 100%)"
         ></Box>
       </Box>
+
       <Flex direction="column">
         <Text fontSize="md" color="gray.500" fontWeight="600" mb="10px">
           {Medicinal_Use.map((use) => (
-            <Tag key={use} style={{ margin: "0 5px 0 0" }}>
+            <Tag key={use} style={{ margin: "2px 5px 0 0" }}>
               {use}
             </Tag>
           ))}
         </Text>
-        <Text fontSize="xl" color={textColor} fontWeight="bold" mb="3px">
-          {Name}
-          <Badge ml="1" colorScheme={isArchviedC}>
-            {isArchvied}
-          </Badge>
-        </Text>
+        <Tooltip hasArrow placement="right-start" label={Description}>
+          <Text fontSize="xl" color={textColor} fontWeight="bold" mb="3px">
+            {Name}
+            <Badge ml="1" colorScheme={isArchviedC}>
+              {isArchvied}
+            </Badge>
+          </Text>
+        </Tooltip>
         <Text fontSize="sm" color="gray.500" fontWeight="400">
           Active Ing:
           {Active_Ingredients.map((use) => (
@@ -173,20 +176,17 @@ const MedicineCard = ({ Medicine, ...rest }) => {
         </Text>
         <br />
 
-        <Text fontSize="sm" color="gray.500" fontWeight="400" mb="10px">
-          {Description}
-        </Text>
-
         <Tooltip
-          placement='bottom-start'
+          placement="bottom-start"
           label={
-            (MedicationType === "Prescribed"  )
+            MedicationType === "Prescribed"
               ? "This medicine needs a prescription to order"
-              : (Quantity === 0)
-              ? "Out of Stock. You can find alternatives" : "Add to cart"
+              : Quantity === 0
+              ? "Out of Stock. You can find alternatives"
+              : "Add to cart"
           }
           bg={
-            (MedicationType === "Prescribed" || Quantity === 0)
+            MedicationType === "Prescribed" || Quantity === 0
               ? "red.500"
               : "green.500"
           }
@@ -206,8 +206,9 @@ const MedicineCard = ({ Medicine, ...rest }) => {
               {Quantity === 0 ? (
                 "View Alternatives"
               ) : (
-                <Flex >
-                  <CartPlusFill style={{margin:"3px" , width:"14px"}}/> <p>{Price} EGP</p>
+                <Flex>
+                  <CartPlusFill style={{ margin: "3px", width: "14px" }} />{" "}
+                  <p>{Price} EGP</p>
                 </Flex>
               )}
             </Button>
