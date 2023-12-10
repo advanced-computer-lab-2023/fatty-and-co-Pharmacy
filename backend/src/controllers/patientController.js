@@ -3,6 +3,8 @@ const userModel = require("../models/systemusers");
 // const familyMemberModel = require("../models/familymembers");
 // const { getAllPatients } = require("./testController");
 const { getPatients } = require("./testController");
+const subscriptionModel = require("../models/subscriptions");
+const packageModel = require("../models/packages");
 
 const getEmergencyContact = async (req, res) => {
   try {
@@ -98,6 +100,23 @@ const getWalletAmount = async (req, res) => {
   }
 };
 
+const getMedicineDiscount = async (req, res) => {
+  try {
+    const current_user = req.user.Username; //changed this
+    const patient = await patientModel.findOne({ Username: current_user });
+    const subscription = await subscriptionModel
+      .findOne({ Patient: patient, Status: "Subscribed" })
+      .populate("Patient")
+      .populate("Package");
+    if (subscription) {
+      const discount = subscription.Package.Medicine_Discount;
+      res.status(200).send({ discount });
+    } 
+  } catch (error) {
+    res.status(400).send({ message: error.message });
+  }
+};
+
 module.exports = {
   getAllPatients,
   deletePatient,
@@ -105,5 +124,6 @@ module.exports = {
   updatePatient,
   getPatientUsername,
   getEmergencyContact,
-  getWalletAmount
+  getWalletAmount,
+  getMedicineDiscount
 };
