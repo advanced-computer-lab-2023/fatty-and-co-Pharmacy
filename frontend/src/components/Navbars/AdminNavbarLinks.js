@@ -40,6 +40,7 @@ import axios from "axios";
 import { API_PATHS } from "API/api_paths";
 import { useState, useEffect } from "react";
 import { useWalletContext } from "hooks/useWalletContext";
+import PatientCart from "./PatientCart";
 
 const theme = extendTheme({
   icons: {
@@ -220,6 +221,9 @@ export default function HeaderLinks(props) {
         w="18px"
         h="18px"
       /> */}
+      {user.userType == "Patient" && (
+        <PatientCart> </PatientCart>
+      )}
       {user.userType !== "Admin" && (
       <ChakraProvider theme={theme}>
         <Icon
