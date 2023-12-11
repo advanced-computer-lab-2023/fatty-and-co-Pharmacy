@@ -34,10 +34,10 @@ function Sidebar(props) {
           overflowY = "auto"
           bg={sidebarBg}
           transition={variantChange}
-          w="260px"
-          maxW="260px"
+          w="325px"
+          maxW="325px"
           ms={{
-            sm: "16px",
+            sm: "-30px",
           }}
           my={{
             sm: "16px",

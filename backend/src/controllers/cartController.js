@@ -99,7 +99,8 @@ const viewCart = async (req, res) => {
                     Name: medicine ? medicine.Name : 'Unknown',
                     Price: medicine ? medicine.Price : 0,
                     Quantity: medicineQuantityMap.get(medicineId),
-                    TotalPrice: medicine ? (medicine.Price * medicineQuantityMap.get(medicineId)) : 0
+                    TotalPrice: medicine ? (medicine.Price * medicineQuantityMap.get(medicineId)) : 0,
+                    Image: medicine? (medicine.Image) : null
                 };
             })
         );
