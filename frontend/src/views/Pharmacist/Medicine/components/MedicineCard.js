@@ -156,7 +156,7 @@ const MedicineCard = ({ Medicine }) => {
           {/* <Text>
             {Description}
           </Text> */}
-          <Text fontSize="2xl" color="teal">
+          <Text fontSize="xl" color="teal">
               Price:{' '}{Price}
         </Text>
         </Stack>

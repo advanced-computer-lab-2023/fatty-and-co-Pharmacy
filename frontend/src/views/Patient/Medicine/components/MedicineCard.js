@@ -174,15 +174,15 @@ const MedicineCard = ({ Medicine,medicineDiscount, ...rest }) => {
           {/* <Text>
             {Description}
           </Text> */}
-          <Text fontSize="2xl" color="teal">
+          <Text fontSize="xl" color="teal">
               Price:{' '}
               {medicineDiscount !== 0 ? (
                 <>
                   <span style={{ textDecoration: 'line-through', color: 'teal' }}>
                     {Price}
                   </span>{' '}
-                  -{' '}
-                  <span style={{ color: 'red' }}>{discountedPrice.toFixed(2)}</span>
+                  {'  '}
+                  <span style={{ color: 'red' }}>{Price - (Price * medicineDiscount) / 100}</span>
                 </>
               ) : (
                 <span style={{ color: 'teal' }}>{Price}</span>
