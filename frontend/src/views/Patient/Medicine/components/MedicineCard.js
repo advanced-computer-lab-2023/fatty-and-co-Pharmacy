@@ -57,7 +57,6 @@ const MedicineCard = ({ Medicine,medicineDiscount, ...rest }) => {
   const [message, setMessage] = useState("");
   const [use, setUse] = useState("");
   const [Ingredient, setIngredient] = useState("");
-  const [discountedPrice, setDiscountedPrice] = useState(0);
 
   const isArchviedC =
     Archived === "archived" || Quantity <= 0 ? "red" : "green";
@@ -97,9 +96,6 @@ const MedicineCard = ({ Medicine,medicineDiscount, ...rest }) => {
   };
   useEffect(() => {
     downloadFile();
-    const calculatedDiscountedPrice = Price - (Price * medicineDiscount) / 100;
-    console.log(calculatedDiscountedPrice);
-    setDiscountedPrice(calculatedDiscountedPrice);
   }, []);
 
   const addToCart = (medicine) => {
