@@ -56,7 +56,7 @@ export default function PatientCart() {
                 
                 dispatch({ type: "SET_CART", payload: response.data.medicine });
                 console.log("Cart:", cart);
-                // fetchMedicineImages(response.data.medicine);
+                fetchMedicineImages(response.data.medicine);
             })
             .catch((error) => {
                 console.error("Error fetching cart:", error);
