@@ -47,6 +47,7 @@ export const API_PATHS = {
   // Pharmacist paths
 
   // Patient paths
+  getMedicineDiscount: PATIENT_BASE+"getMedicineDiscount/",
 
   // Order paths
   checkout: ORDER_BASE + "checkout/",

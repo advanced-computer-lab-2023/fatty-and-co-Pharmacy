@@ -5,6 +5,7 @@ import {
   Flex,
   Image,
   Text,
+  Heading,
   useColorModeValue,
   Badge,
   useDisclosure,
@@ -20,6 +21,7 @@ import {
   Input,
   Menu,
   MenuButton,
+  Tooltip,
   MenuList,
   MenuItem,
   Tag,
@@ -105,7 +107,78 @@ const MedicineCard = ({ Medicine }) => {
   };
 
   return (
+    <div>
+    <Box
+    borderWidth="1px"
+    borderRadius="lg"
+    overflow="hidden"
+    p="4"
+    boxShadow="md"
+  >
     <Flex direction="column">
+      <Tooltip
+          label={Description}
+        >
+           <Box>
+        <Image src={file} alt={Name} borderRadius="15px" boxSize="200px" />
+        <Stack mt='6' spacing='3'>
+          <Heading size='md'>
+            {Name}
+            <Badge ml="1" colorScheme={isArchviedC}>
+              {isArchvied}
+            </Badge>
+          </Heading>
+          <Text fontSize="md" color="gray.500" fontWeight="600" mb="10px">
+           {Medicinal_Use.map((use) => (
+             <Tag key={use} style={{ margin: "0 5px 0 0" }}>
+              {use}
+            </Tag>
+          ))}
+         </Text>
+          <Text fontSize="sm" color="gray.500" fontWeight="400">
+           Active Ingredients:
+           {Active_Ingredients.map((use) => (
+             <text>{" " + use} </text>
+           ))}
+         </Text>
+         <Text fontSize="sm" color="gray.500" fontWeight="400">
+           Medication Type: {MedicationType}
+         </Text>
+         <Text fontSize="sm" color="gray.500" fontWeight="400">
+          Quantity: {Quantity}
+        </Text>
+        <Text fontSize="sm" color="gray.500" fontWeight="400">
+          Sales: {Sales}
+        </Text>
+        <Text fontSize="sm" color="gray.500" fontWeight="400">
+          Medication Type: {MedicationType}
+        </Text>
+          {/* <Text>
+            {Description}
+          </Text> */}
+          <Text fontSize="xl" color="teal">
+              Price:{' '}{Price}
+        </Text>
+        </Stack>
+        </Box>
+        </Tooltip>
+        <Flex justifyContent="space-between">
+          <Button
+            variant="outline"
+            colorScheme="teal"
+            minW="110px"
+            h="36px"
+            fontSize="xs"
+            px="1.5rem"
+            onClick={onOpen}
+          >
+            Edit
+          </Button>
+        </Flex>
+      </Flex>
+      </Box>
+
+    {/* <Flex direction="column">
       <Box mb="20px" position="relative" borderRadius="15px">
         <Image src={file} alt={Name} borderRadius="15px" boxSize="200px" />
         <Box
@@ -166,7 +239,7 @@ const MedicineCard = ({ Medicine }) => {
             Edit
           </Button>
         </Flex>
-      </Flex>
+      </Flex> */}
       <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={closeEdit}>
         <ModalOverlay />
         <ModalContent>
@@ -573,7 +646,8 @@ const MedicineCard = ({ Medicine }) => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </Flex>
+    {/* </Flex> */}
+    </div>
   );
 };
 
