@@ -121,7 +121,7 @@ export default function PatientCart() {
       <Popover>
         <PopoverTrigger>
           <IconButton icon={<BsCart2 />} color={navbarIcon} w="22px" h="22px" me="0px" mb="5px"
-            variant="unstyled"  _hover={{ bg: "white" }}/>
+            variant="unstyled"  _hover={{ bg: "white" , color:"black" }}/>
         </PopoverTrigger>
         <PopoverContent>
           <PopoverArrow />
