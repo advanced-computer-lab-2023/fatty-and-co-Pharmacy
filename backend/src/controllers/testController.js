@@ -2,6 +2,7 @@ const pharmacistModel = require("../models/pharmacists");
 const patientModel = require("../models/patients");
 const systemUserModel = require("../models/systemusers");
 const medicineModel = require("../models/medicine");
+const requestModel = require("../models/requests");
 const orderModel = require("../models/orders");
 const { default: mongoose } = require("mongoose");
 const {
@@ -17,7 +18,9 @@ const {
   generateEmail,
   generatePassword,
   generateMedicineDetails,
+  generateGender,
 } = require("../common/utils/generators");
+const { request } = require("express");
 
 // create a new System User
 const createSystemUser = async (req, res) => {
@@ -28,12 +31,12 @@ const createSystemUser = async (req, res) => {
   const email = Email || generateEmail();
   const type = Type || "Admin";
   try {
-    const newUser = await systemUserModel.create({
-      Username: username,
-      Password: password,
-      Email: email,
-      Type: type,
-    });
+    const newUser = await systemUserModel.addEntry(
+      username,
+      password,
+      email,
+      type
+    );
     res.status(201).json(newUser);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -44,6 +47,8 @@ const createSystemUser = async (req, res) => {
 const createPharmacist = async (req, res) => {
   const {
     Username,
+    Email,
+    Password,
     Name,
     DateOfBirth,
     HourlyRate,
@@ -52,6 +57,8 @@ const createPharmacist = async (req, res) => {
   } = req.body;
 
   const username = Username || generateUsername();
+  const email = Email || generateEmail();
+  const password = Password || generatePassword();
   const name = Name || generateName();
   const dateOfBirth = DateOfBirth || generateDateOfBirth();
   const hourlyRate = HourlyRate || generateHourlyRate();
@@ -60,6 +67,18 @@ const createPharmacist = async (req, res) => {
     EducationalBackground || generateEducationalBackground();
 
   try {
+    await requestModel.create({
+      Username: username,
+      Email: email,
+      Password: password,
+      Name: name,
+      DateOfBirth: dateOfBirth,
+      HourlyRate: hourlyRate,
+      Affiliation: affiliation,
+      EducationalBackground: educationalBackground,
+      Status: "Accepted",
+    });
+    await systemUserModel.addEntry(username, password, email, "Pharmacist");
     await systemUserModel.create({
       Username: username,
       Email: generateEmail(),
@@ -82,14 +101,34 @@ const createPharmacist = async (req, res) => {
 
 // create a random patient
 const createPatient = async (req, res) => {
-  const { Username, Name, DateOfBirth, MobileNum } = req.body;
+  const {
+    Username,
+    Name,
+    Password,
+    DateOfBirth,
+    MobileNum,
+    EmergencyContact,
+    Gender,
+  } = req.body;
 
   const username = Username || generateUsername();
   const name = Name || generateName();
   const dateOfBirth = DateOfBirth || generateDateOfBirth();
   const mobileNum = MobileNum || generateMobileNum();
+  const emergencyContact = EmergencyContact || {
+    FullName: generateName(),
+    PhoneNumber: generateMobileNum(),
+  };
+  const password = Password || generatePassword();
+  const gender = Gender || generateGender();
 
   try {
+    await systemUserModel.addEntry(
+      username,
+      password,
+      generateEmail(),
+      "Patient"
+    );
     await systemUserModel.create({
       Username: username,
       Email: generateEmail(),
@@ -101,6 +140,8 @@ const createPatient = async (req, res) => {
       Name: name,
       DateOfBirth: dateOfBirth,
       MobileNum: mobileNum,
+      Gender: gender,
+      EmergencyContact: emergencyContact,
     });
     res.status(201).json(newPatient);
   } catch (error) {
@@ -119,27 +160,34 @@ const createMedicine = async (req, res) => {
     Image,
     Medicinal_Use,
     Sales,
+    MedicationType,
+    State,
   } = req.body;
 
   const {
     name,
     quantity,
-    active_ingredients,
+    activeIngredients,
     description,
     price,
     image,
-    medicinal_use,
+    medicinalUse,
     sales,
+    medicationType,
   } = generateMedicineDetails();
 
+  console.log(req.body);
+
   const finalName = Name || name;
-  const finalQuantity = Quantity || quantity;
-  const finalActive_Ingredients = Active_Ingredients || active_ingredients;
+  const finalQuantity = Quantity != null ? Quantity : quantity;
+  const finalActive_Ingredients = Active_Ingredients || activeIngredients;
   const finalDescription = Description || description;
   const finalPrice = Price || price;
   const finalImage = Image || image;
-  const finalMedicinal_Use = Medicinal_Use || medicinal_use;
+  const finalMedicinal_Use = Medicinal_Use || medicinalUse;
   const finalSales = Sales || sales;
+  const finalMedicationType = MedicationType || medicationType;
+  const finalState = State || "unarchived";
 
   try {
     const newMedicine = await medicineModel.create({
@@ -150,7 +198,9 @@ const createMedicine = async (req, res) => {
       Price: finalPrice,
       Image: finalImage,
       Medicinal_Use: finalMedicinal_Use,
+      State: finalState,
       Sales: finalSales,
+      MedicationType: finalMedicationType,
     });
     res.status(201).json(newMedicine);
   } catch (error) {

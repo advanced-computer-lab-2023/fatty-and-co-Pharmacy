@@ -37,10 +37,13 @@ import CardHeader from "components/Card/CardHeader";
 import React from "react";
 import { FaPlus } from "react-icons/fa";
 import MedicineCard from "./MedicineCard";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { API_PATHS } from "../../../../API/api_paths";
 import { useMedicineContext } from "../../../../hooks/useMedicineContext";
 import { SearchBar } from "components/Navbars/SearchBar/SearchBar";
+import axios from "axios";
+import { useAuthContext } from "hooks/useAuthContext";
+import MultiSelect from "components/Selections/MultiSelect";
 
 const MedicineGroup = ({
   medicines,
@@ -60,97 +63,173 @@ const MedicineGroup = ({
   const [MImage, setImage] = useState("");
   const [use, setUse] = useState("");
   const [Medicinal_Use, setMedicinal_Use] = useState([]);
+  const [MedicationType, setMedicationType] = useState("Over the counter");
   const [Sales, setSales] = useState(0);
   const [Archived, setArchived] = useState("unarchived");
   const [message, setMessage] = useState("");
   // handle edit
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
+  const { user } = useAuthContext();
+  const Authorization = `Bearer ${user.token}`;
 
   const handleSubmit = async (e) => {
     // API_PATHS.addMedicine
     // "medicine/addMedicine"
     e.preventDefault();
+    // if (Active_Ingredients.length === 0 || Medicinal_Use.length === 0) {
+    //   return toast({
+    //     title: "failed Add Medicine.",
+    //     description: "Please add at least one ingredient and one use.",
+    //     status: "error",
+    //     duration: 5000,
+    //     isClosable: true,
+    //   });
+    // }
+
+    // const response = await fetch(API_PATHS.addMedicine, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     Name,
+    //     Price,
+    //     Active_Ingredients,
+    //     Medicinal_Use,
+    //     Quantity,
+    //     Sales,
+    //     Image: MImage,
+    //     Description,
+    //     state: Archived,
+    //   }),
+    // });
+    // const data = await response.json();
+
+    // if (response.status === 200) {
+    //   dispatch({ type: "ADD_MEDICINE", payload: data });
+
+    //   toast({
+    //     title: "Medicine Added.",
+    //     description: "You Added the Medicine succsefuly.",
+    //     status: "success",
+    //     duration: 9000,
+    //     isClosable: true,
+    //   });
+
+    //   setName("");
+    //   setPrice("");
+    //   setActive_Ingredients("");
+    //   setMedicinal_Use("");
+    //   setQuantity("");
+    //   setSales("");
+    //   setImage("");
+    //   setDescription("");
+    //   setArchived("unarchived");
+    //   onClose();
+    // } else {
+    //   return toast({
+    //     title: "failed Medi Update.",
+    //     description: message,
+    //     status: "error",
+    //     duration: 9000,
+    //     isClosable: true,
+    //   });
+    // }
+
     if (Active_Ingredients.length === 0 || Medicinal_Use.length === 0) {
       return toast({
         title: "failed Add Medicine.",
-        description: "Please add at least one ingredient and one use.",
+        description:
+          Active_Ingredients.length === 0
+            ? "Please add at least one ingredient."
+            : "Please add at least one use.",
         status: "error",
         duration: 5000,
         isClosable: true,
       });
     }
 
-    const response = await fetch(API_PATHS.addMedicine, {
+    const formData = new FormData();
+    formData.append("Name", Name);
+    formData.append("Price", Price);
+    formData.append("Active_Ingredients", Active_Ingredients);
+    formData.append("Medicinal_Use", Medicinal_Use);
+    formData.append("Quantity", Quantity);
+    formData.append("Sales", Sales);
+    formData.append("MImage", MImage);
+    formData.append("Description", Description);
+    formData.append("state", Archived);
+    formData.append("MedicationType", MedicationType);
+
+    await fetch(API_PATHS.addMedicine, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        Authorization: Authorization,
       },
-      body: JSON.stringify({
-        Name,
-        Price,
-        Active_Ingredients,
-        Medicinal_Use,
-        Quantity,
-        Sales,
-        Image: MImage,
-        Description,
-        state: Archived,
-      }),
-    });
-    const data = await response.json();
+      body: formData,
+    })
+      .then(async (response) => {
+        const data = await response.json();
+        dispatch({ type: "ADD_MEDICINE", payload: data });
 
-    if (response.status === 200) {
-      dispatch({ type: "ADD_MEDICINE", payload: data });
-
-      toast({
-        title: "Medicine Added.",
-        description: "You Added the Medicine succsefuly.",
-        status: "success",
-        duration: 9000,
-        isClosable: true,
+        toast({
+          title: "Medicine Added.",
+          description: "Medicine Added Successfully.",
+          status: "success",
+          duration: 9000,
+          isClosable: true,
+        });
+        setName("");
+        setPrice("");
+        setActive_Ingredients("");
+        setMedicinal_Use("");
+        setQuantity("");
+        setSales("");
+        setImage("");
+        setDescription("");
+        setArchived("");
+        setMedicationType("");
+        onClose();
+        //location.reload();
+      })
+      .catch((err) => {
+        return toast({
+          title: "Failed to add Medicine",
+          description: err.response.data.message,
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        });
       });
-
-      setName("");
-      setPrice("");
-      setActive_Ingredients("");
-      setMedicinal_Use("");
-      setQuantity("");
-      setSales("");
-      setImage("");
-      setDescription("");
-      setArchived("unarchived");
-      onClose();
-    } else {
-      return toast({
-        title: "failed Medi Update.",
-        description: message,
-        status: "error",
-        duration: 9000,
-        isClosable: true,
-      });
-    }
   };
 
   const handleNameValueChange = (value) => {
+    if (typeof value !== "string") return;
     setSearchAndFilterParams({ ...searchAndFilterParams, Name: value });
   };
-  const handleMedicinalUseValueChange = (value) => {
+  const handleMedicinalUseValueChange = () => {
     setSearchAndFilterParams({
       ...searchAndFilterParams,
-      Medicinal_Use: selectedUses,
+      Medicinal_Use: selectedUses.map((item) => item.use),
     });
     console.log(searchAndFilterParams);
   };
 
   const [selectedUses, setSelectedUses] = useState([]);
-  const medicinalUses = [
-    "painkiller",
-    "fever",
-    "anti-inflammatory",
-    "anxiety",
-    "pain",
-  ];
+
+  useEffect(() => {
+    setSearchAndFilterParams({
+      ...searchAndFilterParams,
+      Medicinal_Use: selectedUses.map((item) => item.use),
+    });
+  }, [selectedUses]);
+
+  const medicinalUses = useMemo(() => {
+    return Array.from(
+      new Set(medicines.map((medicine) => medicine.Medicinal_Use).flat())
+    ).map((use) => ({ use: use }));
+  }, []); // Empty array means it will only compute the value on the first render
   const handleMedicinalUseChange = (values) => {
     setSelectedUses(values);
   };
@@ -167,24 +246,37 @@ const MedicineGroup = ({
               "Medicine Group Description"
             </Text>
           </Flex>
-          <SearchBar
-            placeholder="Medicine Name..."
-            onChange={handleNameValueChange}
-          />
-          <Box>
-            <CheckboxGroup
-              colorScheme="green"
-              defaultValue={selectedUses}
-              onChange={handleMedicinalUseChange}
-            >
-              {medicinalUses.map((use, index) => (
-                <Checkbox key={index} value={use}>
-                  {use}
-                </Checkbox>
-              ))}
-            </CheckboxGroup>
-            <Button onClick={handleMedicinalUseValueChange}>Submit</Button>
-          </Box>
+          <Flex direction={"row"} justifyContent={"flex-end"} marginLeft={20}>
+            <Flex direction={"row"} marginLeft="10px">
+              <SearchBar
+                placeholder="Medicine Name..."
+                onChange={handleNameValueChange}
+                marginLeft="10px"
+              />
+              <MultiSelect
+                marginLeft={10}
+                placeholder="Medicinal Use..."
+                initialItems={medicinalUses}
+                selectedItems={selectedUses}
+                setSelectedItems={setSelectedUses}
+                onSelectedItemsChange={handleMedicinalUseChange}
+                labelKey="use"
+                valueKey="use"
+              ></MultiSelect>
+              <Button
+                marginLeft={10}
+                onClick={() => {
+                  setSearchAndFilterParams({
+                    Name: "",
+                    Medicinal_Use: [],
+                  });
+                  setSelectedUses([]);
+                }}
+              >
+                Clear
+              </Button>
+            </Flex>
+          </Flex>
         </Flex>
       </CardHeader>
       <CardBody px="5px">
@@ -215,7 +307,7 @@ const MedicineGroup = ({
             </Flex>
           </Button>
         </Grid>
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent>
             <ModalHeader>Add New Medicine</ModalHeader>
@@ -274,10 +366,12 @@ const MedicineGroup = ({
                     <Button
                       style={{ width: "20%", marginLeft: "10px" }}
                       onClick={(e) => {
-                        setActive_Ingredients([
-                          ...Active_Ingredients,
-                          Ingredient,
-                        ]);
+                        if (Ingredient.length > 0) {
+                          setActive_Ingredients([
+                            ...Active_Ingredients,
+                            Ingredient,
+                          ]);
+                        }
                       }}
                     >
                       add
@@ -291,7 +385,12 @@ const MedicineGroup = ({
                           size={"sm"}
                           borderRadius="full"
                           variant="solid"
-                          style={{ width: "fit-content", marginRight: "5px" }}
+                          _hover={{ cursor: "pointer", backgroundColor: "red" }}
+                          // add css hover effect color red
+                          style={{
+                            width: "fit-content",
+                            marginRight: "5px",
+                          }}
                           onClick={(e) => {
                             setActive_Ingredients(
                               Active_Ingredients.filter(
@@ -317,7 +416,9 @@ const MedicineGroup = ({
                     <Button
                       style={{ width: "20%", marginLeft: "10px" }}
                       onClick={(e) => {
-                        setMedicinal_Use([...Medicinal_Use, use]);
+                        if (use.length > 0) {
+                          setMedicinal_Use([...Medicinal_Use, use]);
+                        }
                       }}
                     >
                       add
@@ -331,6 +432,7 @@ const MedicineGroup = ({
                           size={"sm"}
                           borderRadius="full"
                           variant="solid"
+                          _hover={{ cursor: "pointer", backgroundColor: "red" }}
                           style={{ width: "fit-content", marginRight: "5px" }}
                           onClick={(e) => {
                             setMedicinal_Use(
@@ -342,15 +444,43 @@ const MedicineGroup = ({
                         </Tag>
                       ))}
                   </Box>
+                  
                   <Input
                     variant="filled"
-                    type="text"
-                    placeholder="Image"
+                    type="file"
+                    id="MImage"
+                    name="MImage"
+                    accept="image/png, image/jpeg ,image/jpg"
                     required
-                    onChange={(e) => {
-                      setImage(e.target.value);
-                    }}
+                    // style={{ display:"none"}}
+                    onChange={(e) => setImage(e.target.files[0])}
                   />
+                  <style>
+                    {`
+                      #MImage::-webkit-file-upload-button {
+                        visibility: hidden;
+                      }
+                      #MImage::before {
+                        content: 'Select Image';
+                        display: inline-block;
+                        background: linear-gradient(top, #f9f9f9, #e3e3e3);
+                        padding: 5px 0px;
+                        outline: none;
+                        white-space: nowrap;
+                        -webkit-user-select: none;
+                        cursor: pointer;
+                        font-weight: 400;
+                        font-size: 12pt;
+                        color: #A0AEC0;
+                      }
+                      #MImage:hover::before {
+                        
+                      }
+                      #MImage:active::before {
+                        background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+                      }
+                    `}
+                  </style>
                   <Input
                     variant="filled"
                     type="text"
@@ -381,6 +511,27 @@ const MedicineGroup = ({
                       </MenuItem>
                     </MenuList>
                   </Menu>
+                  <Menu>
+                    <MenuButton as={Button}>{MedicationType}</MenuButton>
+                    <MenuList>
+                      <MenuItem
+                        value={"Over the counter"}
+                        onClick={(e) => {
+                          setMedicationType(e.target.value);
+                        }}
+                      >
+                        Over the counter
+                      </MenuItem>
+                      <MenuItem
+                        value={"Prescribed"}
+                        onClick={(e) => {
+                          setMedicationType(e.target.value);
+                        }}
+                      >
+                        Prescribed
+                      </MenuItem>
+                    </MenuList>
+                  </Menu>
                 </Stack>
               </ModalBody>
               <ModalFooter>
@@ -397,6 +548,7 @@ const MedicineGroup = ({
                     setImage("");
                     setDescription("");
                     setArchived("unarchived");
+                    setMedicationType("Over the counter");
                     onClose();
                   }}
                 >

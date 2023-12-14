@@ -8,7 +8,7 @@
 * Copyright 2021 Creative Tim (https://www.creative-tim.com)
 * Licensed under MIT (https://github.com/creativetimofficial/purity-ui-dashboard/blob/master/LICENSE.md)
 
-* Design by Creative Tim & Coded by Simmmple
+* Design by Creative Tim & Coded by Simmmple 
 
 =========================================================
 
@@ -17,20 +17,20 @@
 */
 import React from "react";
 import ReactDOM from "react-dom";
-import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
-
-import AuthLayout from "layouts/Auth.js";
-import AdminLayout from "layouts/Admin.js";
-import RTLLayout from "layouts/RTL.js";
+import { AuthContextProvider } from "context/AuthContext";
+import { WalletContextProvider } from "context/WalletContext";
+import {CartContextProvider} from "context/CartContext";
+import App from "./App";
 
 ReactDOM.render(
-  <HashRouter>
-    <Switch>
-      <Route path={`/auth`} component={AuthLayout} />
-      <Route path={`/admin`} component={AdminLayout} />
-      <Route path={`/rtl`} component={RTLLayout} />
-      <Redirect from={`/`} to="/admin/dashboard" />
-    </Switch>
-  </HashRouter>,
+  <React.StrictMode>
+    <AuthContextProvider>
+      <WalletContextProvider>
+        <CartContextProvider>
+        <App />
+        </CartContextProvider>
+      </WalletContextProvider>
+    </AuthContextProvider>
+  </React.StrictMode>,
   document.getElementById("root")
 );

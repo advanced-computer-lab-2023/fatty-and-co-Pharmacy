@@ -180,9 +180,9 @@ function generateMedicineDetails() {
       description:
         "Aspirin is a nonsteroidal anti-inflammatory drug (NSAID) used to treat fever, pain, and inflammation.",
       price: Math.floor(Math.random() * 1000),
-      image: "https://www.drugs.com/images/pills/fio/AAS00310.JPG",
-      medicinalUse: "Pain relief, fever reduction, anti-inflammatory",
+      medicinalUse: ["painkiller", "fever", "anti-inflammatory"],
       sales: Math.floor(Math.random() * 1000),
+      medicationType: "Over the counter",
     },
     {
       name: "Paracetamol",
@@ -190,9 +190,9 @@ function generateMedicineDetails() {
       activeIngredients: ["Paracetamol"],
       description: "Paracetamol is a pain reliever and a fever reducer.",
       price: Math.floor(Math.random() * 1000),
-      image: "https://www.drugs.com/images/pills/fio/paracetamol-500mg-1.jpg",
-      medicinalUse: "Pain relief, fever reduction",
+      medicinalUse: ["painkiller", "fever"],
       sales: Math.floor(Math.random() * 1000),
+      medicationType: "Over the counter",
     },
     {
       name: "Ibuprofen",
@@ -201,9 +201,9 @@ function generateMedicineDetails() {
       description:
         "Ibuprofen is a nonsteroidal anti-inflammatory drug (NSAID) used to treat pain, fever, and inflammation.",
       price: Math.floor(Math.random() * 1000),
-      image: "https://www.drugs.com/images/pills/fio/ibuprofen-200mg-1.jpg",
-      medicinalUse: "Pain relief, fever reduction, anti-inflammatory",
+      medicinalUse: ["painkiller", "fever", "anti-inflammatory"],
       sales: Math.floor(Math.random() * 1000),
+      medicationType: "Over the counter",
     },
     {
       name: "Acetaminophen",
@@ -211,9 +211,9 @@ function generateMedicineDetails() {
       activeIngredients: ["Acetaminophen"],
       description: "Acetaminophen is a pain reliever and a fever reducer.",
       price: Math.floor(Math.random() * 1000),
-      image: "https://www.drugs.com/images/pills/fio/acetaminophen-500mg-1.jpg",
-      medicinalUse: "Pain relief, fever reduction",
+      medicinalUse: ["painkiller", "fever"],
       sales: Math.floor(Math.random() * 1000),
+      medicationType: "Over the counter",
     },
     {
       name: "Naproxen",
@@ -222,9 +222,9 @@ function generateMedicineDetails() {
       description:
         "Naproxen is a nonsteroidal anti-inflammatory drug (NSAID) used to treat pain, fever, and inflammation.",
       price: Math.floor(Math.random() * 1000),
-      image: "https://www.drugs.com/images/pills/fio/naproxen-500mg-1.jpg",
-      medicinalUse: "Pain relief, fever reduction, anti-inflammatory",
+      medicinalUse: ["painkiller", "fever", "anti-inflammatory"],
       sales: Math.floor(Math.random() * 1000),
+      medicationType: "Over the counter",
     },
     {
       name: "Codeine",
@@ -233,9 +233,9 @@ function generateMedicineDetails() {
       description:
         "Codeine is an opioid pain medication used to treat mild to moderate pain.",
       price: Math.floor(Math.random() * 1000),
-      image: "https://www.drugs.com/images/pills/fio/codeine-30mg-1.jpg",
-      medicinalUse: "Pain relief",
+      medicinalUse: ["painkiller", "pain"],
       sales: Math.floor(Math.random() * 1000),
+      medicationType: "Prescribed",
     },
     {
       name: "Morphine",
@@ -244,9 +244,9 @@ function generateMedicineDetails() {
       description:
         "Morphine is an opioid pain medication used to treat severe pain.",
       price: Math.floor(Math.random() * 1000),
-      image: "https://www.drugs.com/images/pills/fio/morphine-30mg-1.jpg",
-      medicinalUse: "Pain relief",
+      medicinalUse: ["painkiller", "pain"],
       sales: Math.floor(Math.random() * 1000),
+      medicationType: "Prescribed",
     },
     {
       name: "Tramadol",
@@ -255,9 +255,9 @@ function generateMedicineDetails() {
       description:
         "Tramadol is an opioid pain medication used to treat moderate to severe pain.",
       price: Math.floor(Math.random() * 1000),
-      image: "https://www.drugs.com/images/pills/fio/tramadol-50mg-1.jpg",
-      medicinalUse: "Pain relief",
+      medicinalUse: ["painkiller", "pain"],
       sales: Math.floor(Math.random() * 1000),
+      medicationType: "Prescribed",
     },
     {
       name: "Diazepam",
@@ -266,9 +266,9 @@ function generateMedicineDetails() {
       description:
         "Diazepam is a benzodiazepine used to treat anxiety, alcohol withdrawal, and seizures.",
       price: Math.floor(Math.random() * 1000),
-      image: "https://www.drugs.com/images/pills/fio/diazepam-10mg-1.jpg",
-      medicinalUse: "Anxiety relief, alcohol withdrawal, seizure treatment",
+      medicinalUse: ["anxiety"],
       sales: Math.floor(Math.random() * 1000),
+      medicationType: "Prescribed",
     },
     {
       name: "Lorazepam",
@@ -277,9 +277,9 @@ function generateMedicineDetails() {
       description:
         "Lorazepam is a benzodiazepine used to treat anxiety, insomnia, and seizures.",
       price: Math.floor(Math.random() * 1000),
-      image: "https://www.drugs.com/images/pills/fio/lorazepam-1mg-1.jpg",
-      medicinalUse: "Anxiety relief, insomnia treatment, seizure treatment",
+      medicinalUse: ["anxiety", "pain"],
       sales: Math.floor(Math.random() * 1000),
+      medicationType: "Prescribed",
     },
     {
       name: "Alprazolam",
@@ -288,9 +288,9 @@ function generateMedicineDetails() {
       description:
         "Alprazolam is a benzodiazepine used to treat anxiety and panic disorders.",
       price: Math.floor(Math.random() * 1000),
-      image: "https://www.drugs.com/images/pills/fio/alprazolam-1mg-1.jpg",
-      medicinalUse: "Anxiety relief, panic disorder treatment",
+      medicinalUse: ["anxiety"],
       sales: Math.floor(Math.random() * 1000),
+      medicationType: "Prescribed",
     },
     {
       name: "Cetirizine",
@@ -299,9 +299,9 @@ function generateMedicineDetails() {
       description:
         "Cetirizine is an antihistamine used to treat allergies and hives.",
       price: Math.floor(Math.random() * 1000),
-      image: "https://www.drugs.com/images/pills/fio/cetirizine-10mg-1.jpg",
-      medicinalUse: "Allergy relief, hives treatment",
+      medicinalUse: ["fever"],
       sales: Math.floor(Math.random() * 1000),
+      medicationType: "Over the counter",
     },
     {
       name: "Loratadine",
@@ -309,9 +309,9 @@ function generateMedicineDetails() {
       activeIngredients: ["Loratadine"],
       description: "Loratadine is an antihistamine used to treat allergies.",
       price: Math.floor(Math.random() * 1000),
-      image: "https://www.drugs.com/images/pills/fio/loratadine-10mg-1.jpg",
-      medicinalUse: "Allergy relief",
+      medicinalUse: ["fever"],
       sales: Math.floor(Math.random() * 1000),
+      medicationType: "Over the counter",
     },
     {
       name: "Fexofenadine",
@@ -319,9 +319,9 @@ function generateMedicineDetails() {
       activeIngredients: ["Fexofenadine"],
       description: "Fexofenadine is an antihistamine used to treat allergies.",
       price: Math.floor(Math.random() * 1000),
-      image: "https://www.drugs.com/images/pills/fio/fexofenadine-180mg-1.jpg",
-      medicinalUse: "Allergy relief",
+      medicinalUse: ["fever"],
       sales: Math.floor(Math.random() * 1000),
+      medicationType: "Over the counter",
     },
     {
       name: "Omeprazole",
@@ -330,9 +330,9 @@ function generateMedicineDetails() {
       description:
         "Omeprazole is a proton pump inhibitor used to treat gastroesophageal reflux disease (GERD) and stomach ulcers.",
       price: Math.floor(Math.random() * 1000),
-      image: "https://www.drugs.com/images/pills/fio/omeprazole-20mg-1.jpg",
-      medicinalUse: "GERD treatment, stomach ulcer treatment",
+      medicinalUse: ["painkiller"],
       sales: Math.floor(Math.random() * 1000),
+      medicationType: "Over the counter",
     },
     {
       name: "Pantoprazole",
@@ -341,9 +341,9 @@ function generateMedicineDetails() {
       description:
         "Pantoprazole is a proton pump inhibitor used to treat gastroesophageal reflux disease (GERD) and stomach ulcers.",
       price: Math.floor(Math.random() * 1000),
-      image: "https://www.drugs.com/images/pills/fio/pantoprazole-40mg-1.jpg",
-      medicinalUse: "GERD treatment, stomach ulcer treatment",
+      medicinalUse: ["painkiller"],
       sales: Math.floor(Math.random() * 1000),
+      medicationType: "Over the counter",
     },
     {
       name: "Esomeprazole",
@@ -352,12 +352,17 @@ function generateMedicineDetails() {
       description:
         "Esomeprazole is a proton pump inhibitor used to treat gastroesophageal reflux disease (GERD) and stomach ulcers.",
       price: Math.floor(Math.random() * 1000),
-      image: "https://www.drugs.com/images/pills/fio/esomeprazole-40mg-1.jpg",
-      medicinalUse: "GERD treatment, stomach ulcer treatment",
+      medicinalUse: ["painkiller"],
       sales: Math.floor(Math.random() * 1000),
+      medicationType: "Over the counter",
     },
   ];
   return medicines[Math.floor(Math.random() * medicines.length)];
+}
+
+function generateGender() {
+  const genders = ["M", "F"];
+  return genders[Math.floor(Math.random() * genders.length)];
 }
 
 module.exports = {
@@ -373,4 +378,5 @@ module.exports = {
   generateEmail,
   generatePassword,
   generateMedicineDetails,
+  generateGender,
 };

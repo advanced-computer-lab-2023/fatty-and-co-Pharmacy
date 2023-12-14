@@ -3,34 +3,8 @@ const userModel = require("../models/systemusers");
 // const familyMemberModel = require("../models/familymembers");
 // const { getAllPatients } = require("./testController");
 const { getPatients } = require("./testController");
-
-const createPatient = async (req, res) => {
-  const {EmergencyContactNumber,EmergencyContactName,EmergencyContactRelation} = req.body;
-  try {
-    const patient = await patientModel.create({
-      Username: req.body.Username,
-      Name: req.body.Name,
-      MobileNum: req.body.MobileNum,
-      DateOfBirth: req.body.DateOfBirth,
-      Gender: req.body.Gender,
-      EmergencyContact: {
-        FullName: EmergencyContactName,
-        PhoneNumber: EmergencyContactNumber,
-        Relation: EmergencyContactRelation,
-      },
-      
-    });
-    const user = await userModel.create({
-      Username: req.body.Username,
-      Password: req.body.Password,
-      Email: req.body.Email,
-      Type: "Patient",
-    });
-    res.status(200).send({ patient, user });
-  } catch (error) {
-    res.status(400).send({ message: error.message });
-  }
-};
+const subscriptionModel = require("../models/subscriptions");
+const packageModel = require("../models/packages");
 
 const getEmergencyContact = async (req, res) => {
   try {
@@ -45,10 +19,12 @@ const getEmergencyContact = async (req, res) => {
     }
 
     const EmergencyContact = patient.EmergencyContact;
-    const  Name = patient.Name;
+    const Name = patient.Name;
     console.log(Name);
     if (!EmergencyContact) {
-      res.status(404).send({ message: "Emergency contact not found for the patient." });
+      res
+        .status(404)
+        .send({ message: "Emergency contact not found for the patient." });
       return;
     }
 
@@ -56,7 +32,7 @@ const getEmergencyContact = async (req, res) => {
   } catch (error) {
     res.status(400).send({ message: error.message });
   }
-}
+};
 
 const getAllPatients = async (req, res) => {
   try {
@@ -88,6 +64,8 @@ const getPatientUsername = async (req, res) => {
   }
 };
 
+// I think this is useless?
+// if not useless it needs to delete from user model and order model too
 const deletePatient = async (req, res) => {
   try {
     const patient = await patientModel.findByIdAndDelete(req.params.id);
@@ -109,12 +87,43 @@ const updatePatient = async (req, res) => {
   }
 };
 
+const getWalletAmount = async (req, res) => {
+  try {
+    const patient = await patientModel.findOne({ Username: req.user.Username });
+    if (patient) {
+      res.status(200).json({ Wallet: patient.Wallet });
+    } else {
+      res.status(404).json({ error: "Cannot find wallet!" });
+    }
+  } catch {
+    res.status(404).json({ error: "Error occured while fetching amount!" });
+  }
+};
+
+const getMedicineDiscount = async (req, res) => {
+  try {
+    const current_user = req.user.Username; //changed this
+    const patient = await patientModel.findOne({ Username: current_user });
+    const subscription = await subscriptionModel
+      .findOne({ Patient: patient, Status: "Subscribed" })
+      .populate("Patient")
+      .populate("Package");
+    if (subscription) {
+      const discount = subscription.Package.Medicine_Discount;
+      res.status(200).send({ discount });
+    } 
+  } catch (error) {
+    res.status(400).send({ message: error.message });
+  }
+};
+
 module.exports = {
-  createPatient,
   getAllPatients,
   deletePatient,
   getPatient,
   updatePatient,
   getPatientUsername,
   getEmergencyContact,
+  getWalletAmount,
+  getMedicineDiscount
 };

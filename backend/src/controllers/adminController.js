@@ -1,21 +1,24 @@
 const pharmacistModel = require("../models/pharmacists");
 const patientModel = require("../models/patients");
 const requestModel = require("../models/requests");
+const orderModel = require("../models/orders");
 const systemUserModel = require("../models/systemusers");
+const { getFileByFilename } = require("../common/middleware/pharmUpload");
 
 const { default: mongoose } = require("mongoose");
 
 const createAdmin = async (req, res) => {
   const { Username, Password, Email } = req.body;
   try {
-    const admin = await systemUserModel.create({
-      Username: Username,
-      Password: Password,
-      Email: Email,
-      Type: "Admin",
-    });
+    const admin = await systemUserModel.addEntry(
+      Username,
+      Password,
+      Email,
+      "Admin"
+    );
     res.status(200).json(admin);
   } catch (error) {
+    console.log(error.message);
     res.status(400).json({ error: error.message });
   }
 };
@@ -25,6 +28,16 @@ const getRequest = async (req, res) => {
   try {
     const request = await requestModel.find({ Username: Username });
     res.status(200).json(request);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const getRequestFile = async (req, res) => {
+  try {
+    const { filename } = req.params;
+    const downloadStream = await getFileByFilename(filename);
+    downloadStream.pipe(res);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -42,10 +55,16 @@ const getRequests = async (req, res) => {
 const acceptRequest = async (req, res) => {
   const { Username } = req.body;
   try {
-    const request = await requestModel.findOneAndUpdate({
-      Username: Username,
-      Status: "Accepted",
-    });
+    const request = await requestModel.findOneAndUpdate(
+      { Username: Username, Status: { $ne: "Accepted" } },
+    { $set: { Status: "Accepted" } },
+    { new: true });
+    const user = await systemUserModel.create(
+      Username,
+      request.Password,
+      request.Email,
+      "Pharmacist"
+    );
     const doc = await pharmacistModel.create({
       Username: Username,
       Name: request.Name,
@@ -54,11 +73,7 @@ const acceptRequest = async (req, res) => {
       Affiliation: request.Affiliation,
       EducationalBackground: request.EducationalBackground,
     });
-    const user = await systemUserModel.create({
-      Username: Username,
-      Password: request.Password,
-      Email: request.Email,
-    });
+    
     res.status(200).json(request);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -68,10 +83,10 @@ const acceptRequest = async (req, res) => {
 const rejectRequest = async (req, res) => {
   const { Username } = req.body;
   try {
-    const request = await requestModel.findOneAndUpdate({
-      Username: Username,
-      Status: "Rejected",
-    });
+    const request = await requestModel.findOneAndUpdate(
+      { Username: Username, Status: { $ne: "Rejected" } },
+    { $set: { Status: "Rejected" } },
+    { new: true });
     res.status(200).json(request);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -82,17 +97,21 @@ const deleteUser = async (req, res) => {
   const { Username } = req.body;
   try {
     const user = await systemUserModel.findOneAndDelete({ Username: Username });
-    if (user.Type == "Patient") {
+    if (user && user.Type === "Patient") {
       const patient = await patientModel.findOneAndDelete({
         Username: Username,
       });
-    } else if (user.Type == "Pharmacist") {
-      const doctor = await pharmacistModel.findOneAndDelete({
+      const orders = await orderModel.find({ PatientUsername: Username });
+      if (orders.length > 0) {
+        await orders.deleteMany({ PatientUsername: Username });
+      }
+      res.status(200).json({ user, patient });
+    } else if (user && user.Type == "Pharmacist") {
+      const pharmacist = await pharmacistModel.findOneAndDelete({
         Username: Username,
       });
+      res.status(200).json({ user, pharmacist });
     }
-
-    res.status(200).json(user);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -148,4 +167,5 @@ module.exports = {
   acceptRequest,
   rejectRequest,
   getRequests,
+  getRequestFile,
 };

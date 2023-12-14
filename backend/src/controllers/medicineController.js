@@ -1,6 +1,7 @@
 // #Task route solution
 const medicineModel = require("../models/medicine");
 const { default: mongoose } = require("mongoose");
+const { getFileByFilename } = require("../common/middleware/upload");
 
 const createMedicine = async (req, res) => {
   //add a new Medicine to the database with
@@ -10,29 +11,35 @@ const createMedicine = async (req, res) => {
     Active_Ingredients,
     Description,
     Price,
-    Image,
     Sales,
     Medicinal_Use,
   } = req.body;
-  const newMedicine = new medicineModel({
-    Name: Name,
-    Quantity: Quantity,
-    Active_Ingredients: Active_Ingredients,
-    Description: Description,
-    Price: Price,
-    Image: Image,
-    Sales: Sales,
-    Medicinal_Use: Medicinal_Use,
-  });
+  const filename = req.file.filename;
+  const originalname = req.file.originalname;
+  const UpdatedMedicinalUse = Medicinal_Use.split(",");
+  const UpdatedActiveIngredients = Active_Ingredients.split(",");
+  try {
+    const newMedicine = new medicineModel({
+      Name: Name,
+      Quantity: Quantity,
+      Active_Ingredients: UpdatedActiveIngredients,
+      Description: Description,
+      Price: Price,
+      Image: { filename: filename, originalname: originalname },
+      Sales: Sales,
+      Medicinal_Use: UpdatedMedicinalUse,
+    });
 
-  await newMedicine.save();
-  res.status(200).json(newMedicine);
+    await newMedicine.save();
+    res.status(200).json(newMedicine);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 };
 
 const getMedicines = async (req, res) => {
   const { Name, Medicinal_Use } = req.query;
 
-  console.log(req.query);
   //retrieve all Medicine from the database
   try {
     const Medicine = await medicineModel.find({
@@ -58,28 +65,39 @@ const updateMedicine = async (req, res) => {
       State,
       Description,
       Price,
-      Image,
       Sales,
+      MedicationType,
     } = req.body;
+    let filename;
+    let originalname;
+    let isImage = true;
+    try {
+      filename = req.file.filename;
+      originalname = req.file.originalname;
+    } catch (error) {
+      isImage = false;
+    }
     if (!mongoose.Types.ObjectId.isValid(id))
       return res.status(404).send(`No Medicine with id: ${id}`);
 
+    const UpdatedMedicinalUse = Medicinal_Use.split(",");
+    const UpdatedActiveIngredients = Active_Ingredients.split(",");
     const updatedMedicine = {
       Name,
       Quantity,
-      Active_Ingredients,
+      Active_Ingredients: UpdatedActiveIngredients,
       Description,
       Price,
-      Medicinal_Use,
+      Medicinal_Use: UpdatedMedicinalUse,
       State,
-      Image,
       Sales,
+      MedicationType,
       _id: id,
+      ...(isImage && { Image: { filename: filename, originalname: originalname } }),
     };
     const newMed = await medicineModel.findByIdAndUpdate(id, updatedMedicine, {
       new: true,
     });
-
     res.status(200).json(newMed);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -125,15 +143,21 @@ const filterMedicine = async (req, res) => {
 // retrieve a specific Medicine by Name
 const getMedicine = async (req, res) => {
   try {
-    const { Name, Medicinal_Use } = req.params;
+    const { Name } = req.params;
     const medicine = await medicineModel.find({
       ...(Name ? { Name: { $regex: Name, $options: "i" } } : {}),
-      ...(Medicinal_Use ? { Medicinal_Use: { $in: Medicinal_Use } } : {}),
     });
     res.status(200).json(medicine);
   } catch (err) {
     res.status(404).json({ message: "No Medicine found" });
   }
+};
+
+// retrive the image of a specific Medicine by filename
+const downloadFile = async (req, res) => {
+  const { filename } = req.params;
+  const downloadStream = await getFileByFilename(filename);
+  downloadStream.pipe(res);
 };
 
 module.exports = {
@@ -143,4 +167,5 @@ module.exports = {
   deleteMedicine,
   filterMedicine,
   getMedicine,
+  downloadFile,
 };

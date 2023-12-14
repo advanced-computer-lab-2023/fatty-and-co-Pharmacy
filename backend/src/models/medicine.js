@@ -25,7 +25,7 @@ const medicineSchema = new Schema(
       required: true,
     },
     Image: {
-      type: String,
+      type: { filename: String, originalname: String }, 
     },
     Medicinal_Use: [
       {
@@ -41,6 +41,11 @@ const medicineSchema = new Schema(
       type: String,
       enum: ["archived", "unarchived"],
       default: "unarchived",
+    },
+    MedicationType: {
+      type: String,
+      enum: ["Over the counter", "Prescribed"],
+      default: "Over the counter",
     },
   },
 

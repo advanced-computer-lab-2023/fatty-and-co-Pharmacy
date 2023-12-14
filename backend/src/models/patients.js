@@ -17,6 +17,12 @@ const patientSchema = new Schema(
     MobileNum: {
       type: Number,
       required: true,
+      unique: true,
+    },
+    NationalId: {
+      type: String,
+      required: true,
+      unique: true,
     },
     DateOfBirth: {
       type: Date,
@@ -25,20 +31,29 @@ const patientSchema = new Schema(
     Gender: {
       type: String,
       enum: ["M", "F"],
-      required: true
+      required: true,
     },
     EmergencyContact: {
       type: { FullName: String, PhoneNumber: Number, Relation: String }, //NOT SURE OF THIS SYNTAX
-      required: false,
+      required: true,
     },
-    // TODO: change this
-    // FamilyMem: {
-    //   type: [ImportFamObject.FamilyMem], //NOT SURE MEN LAW DA VALID TYPE
-    //   required: false,
-    // },
-    // TODO: properly add prescriptions
-    Prescriptions: {
-      type: [String],
+    Wallet: {
+      type: Number,
+      required: false,
+      default: 5000,
+    },
+    LinkedPatients: {
+      type: [
+        {
+          type: mongoose.Types.ObjectId,
+          ref: "Patient",
+        },
+      ],
+      required: true,
+    },
+    MedicalHistory: {
+      // i want medical history to be a array of pairs of strings
+      type: [{ filename: String, originalname: String, note: String }],
       required: false,
     },
   },

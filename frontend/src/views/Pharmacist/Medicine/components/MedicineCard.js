@@ -5,6 +5,7 @@ import {
   Flex,
   Image,
   Text,
+  Heading,
   useColorModeValue,
   Badge,
   useDisclosure,
@@ -20,6 +21,7 @@ import {
   Input,
   Menu,
   MenuButton,
+  Tooltip,
   MenuList,
   MenuItem,
   Tag,
@@ -28,6 +30,9 @@ import {
 import React, { useState } from "react";
 import { useMedicineContext } from "../../../../hooks/useMedicineContext";
 import { API_PATHS } from "API/api_paths";
+import axios from "axios";
+import { useEffect } from "react";
+import { useAuthContext } from "hooks/useAuthContext";
 
 const MedicineCard = ({ Medicine }) => {
   // Chakra color mode
@@ -48,7 +53,9 @@ const MedicineCard = ({ Medicine }) => {
   const [message, setMessage] = useState("");
   const [use, setUse] = useState("");
   const [Ingredient, setIngredient] = useState("");
-
+  const [MedicationType, setMedicationType] = useState(Medicine.MedicationType);
+  const [updateImage, setUpdateImage] = useState(null);
+  const [id, setId] = useState(Medicine._id);
   const isArchviedC = Archived === "archived" ? "red" : "green";
   const isArchvied = Archived === "archived" ? "Archived" : "Available";
 
@@ -56,10 +63,124 @@ const MedicineCard = ({ Medicine }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
 
+  const { user } = useAuthContext();
+  const Authorization = `Bearer ${user.token}`;
+
+  // set image
+  const [file, setFile] = useState(null);
+  const downloadFile = async () => {
+    let imageFilename = "";
+    try {
+      const { filename } = MImage;
+      imageFilename = filename;
+    } catch (err) {
+      setFile("fail");
+      return;
+    }
+    const response = await fetch(API_PATHS.downloadFile + imageFilename, {
+      method: "GET",
+      headers: {
+        Authorization,
+      },
+    });
+    const file = await response.blob();
+    const fileUrl = URL.createObjectURL(file);
+    setFile(fileUrl);
+  };
+  useEffect(() => {
+    downloadFile();
+  }, []);
+
+  const closeEdit = (e) => {
+    console.log(Medicine);
+    setName(Medicine.Name);
+    setPrice(Medicine.Price);
+    setActive_Ingredients([...Medicine.Active_Ingredients]);
+    setMedicinal_Use([...Medicine.Medicinal_Use]);
+    setQuantity(Medicine.Quantity);
+    setSales(Medicine.Sales);
+    //setImage(Medicine.Image);
+    setDescription(Medicine.Description);
+    setArchived(Medicine.State);
+    setMedicationType(Medicine.MedicationType);
+    onClose();
+  };
+
   return (
+    <div>
+    <Box
+    borderWidth="1px"
+    borderRadius="lg"
+    overflow="hidden"
+    p="4"
+    boxShadow="md"
+  >
     <Flex direction="column">
+      <Tooltip
+          label={Description}
+        >
+           <Box>
+        <Image src={file} alt={Name} borderRadius="15px" boxSize="200px" />
+        <Stack mt='6' spacing='3'>
+          <Heading size='md'>
+            {Name}
+            <Badge ml="1" colorScheme={isArchviedC}>
+              {isArchvied}
+            </Badge>
+          </Heading>
+          <Text fontSize="md" color="gray.500" fontWeight="600" mb="10px">
+           {Medicinal_Use.map((use) => (
+             <Tag key={use} style={{ margin: "0 5px 0 0" }}>
+              {use}
+            </Tag>
+          ))}
+         </Text>
+          <Text fontSize="sm" color="gray.500" fontWeight="400">
+           Active Ingredients:
+           {Active_Ingredients.map((use) => (
+             <text>{" " + use} </text>
+           ))}
+         </Text>
+         <Text fontSize="sm" color="gray.500" fontWeight="400">
+           Medication Type: {MedicationType}
+         </Text>
+         <Text fontSize="sm" color="gray.500" fontWeight="400">
+          Quantity: {Quantity}
+        </Text>
+        <Text fontSize="sm" color="gray.500" fontWeight="400">
+          Sales: {Sales}
+        </Text>
+        <Text fontSize="sm" color="gray.500" fontWeight="400">
+          Medication Type: {MedicationType}
+        </Text>
+          {/* <Text>
+            {Description}
+          </Text> */}
+          <Text fontSize="xl" color="teal">
+              Price:{' '}{Price}
+        </Text>
+        </Stack>
+        </Box>
+        </Tooltip>
+        <Flex justifyContent="space-between">
+          <Button
+            variant="outline"
+            colorScheme="teal"
+            minW="110px"
+            h="36px"
+            fontSize="xs"
+            px="1.5rem"
+            onClick={onOpen}
+          >
+            Edit
+          </Button>
+        </Flex>
+      </Flex>
+      </Box>
+
+    {/* <Flex direction="column">
       <Box mb="20px" position="relative" borderRadius="15px">
-        <Image src={MImage} alt={Name} borderRadius="15px" boxSize="200px" />
+        <Image src={file} alt={Name} borderRadius="15px" boxSize="200px" />
         <Box
           w="100%"
           h="100%"
@@ -93,10 +214,13 @@ const MedicineCard = ({ Medicine }) => {
           Quantity: {Quantity}
         </Text>
         <Text fontSize="sm" color="gray.500" fontWeight="400">
-          Price : {Price} EGP
+          Price: {Price} EGP
         </Text>
         <Text fontSize="sm" color="gray.500" fontWeight="400">
-          Sales : {Sales}
+          Sales: {Sales}
+        </Text>
+        <Text fontSize="sm" color="gray.500" fontWeight="400">
+          Medication Type: {MedicationType}
         </Text>
         <br />
         <Text fontSize="sm" color="gray.500" fontWeight="400" mb="10px">
@@ -115,8 +239,8 @@ const MedicineCard = ({ Medicine }) => {
             Edit
           </Button>
         </Flex>
-      </Flex>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      </Flex> */}
+      <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={closeEdit}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Edit {Name}</ModalHeader>
@@ -207,6 +331,7 @@ const MedicineCard = ({ Medicine }) => {
                       size={"sm"}
                       borderRadius="full"
                       variant="solid"
+                      _hover={{ cursor: "pointer", backgroundColor: "red" }}
                       style={{ width: "fit-content", marginRight: "5px" }}
                       onClick={(e) => {
                         setActive_Ingredients(
@@ -234,7 +359,9 @@ const MedicineCard = ({ Medicine }) => {
                 <Button
                   style={{ width: "20%", marginLeft: "10px" }}
                   onClick={(e) => {
-                    setMedicinal_Use([...Medicinal_Use, use]);
+                    if (use.length > 0) {
+                      setMedicinal_Use([...Medicinal_Use, use]);
+                    }
                   }}
                 >
                   add
@@ -248,6 +375,7 @@ const MedicineCard = ({ Medicine }) => {
                       size={"sm"}
                       borderRadius="full"
                       variant="solid"
+                      _hover={{ cursor: "pointer", backgroundColor: "red" }}
                       style={{ width: "fit-content", marginRight: "5px" }}
                       onClick={(e) => {
                         setMedicinal_Use(
@@ -261,16 +389,45 @@ const MedicineCard = ({ Medicine }) => {
               </Box>
               <Input
                 variant="filled"
-                type="text"
-                placeholder="Image"
+                type="file"
+                id="MImage"
+                name="MImage"
+                accept="image/png, image/jpeg ,image/jpg"
+                required
                 onChange={(e) => {
                   if (e.target.value.length == 0) {
-                    setImage(Medicine.Image);
+                    //setImage(Medicine.Image);
                   } else {
-                    setImage(e.target.value);
+                    setUpdateImage(e.target.files[0]);
                   }
                 }}
               />
+              <style>
+                {`
+                      #MImage::-webkit-file-upload-button {
+                        visibility: hidden;
+                      }
+                      #MImage::before {
+                        content: 'Select Image';
+                        display: inline-block;
+                        background: linear-gradient(top, #f9f9f9, #e3e3e3);
+                        padding: 5px 0px;
+                        outline: none;
+                        white-space: nowrap;
+                        -webkit-user-select: none;
+                        cursor: pointer;
+                        font-weight: 400;
+                        font-size: 12pt;
+                        color: #A0AEC0;
+                      }
+                      #MImage:hover::before {
+                        
+                      }
+                      #MImage:active::before {
+                        background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+                      }
+                    `}
+              </style>
               <Input
                 variant="filled"
                 type="text"
@@ -304,26 +461,31 @@ const MedicineCard = ({ Medicine }) => {
                   </MenuItem>
                 </MenuList>
               </Menu>
+              <Menu>
+                <MenuButton as={Button}>{MedicationType}</MenuButton>
+                <MenuList>
+                  <MenuItem
+                    value={"Over the counter"}
+                    onClick={(e) => {
+                      setMedicationType(e.target.value);
+                    }}
+                  >
+                    Over the counter
+                  </MenuItem>
+                  <MenuItem
+                    value={"Prescribed"}
+                    onClick={(e) => {
+                      setMedicationType(e.target.value);
+                    }}
+                  >
+                    Prescribed
+                  </MenuItem>
+                </MenuList>
+              </Menu>
             </Stack>
           </ModalBody>
           <ModalFooter>
-            <Button
-              variant="ghost"
-              mr={3}
-              onClick={(e) => {
-                console.log(Medicine);
-                setName(Medicine.Name);
-                setPrice(Medicine.Price);
-                setActive_Ingredients([...Medicine.Active_Ingredients]);
-                setMedicinal_Use([...Medicine.Medicinal_Use]);
-                setQuantity(Medicine.Quantity);
-                setSales(Medicine.Sales);
-                setImage(Medicine.Image);
-                setDescription(Medicine.Description);
-                setArchived(Medicine.State);
-                onClose();
-              }}
-            >
+            <Button variant="ghost" mr={3} onClick={closeEdit}>
               Close
             </Button>
             <Button
@@ -332,75 +494,151 @@ const MedicineCard = ({ Medicine }) => {
                 // API_PATHS.updateMedicine + Medicine._id
                 // "medicine/updateMedicine/"
 
+                // if (
+                //   Active_Ingredients.length === 0 ||
+                //   Medicinal_Use.length === 0
+                // ) {
+                //   return toast({
+                //     title: "failed Add Medicine.",
+                //     description:
+                //       "Please add at least one ingredient and one use.",
+                //     status: "error",
+                //     duration: 5000,
+                //     isClosable: true,
+                //   });
+                // }
+
+                // const response = await fetch(
+                //   API_PATHS.updateMedicine + Medicine._id,
+                //   {
+                //     method: "PATCH",
+                //     headers: {
+                //       "Content-Type": "application/json",
+                //     },
+                //     body: JSON.stringify({
+                //       Name,
+                //       Price,
+                //       Active_Ingredients,
+                //       Medicinal_Use,
+                //       Quantity,
+                //       Sales,
+                //       Image: MImage,
+                //       Description,
+                //       State: Archived,
+                //     }),
+                //   }
+                // );
+
+                // const data = await response.json();
+                // console.log(data);
+                // if (response.status === 200) {
+                //   dispatch({ type: "UPDATE_MEDICINE", payload: data });
+
+                //   toast({
+                //     title: "Medicine Updated.",
+                //     description: "You updated the Medicine succsefuly.",
+                //     status: "success",
+                //     duration: 5000,
+                //     isClosable: true,
+                //   });
+                //   onClose();
+                // } else {
+                //   // setMessage(data.message);
+                //   setMessage(data.message);
+                //   setName(Medicine.Name);
+                //   setPrice(Medicine.Price);
+                //   setActive_Ingredients(Medicine.Active_Ingredients);
+                //   setMedicinal_Use(Medicine.Medicinal_Use);
+                //   setQuantity(Medicine.Quantity);
+                //   setSales(Medicine.Sales);
+                //   setImage(Medicine.Image);
+                //   setDescription(Medicine.Description);
+                //   setArchived(Medicine.State);
+
+                //   toast({
+                //     title: "failed Medicine Update.",
+                //     description: message,
+                //     status: "error",
+                //     duration: 9000,
+                //     isClosable: true,
+                //   });
+                // }
+
                 if (
                   Active_Ingredients.length === 0 ||
                   Medicinal_Use.length === 0
                 ) {
                   return toast({
-                    title: "failed Add Medicine.",
+                    title: "failed update Medicine.",
                     description:
-                      "Please add at least one ingredient and one use.",
+                      Active_Ingredients.length === 0
+                        ? "Please add at least one ingredient."
+                        : "Please add at least one use.",
                     status: "error",
                     duration: 5000,
                     isClosable: true,
                   });
                 }
+                const formData = new FormData();
+                formData.append("Name", Name);
+                formData.append("Price", Price);
+                formData.append("Active_Ingredients", [...Active_Ingredients]);
+                formData.append("Medicinal_Use", [...Medicinal_Use]);
+                formData.append("Quantity", Quantity);
+                formData.append("Sales", Sales);
+                formData.append("MImage", updateImage);
+                formData.append("Description", Description);
+                formData.append("State", Archived);
+                formData.append("MedicationType", MedicationType);
+                await fetch(API_PATHS.updateMedicine + id, {
+                  method: "PATCH",
+                  headers: {
+                    Authorization: Authorization,
+                  },
+                  body: formData,
+                })
+                  .then(async (response) => {
+                    // Handle success
+                    const data = await response.json();
+                    dispatch({
+                      type: "UPDATE_MEDICINE",
+                      payload: data,
+                    });
+                    toast({
+                      title: "Medicine Updated.",
+                      description: "You updated the Medicine successfully.",
+                      status: "success",
+                      duration: 5000,
+                      isClosable: true,
+                    });
+                    onClose();
+                    const timer = setTimeout(() => {
+                      location.reload();
+                    }, 1000); // 1000ms delay
+                  })
+                  .catch((error) => {
+                    // Handle error
+                    console.log(error);
+                    setMessage(error.response.data.message);
+                    setName(Medicine.Name);
+                    setPrice(Medicine.Price);
+                    setActive_Ingredients([...Medicine.Active_Ingredients]);
+                    setMedicinal_Use([...Medicine.Medicinal_Use]);
+                    setQuantity(Medicine.Quantity);
+                    setSales(Medicine.Sales);
+                    //setImage(Medicine.Image);
+                    setDescription(Medicine.Description);
+                    setArchived(Medicine.State);
+                    setMedicationType(Medicine.MedicationType);
 
-                const response = await fetch(
-                  API_PATHS.updateMedicine + Medicine._id,
-                  {
-                    method: "PATCH",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                      Name,
-                      Price,
-                      Active_Ingredients,
-                      Medicinal_Use,
-                      Quantity,
-                      Sales,
-                      Image: MImage,
-                      Description,
-                      State: Archived,
-                    }),
-                  }
-                );
-
-                const data = await response.json();
-                console.log(data);
-                if (response.status === 200) {
-                  dispatch({ type: "UPDATE_MEDICINE", payload: data });
-
-                  toast({
-                    title: "Medicine Updated.",
-                    description: "You updated the Medicine succsefuly.",
-                    status: "success",
-                    duration: 5000,
-                    isClosable: true,
+                    toast({
+                      title: "failed Medicine Update.",
+                      description: message,
+                      status: "error",
+                      duration: 9000,
+                      isClosable: true,
+                    });
                   });
-                  onClose();
-                } else {
-                  // setMessage(data.message);
-                  setMessage(data.message);
-                  setName(Medicine.Name);
-                  setPrice(Medicine.Price);
-                  setActive_Ingredients(Medicine.Active_Ingredients);
-                  setMedicinal_Use(Medicine.Medicinal_Use);
-                  setQuantity(Medicine.Quantity);
-                  setSales(Medicine.Sales);
-                  setImage(Medicine.Image);
-                  setDescription(Medicine.Description);
-                  setArchived(Medicine.State);
-
-                  toast({
-                    title: "failed Medicine Update.",
-                    description: message,
-                    status: "error",
-                    duration: 9000,
-                    isClosable: true,
-                  });
-                }
               }}
             >
               Save Changes
@@ -408,7 +646,8 @@ const MedicineCard = ({ Medicine }) => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </Flex>
+    {/* </Flex> */}
+    </div>
   );
 };
 

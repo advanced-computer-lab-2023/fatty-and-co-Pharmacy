@@ -14,12 +14,13 @@ const orderSchema = new Schema({
   },
   Status: {
     type: String,
-    enum: ["Pending", "In Progress", "Cancelled", "Completed"],
+    enum: ["In Progress", "Cancelled", "Completed"],
+    default: "In Progress",
     required: true,
   },
   Details: {
     type: String,
-    required: true,
+    required: false,
   },
   TotalCost: {
     type: Number,
@@ -27,10 +28,18 @@ const orderSchema = new Schema({
   },
   PaymentMethod: {
     type: String,
-    enum: ["Cash", "Credit Card"],
+    enum: ["Wallet", "Cash", "Credit Card"],
     required: true,
   },
-  //TODO: add array of medicine
+  Medicine: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "Medicine",
+    required: true,
+  },
+  DeliveryAddress: {
+    type: String,
+    required: true,
+  },
 });
 
 const Order = mongoose.model("Order", orderSchema);
