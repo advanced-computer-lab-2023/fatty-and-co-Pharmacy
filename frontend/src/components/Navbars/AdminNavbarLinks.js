@@ -192,7 +192,7 @@ export default function HeaderLinks(props) {
               h="27px"
               mr="13px"
             >
-              {Wallet !== null ? `${Wallet}` : ""}
+              {Wallet !== null ? `${parseFloat(Wallet).toFixed(2)}` : ""}
             </Text>
           </Flex>
           </Tooltip>
