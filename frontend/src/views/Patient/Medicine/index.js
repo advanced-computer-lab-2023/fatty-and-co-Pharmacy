@@ -12,6 +12,7 @@ import ProfileInformation from "./components/ProfileInformation";
 import MedicineGroup from "./components/MedicineGroup";
 import { useState, useEffect } from "react";
 import { useMedicineContext } from "../../../hooks/useMedicineContext";
+import { useCartContext } from "../../../hooks/useCartContext";
 import { API_PATHS } from "../../../API/api_paths";
 import { useAuthContext } from "hooks/useAuthContext";
 import axios from "axios";
@@ -20,6 +21,7 @@ function Index() {
   // Chakra color mode
   // const [medicines, setMedicines] = useState([]);
   const { medicines, dispatch } = useMedicineContext();
+  const { cart, dispatch: cartDispatch } = useCartContext();
   const textColor = useColorModeValue("gray.700", "white");
   const [searchAndFilterParams, setSearchAndFilterParams] = useState({
     Name: "",
@@ -39,6 +41,18 @@ function Index() {
         dispatch({ type: "SET_MEDICINES", payload: response.data });
       })
       .catch((err) => console.log(err));
+
+    axios
+      .get(API_PATHS.viewCart, {
+        headers: { Authorization },
+      })
+      .then((response) => {
+        cartDispatch({ type: "SET_CART", payload: response.data.medicine });
+      })
+      .catch((error) => {
+        console.error("Error fetching cart:", error);
+      });
+      
   }, [searchAndFilterParams]);
 
   return (

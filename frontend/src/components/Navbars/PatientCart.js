@@ -24,6 +24,7 @@ import {
 import { MdAttachMoney } from "react-icons/md";
 import { BsCart2 } from "react-icons/bs";
 import { useAuthContext } from "hooks/useAuthContext";
+import { useCartContext } from "hooks/useCartContext";
 import React from "react";
 import axios from "axios";
 import { API_PATHS } from "API/api_paths";
@@ -40,7 +41,7 @@ const theme = extendTheme({
 export default function PatientCart() {
   const { user } = useAuthContext();
   const Authorization = `Bearer ${user.token}`;
-  const [medicine, setMedicine] = useState([{}]);
+  const {  cart, dispatch} = useCartContext();
   const [fileUrlMap, setFileUrlMap] = useState(new Map());  
   const history = useHistory();
   useEffect(() => {
@@ -52,7 +53,9 @@ export default function PatientCart() {
                 headers: { Authorization },
             })
             .then((response) => {
-                setMedicine(response.data.medicine);
+                
+                dispatch({ type: "SET_CART", payload: response.data.medicine });
+                console.log("Cart:", cart);
                 fetchMedicineImages(response.data.medicine);
             })
             .catch((error) => {
@@ -130,12 +133,13 @@ export default function PatientCart() {
           <PopoverBody>
             <Flex direction='column' w='100%' >
             <Stack divider={<StackDivider />} spacing='1' flex='1' align='center' flexDirection='column'>
-              {medicine.map((med, index) => (
+              
+              {cart && cart.map((med) => (
                 <Flex
                   justifyContent="space-between"
                   alignItems="center"
                   direction="row"
-                  key={index}
+                  key={med.id}
                   mr="2" 
                 >
                   {fileUrlMap.get(med.id) !== "fail" && (
