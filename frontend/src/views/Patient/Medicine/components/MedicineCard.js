@@ -35,6 +35,7 @@ import { API_PATHS } from "API/api_paths";
 import axios from "axios";
 import { useEffect } from "react";
 import { useAuthContext } from "hooks/useAuthContext";
+import { CartPlusFill } from "react-bootstrap-icons";
 
 const MedicineCard = ({ Medicine,medicineDiscount, ...rest }) => {
   // Chakra color mode
@@ -201,9 +202,19 @@ const MedicineCard = ({ Medicine,medicineDiscount, ...rest }) => {
         </Box>
         </Tooltip>
         <Tooltip
-          isDisabled={MedicationType !== "Prescribed" || Quantity === 0}
-          label="This medicine needs a prescription to order"
-          bg="red.500"
+          placement="bottom-start"
+          label={
+            MedicationType === "Prescribed"
+              ? "This medicine needs a prescription to order"
+              : Quantity === 0
+              ? "Out of Stock. You can find alternatives"
+              : "Add to cart"
+          }
+          bg={
+            MedicationType === "Prescribed" || Quantity === 0
+              ? "red.500"
+              : "green.500"
+          }
         >
           <Flex justifyContent="space-between">
             <Button
@@ -217,7 +228,14 @@ const MedicineCard = ({ Medicine,medicineDiscount, ...rest }) => {
                 }
               }}
             >
-              {Quantity === 0 ? "View Alternatives" : "Add to Cart"}
+              {Quantity === 0 ? (
+                "View Alternatives"
+              ) : (
+                <Flex>
+                  <CartPlusFill style={{ margin: "3px", width: "14px" }} />{" "}
+                  <p>{Price} EGP</p>
+                </Flex>
+              )}
             </Button>
           </Flex>
         </Tooltip>
