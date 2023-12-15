@@ -37,7 +37,7 @@ import { useEffect } from "react";
 import { useAuthContext } from "hooks/useAuthContext";
 import { CartPlusFill } from "react-bootstrap-icons";
 
-const MedicineCard = ({ Medicine,medicineDiscount, ...rest }) => {
+const MedicineCard = ({ Medicine, medicineDiscount, ...rest }) => {
   // Chakra color mode
   const textColor = useColorModeValue("gray.700", "white");
   const { dispatch } = useMedicineContext();
@@ -138,6 +138,25 @@ const MedicineCard = ({ Medicine,medicineDiscount, ...rest }) => {
       });
   };
 
+  const [isPrescribed, setIsPrescribed] = useState(false);
+  useEffect(() => {
+    const checkIfMedicineIsPrescribed = () => {
+      axios
+        .get(API_PATHS.checkMedicinePrescribed, {
+          params: { Medicine: Medicine._id },
+          headers: { Authorization },
+        })
+        .then((response) => {
+          console.log(Name + "  " + response.data.isPrescribed);
+          setIsPrescribed(response.data.isPrescribed);
+        })
+        .catch((error) => {
+          console.log(error.response.data.message);
+        });
+    };
+    checkIfMedicineIsPrescribed();
+  }, []);
+
   // TODO: Needs editing to improve the UX
   const viewAlternatives = () => {
     dispatch({ type: "FILTER_MEDICINES", payload: Active_Ingredients[0] });
@@ -145,80 +164,78 @@ const MedicineCard = ({ Medicine,medicineDiscount, ...rest }) => {
   };
 
   return (
-     <Box
-    borderWidth="1px"
-    borderRadius="lg"
-    overflow="hidden"
-    p="4"
-    boxShadow="md"
-  >
-    <Flex direction="column">
-      <Tooltip
-          label={Description}
-        >
-           <Box>
-        <Image src={file} alt={Name} borderRadius="15px" boxSize="200px" />
-        <Stack mt='6' spacing='3'>
-          <Heading size='md'>
-            {Name}
-            <Badge ml="1" colorScheme={isArchviedC}>
-              {isArchvied}
-            </Badge>
-          </Heading>
-          <Text fontSize="md" color="gray.500" fontWeight="600" mb="10px">
-           {Medicinal_Use.map((use) => (
-             <Tag key={use} style={{ margin: "0 5px 0 0" }}>
-              {use}
-            </Tag>
-          ))}
-         </Text>
-          <Text fontSize="sm" color="gray.500" fontWeight="400">
-           Active Ingredients:
-           {Active_Ingredients.map((use) => (
-             <text>{" " + use} </text>
-           ))}
-         </Text>
-         <Text fontSize="sm" color="gray.500" fontWeight="400">
-           Medication Type: {MedicationType}
-         </Text>
-          {/* <Text>
+    <Box
+      borderWidth="1px"
+      borderRadius="lg"
+      overflow="hidden"
+      p="4"
+      boxShadow="md"
+    >
+      <Flex direction="column">
+        <Tooltip label={Description}>
+          <Box>
+            <Image src={file} alt={Name} borderRadius="15px" boxSize="200px" />
+            <Stack mt="6" spacing="3">
+              <Heading size="md">
+                {Name}
+                <Badge ml="1" colorScheme={isArchviedC}>
+                  {isArchvied}
+                </Badge>
+              </Heading>
+              <Text fontSize="md" color="gray.500" fontWeight="600" mb="10px">
+                {Medicinal_Use.map((use) => (
+                  <Tag key={use} style={{ margin: "0 5px 0 0" }}>
+                    {use}
+                  </Tag>
+                ))}
+              </Text>
+              <Text fontSize="sm" color="gray.500" fontWeight="400">
+                Active Ingredients:
+                {Active_Ingredients.map((use) => (
+                  <Text>{" " + use} </Text>
+                ))}
+              </Text>
+              <Text fontSize="sm" color="gray.500" fontWeight="400">
+                Medication Type: {MedicationType}
+              </Text>
+              {/* <Text>
             {Description}
           </Text> */}
-          <Text fontSize="xl" color="teal">
-              Price:{' '}
-              {medicineDiscount !== 0 ? (
-                <>
-                  <span style={{ textDecoration: 'line-through', color: 'teal' }}>
-                    {Price}
-                  </span>{' '}
-                  {'  '}
-                  <span style={{ color: 'red' }}>{Price - (Price * medicineDiscount) / 100}</span>
-                </>
-              ) : (
-                <span style={{ color: 'teal' }}>{Price}</span>
-              )}
-        </Text>
-        </Stack>
-        </Box>
+              <Text fontSize="xl" color="teal">
+                Price:{" "}
+                {medicineDiscount !== 0 ? (
+                  <>
+                    <span
+                      style={{ textDecoration: "line-through", color: "teal" }}
+                    >
+                      {Price}
+                    </span>{" "}
+                    {"  "}
+                    <span style={{ color: "red" }}>
+                      {Price - (Price * medicineDiscount) / 100}
+                    </span>
+                  </>
+                ) : (
+                  <span style={{ color: "teal" }}>{Price}</span>
+                )}
+              </Text>
+            </Stack>
+          </Box>
         </Tooltip>
         <Tooltip
           placement="bottom-start"
           label={
-            MedicationType === "Prescribed"
-              ? "This medicine needs a prescription to order"
-              : Quantity === 0
+            Quantity === 0
               ? "Out of Stock. You can find alternatives"
+              : !isPrescribed
+              ? "This medicine needs a prescription to order"
               : "Add to cart"
           }
-          bg={
-            MedicationType === "Prescribed" || Quantity === 0
-              ? "red.500"
-              : "green.500"
-          }
+          bg={!isPrescribed || Quantity === 0 ? "red.500" : "green.500"}
         >
           <Flex justifyContent="space-between">
             <Button
-              disabled={MedicationType === "Prescribed" && Quantity !== 0}
+              disabled={!isPrescribed && Quantity !== 0}
               colorScheme={"teal"}
               onClick={() => {
                 if (Quantity === 0) {
@@ -233,15 +250,14 @@ const MedicineCard = ({ Medicine,medicineDiscount, ...rest }) => {
               ) : (
                 <Flex>
                   <CartPlusFill style={{ margin: "3px", width: "14px" }} />{" "}
-                  <p>{Price} EGP</p>
                 </Flex>
               )}
             </Button>
           </Flex>
         </Tooltip>
       </Flex>
-      </Box>
-    
+    </Box>
+
     // <Flex direction="column">
     //   <Box mb="20px" position="relative" borderRadius="15px">
     //     <Image src={file} alt={Name} borderRadius="15px" boxSize="200px" />
@@ -264,7 +280,7 @@ const MedicineCard = ({ Medicine,medicineDiscount, ...rest }) => {
     //     </Text>
     //     <Text fontSize="xl" color={textColor} fontWeight="bold" mb="3px">
     //       {Name}
-    //       <Badge ml="1" colorScheme={isArchviedC}>
+    //       <Badge ml="1" colorScheme={isArchviedC}>`
     //         {isArchvied}
     //       </Badge>
     //     </Text>

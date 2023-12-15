@@ -47,7 +47,7 @@ export const API_PATHS = {
   // Pharmacist paths
 
   // Patient paths
-  getMedicineDiscount: PATIENT_BASE+"getMedicineDiscount/",
+  getMedicineDiscount: PATIENT_BASE + "getMedicineDiscount/",
 
   // Order paths
   checkout: ORDER_BASE + "checkout/",
@@ -59,6 +59,7 @@ export const API_PATHS = {
   viewCart: CART_BASE + "viewCart/",
   decrementItem: CART_BASE + "decrementItem/", // + mdedicineID
   deleteItem: CART_BASE + "deleteItem/",
+  checkMedicinePrescribed: CART_BASE + "checkMedicinePrescribed/",
 
   // Delivery Address paths
   viewDeliveryAddresses: DELIVERY_ADDRESS_BASE + "viewDeliveryAddresses/",
