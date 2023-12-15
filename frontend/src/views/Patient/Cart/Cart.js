@@ -3,6 +3,7 @@ import { API_PATHS } from "API/api_paths";
 import axios from "axios";
 import { BrowserRouter as Router, Route, Switch, useHistory } from 'react-router-dom';
 import { useAuthContext } from "hooks/useAuthContext";
+import { useCartContext } from "hooks/useCartContext";
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
@@ -29,7 +30,7 @@ function Cart() {
     const { user } = useAuthContext();
     const Authorization = `Bearer ${user.token}`;
     const [cart, setCart] = useState([]);
-    const [medicine, setMedicine] = useState([]);
+    const { cart:medicine , dispatch } = useCartContext();
     const textColor = useColorModeValue("gray.700", "white");
     const toast = useToast();
 
@@ -45,7 +46,8 @@ function Cart() {
             })
             .then((response) => {
                 setCart(response.data.cart);
-                setMedicine(response.data.medicine);
+                dispatch({ type: "SET_CART", payload: response.data.medicine });
+                console.log("Cart:", medicine);
             })
             .catch((error) => {
                 console.error("Error fetching cart:", error);
@@ -142,6 +144,7 @@ function Cart() {
                                 </Tr>
                             </Thead>
                             <Tbody>
+                                
                                 {medicine?.map((med) => (
                                     <Tr
                                         key={med._id}

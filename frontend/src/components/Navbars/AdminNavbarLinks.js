@@ -16,7 +16,8 @@ import {
   useColorModeValue,
   ChakraProvider,
   extendTheme,
-  Divider
+  Divider,
+  Tooltip,
 } from "@chakra-ui/react";
 import { Icon } from "@chakra-ui/icon";
 import { MdAttachMoney } from "react-icons/md";
@@ -25,6 +26,7 @@ import avatar1 from "assets/img/avatars/avatar1.png";
 import avatar2 from "assets/img/avatars/avatar2.png";
 import avatar3 from "assets/img/avatars/avatar3.png";
 // Custom Icons
+import { BsBoxArrowRight } from "react-icons/bs";
 import { ProfileIcon, SettingsIcon } from "components/Icons/Icons";
 // Custom Components
 import { ItemContent } from "components/Menu/ItemContent";
@@ -39,6 +41,7 @@ import axios from "axios";
 import { API_PATHS } from "API/api_paths";
 import { useState, useEffect } from "react";
 import { useWalletContext } from "hooks/useWalletContext";
+import PatientCart from "./PatientCart";
 
 const theme = extendTheme({
   icons: {
@@ -87,48 +90,7 @@ export default function HeaderLinks(props) {
       alignItems="center"
       flexDirection="row"
     >
-      <InputGroup
-        cursor="pointer"
-        bg={inputBg}
-        borderRadius="16px"
-        w={{
-          sm: "128px",
-          md: "200px",
-        }}
-        me={{ sm: "auto", md: "20px" }}
-        _focus={{
-          borderColor: { mainTeal },
-        }}
-        _active={{
-          borderColor: { mainTeal },
-        }}
-      >
-        <InputLeftElement
-          children={
-            <IconButton
-              bg="inherit"
-              borderRadius="inherit"
-              _hover="none"
-              _active={{
-                bg: "inherit",
-                transform: "none",
-                borderColor: "transparent",
-              }}
-              _focus={{
-                boxShadow: "none",
-              }}
-              icon={<SearchIcon color={searchIcon} w="15px" h="15px"/>}
-            ></IconButton>
-          }
-        />
-        <Input
-          fontSize="xs"
-          py="11px"
-          color={mainText}
-          placeholder="Type here..."
-          borderRadius="inherit"
-        />
-      </InputGroup>
+      
       {!user && (
         <NavLink to="/auth/signin">
           <Button
@@ -141,12 +103,12 @@ export default function HeaderLinks(props) {
               document.documentElement.dir ? (
                 ""
               ) : (
-                <ProfileIcon color={navbarIcon} w="22px" h="22px" me="0px" />
+                <ProfileIcon color={navbarIcon} w="22px" h="22px" me="0px"  />
               )
             }
             leftIcon={
               document.documentElement.dir ? (
-                <ProfileIcon color={navbarIcon} w="22px" h="22px" me="0px" />
+                <ProfileIcon color={navbarIcon} w="22px" h="22px" me="0px"   />
               ) : (
                 ""
               )
@@ -168,20 +130,23 @@ export default function HeaderLinks(props) {
               document.documentElement.dir ? (
                 ""
               ) : (
-                <ProfileIcon color={navbarIcon} w="22px" h="22px" me="0px" />
+                <Tooltip label="Profile" > 
+                <ProfileIcon color={navbarIcon} w="22px" h="22px" me="0px" _hover={{color:"black"}}  />
+                </Tooltip>
               )
             }
             leftIcon={
               document.documentElement.dir ? (
-                <ProfileIcon color={navbarIcon} w="22px" h="22px" me="0px" />
+                <Tooltip label="Profile" fontSize='md'> 
+                <ProfileIcon color={navbarIcon} w="22px" h="22px" me="0px"  _hover={{color:"black"}}  />
+                </Tooltip>
               ) : (
                 ""
               )
             }
-            onClick={useLogout()}
-          >
-            <Text display={{ sm: "none", md: "flex" }}>Log out</Text>
-          </Button>
+            // TODO: On click navigate to profile
+            // onClick={}
+          ></Button>
         </>
       )}
       <SidebarResponsive
@@ -191,7 +156,7 @@ export default function HeaderLinks(props) {
         // logo={logo}
         {...rest}
       />
-      <SettingsIcon
+      {/* <SettingsIcon
         cursor="pointer"
         ms={{ base: "16px", xl: "0px" }}
         me="16px"
@@ -200,10 +165,42 @@ export default function HeaderLinks(props) {
         color={navbarIcon}
         w="18px"
         h="18px"
-      />
+      /> */}
+
+      {user.userType == "Patient" && <PatientCart> </PatientCart>}
+      {user.userType !== "Admin" && (
+        <ChakraProvider theme={theme}>
+          <Tooltip label="Wallet" >
+          <Flex
+            alignItems="center"
+          >
+            <Icon
+              as={MdAttachMoney}
+              boxSize={5}
+              color={navbarIcon}
+              _hover={{ color: "teal.500", cursor: "pointer" }}
+              w="18px"
+              h="18px"
+              mb="2px"
+            />
+            <Text
+              fontSize="sm"
+              fontWeight="bold"
+              color={navbarIcon}
+              _hover={{ color: "teal.500", cursor: "pointer" }}
+              w="auto"
+              h="27px"
+              mr="13px"
+            >
+              {Wallet !== null ? `${parseFloat(Wallet).toFixed(2)}` : ""}
+            </Text>
+          </Flex>
+          </Tooltip>
+        </ChakraProvider>
+      )}
       <Menu>
         <MenuButton>
-          <BellIcon color={navbarIcon} w="18px" h="18px" me="16px" mb="5px"/>
+          <BellIcon color={navbarIcon} w="18px" h="18px" me="18px" mb="4px"  />
         </MenuButton>
         <MenuList p="16px 8px">
           <Flex flexDirection="column">
@@ -237,29 +234,32 @@ export default function HeaderLinks(props) {
           </Flex>
         </MenuList>
       </Menu>
-      {user.userType === "Patient" && (
-      <ChakraProvider theme={theme}>
-        <Icon
-          as={MdAttachMoney}
-          boxSize={5}
+
+      
+      {/** logout */}
+      <Divider orientation="vertical" />
+      {user && (
+        <Button
+          ms="0px"
+          px="0px"
+          me={{ sm: "2px", md: "16px" }}
           color={navbarIcon}
-          w="18px"
-          h="18px"
-          mb="2px"
-        />
-      </ChakraProvider>
-      )}
-      <ChakraProvider theme={theme}>
-        <Text
-          fontSize="sm"
-          fontWeight="bold"
-          color={navbarIcon}
-          w="100px"
-          h="27px"
+          variant="transparent-with-icon"
+          _hover={{ color: "red.500", cursor: "pointer" }}
+          onClick={useLogout()}
         >
-          {Wallet !== null ? `${Wallet}` : ""}
-        </Text>
-      </ChakraProvider>
+          <Text display={{ sm: "none", md: "flex" }}>Log out</Text>
+          <Icon
+            as={BsBoxArrowRight}
+            _hover={{ color: "red.500", cursor: "pointer" }}
+            color={navbarIcon}
+            w="22px"
+            h="22px"
+            me="0px"
+            ml="5px"
+          />
+        </Button>
+      )}
     </Flex>
   );
 }

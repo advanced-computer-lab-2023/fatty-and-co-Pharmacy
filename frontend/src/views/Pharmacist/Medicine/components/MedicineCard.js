@@ -5,6 +5,7 @@ import {
   Flex,
   Image,
   Text,
+  Heading,
   useColorModeValue,
   Badge,
   useDisclosure,
@@ -20,6 +21,7 @@ import {
   Input,
   Menu,
   MenuButton,
+  Tooltip,
   MenuList,
   MenuItem,
   Tag,
@@ -89,8 +91,94 @@ const MedicineCard = ({ Medicine }) => {
     downloadFile();
   }, []);
 
+  const closeEdit = (e) => {
+    console.log(Medicine);
+    setName(Medicine.Name);
+    setPrice(Medicine.Price);
+    setActive_Ingredients([...Medicine.Active_Ingredients]);
+    setMedicinal_Use([...Medicine.Medicinal_Use]);
+    setQuantity(Medicine.Quantity);
+    setSales(Medicine.Sales);
+    //setImage(Medicine.Image);
+    setDescription(Medicine.Description);
+    setArchived(Medicine.State);
+    setMedicationType(Medicine.MedicationType);
+    onClose();
+  };
+
   return (
+    <div>
+    <Box
+    borderWidth="1px"
+    borderRadius="lg"
+    overflow="hidden"
+    p="4"
+    boxShadow="md"
+  >
     <Flex direction="column">
+      <Tooltip
+          label={Description}
+        >
+           <Box>
+        <Image src={file} alt={Name} borderRadius="15px" boxSize="200px" />
+        <Stack mt='6' spacing='3'>
+          <Heading size='md'>
+            {Name}
+            <Badge ml="1" colorScheme={isArchviedC}>
+              {isArchvied}
+            </Badge>
+          </Heading>
+          <Text fontSize="md" color="gray.500" fontWeight="600" mb="10px">
+           {Medicinal_Use.map((use) => (
+             <Tag key={use} style={{ margin: "0 5px 0 0" }}>
+              {use}
+            </Tag>
+          ))}
+         </Text>
+          <Text fontSize="sm" color="gray.500" fontWeight="400">
+           Active Ingredients:
+           {Active_Ingredients.map((use) => (
+             <text>{" " + use} </text>
+           ))}
+         </Text>
+         <Text fontSize="sm" color="gray.500" fontWeight="400">
+           Medication Type: {MedicationType}
+         </Text>
+         <Text fontSize="sm" color="gray.500" fontWeight="400">
+          Quantity: {Quantity}
+        </Text>
+        <Text fontSize="sm" color="gray.500" fontWeight="400">
+          Sales: {Sales}
+        </Text>
+        <Text fontSize="sm" color="gray.500" fontWeight="400">
+          Medication Type: {MedicationType}
+        </Text>
+          {/* <Text>
+            {Description}
+          </Text> */}
+          <Text fontSize="xl" color="teal">
+              Price:{' '}{Price}
+        </Text>
+        </Stack>
+        </Box>
+        </Tooltip>
+        <Flex justifyContent="space-between">
+          <Button
+            variant="outline"
+            colorScheme="teal"
+            minW="110px"
+            h="36px"
+            fontSize="xs"
+            px="1.5rem"
+            onClick={onOpen}
+          >
+            Edit
+          </Button>
+        </Flex>
+      </Flex>
+      </Box>
+
+    {/* <Flex direction="column">
       <Box mb="20px" position="relative" borderRadius="15px">
         <Image src={file} alt={Name} borderRadius="15px" boxSize="200px" />
         <Box
@@ -151,8 +239,8 @@ const MedicineCard = ({ Medicine }) => {
             Edit
           </Button>
         </Flex>
-      </Flex>
-      <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
+      </Flex> */}
+      <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={closeEdit}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Edit {Name}</ModalHeader>
@@ -243,6 +331,7 @@ const MedicineCard = ({ Medicine }) => {
                       size={"sm"}
                       borderRadius="full"
                       variant="solid"
+                      _hover={{ cursor: "pointer", backgroundColor: "red" }}
                       style={{ width: "fit-content", marginRight: "5px" }}
                       onClick={(e) => {
                         setActive_Ingredients(
@@ -270,7 +359,9 @@ const MedicineCard = ({ Medicine }) => {
                 <Button
                   style={{ width: "20%", marginLeft: "10px" }}
                   onClick={(e) => {
-                    setMedicinal_Use([...Medicinal_Use, use]);
+                    if (use.length > 0) {
+                      setMedicinal_Use([...Medicinal_Use, use]);
+                    }
                   }}
                 >
                   add
@@ -284,6 +375,7 @@ const MedicineCard = ({ Medicine }) => {
                       size={"sm"}
                       borderRadius="full"
                       variant="solid"
+                      _hover={{ cursor: "pointer", backgroundColor: "red" }}
                       style={{ width: "fit-content", marginRight: "5px" }}
                       onClick={(e) => {
                         setMedicinal_Use(
@@ -310,6 +402,32 @@ const MedicineCard = ({ Medicine }) => {
                   }
                 }}
               />
+              <style>
+                {`
+                      #MImage::-webkit-file-upload-button {
+                        visibility: hidden;
+                      }
+                      #MImage::before {
+                        content: 'Select Image';
+                        display: inline-block;
+                        background: linear-gradient(top, #f9f9f9, #e3e3e3);
+                        padding: 5px 0px;
+                        outline: none;
+                        white-space: nowrap;
+                        -webkit-user-select: none;
+                        cursor: pointer;
+                        font-weight: 400;
+                        font-size: 12pt;
+                        color: #A0AEC0;
+                      }
+                      #MImage:hover::before {
+                        
+                      }
+                      #MImage:active::before {
+                        background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+                      }
+                    `}
+              </style>
               <Input
                 variant="filled"
                 type="text"
@@ -367,24 +485,7 @@ const MedicineCard = ({ Medicine }) => {
             </Stack>
           </ModalBody>
           <ModalFooter>
-            <Button
-              variant="ghost"
-              mr={3}
-              onClick={(e) => {
-                console.log(Medicine);
-                setName(Medicine.Name);
-                setPrice(Medicine.Price);
-                setActive_Ingredients([...Medicine.Active_Ingredients]);
-                setMedicinal_Use([...Medicine.Medicinal_Use]);
-                setQuantity(Medicine.Quantity);
-                setSales(Medicine.Sales);
-                //setImage(Medicine.Image);
-                setDescription(Medicine.Description);
-                setArchived(Medicine.State);
-                setMedicationType(Medicine.MedicationType);
-                onClose();
-              }}
-            >
+            <Button variant="ghost" mr={3} onClick={closeEdit}>
               Close
             </Button>
             <Button
@@ -462,6 +563,22 @@ const MedicineCard = ({ Medicine }) => {
                 //     isClosable: true,
                 //   });
                 // }
+
+                if (
+                  Active_Ingredients.length === 0 ||
+                  Medicinal_Use.length === 0
+                ) {
+                  return toast({
+                    title: "failed update Medicine.",
+                    description:
+                      Active_Ingredients.length === 0
+                        ? "Please add at least one ingredient."
+                        : "Please add at least one use.",
+                    status: "error",
+                    duration: 5000,
+                    isClosable: true,
+                  });
+                }
                 const formData = new FormData();
                 formData.append("Name", Name);
                 formData.append("Price", Price);
@@ -487,7 +604,6 @@ const MedicineCard = ({ Medicine }) => {
                       type: "UPDATE_MEDICINE",
                       payload: data,
                     });
-
                     toast({
                       title: "Medicine Updated.",
                       description: "You updated the Medicine successfully.",
@@ -496,7 +612,9 @@ const MedicineCard = ({ Medicine }) => {
                       isClosable: true,
                     });
                     onClose();
-                    const timer = setTimeout(() => { location.reload(); }, 1000); // 1000ms delay
+                    const timer = setTimeout(() => {
+                      location.reload();
+                    }, 1000); // 1000ms delay
                   })
                   .catch((error) => {
                     // Handle error
@@ -528,7 +646,8 @@ const MedicineCard = ({ Medicine }) => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </Flex>
+    {/* </Flex> */}
+    </div>
   );
 };
 

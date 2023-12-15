@@ -2,6 +2,7 @@ const patientModel = require("../models/patients");
 const orderModel = require("../models/orders");
 const cartModel = require("../models/cart");
 const medicineModel = require("../models/medicine");
+const prescriptionModel = require("../models/prescriptions");
 
 const checkout = async (req, res) => {
   try {
@@ -17,11 +18,9 @@ const checkout = async (req, res) => {
     const deliveryAddress = req.query.DeliveryAddress;
 
     if (totalCost == 0) {
-      res
-        .status(400)
-        .send({
-          message: `Your cart is empty. Please add your items to cart before checking out.`,
-        });
+      res.status(400).send({
+        message: `Your cart is empty. Please add your items to cart before checking out.`,
+      });
       return;
     }
 
@@ -53,11 +52,9 @@ const checkout = async (req, res) => {
           }
         }
         await cart.save();
-        res
-          .status(400)
-          .send({
-            message: `Sorry, we only have ${medicine.Quantity} of ${medicine.Name} in stock.`,
-          });
+        res.status(400).send({
+          message: `Sorry, we only have ${medicine.Quantity} of ${medicine.Name} in stock.`,
+        });
         return;
       }
       medicine.Quantity -= quantity;
@@ -85,6 +82,9 @@ const checkout = async (req, res) => {
       DeliveryAddress: deliveryAddress,
     });
     await newOrder.save();
+
+    // TODO: check if prescription is bought and set status to filled
+
     cart.TotalCost = 0;
     cart.Medicine = [];
     await cart.save();
@@ -135,14 +135,15 @@ const cancelOrder = async (req, res) => {
     await order.save();
 
     // refund patient wallet
-    const patient = await patientModel.findOne({
-      Username: order.PatientUsername,
-    });
-    const wallet = patient.Wallet;
-    const newWallet = wallet + order.TotalCost;
-    patient.Wallet = newWallet;
-    await patient.save();
-
+    if (order.PaymentMethod != "Cash") {
+      const patient = await patientModel.findOne({
+        Username: order.PatientUsername,
+      });
+      const wallet = patient.Wallet;
+      const newWallet = wallet + order.TotalCost;
+      patient.Wallet = newWallet;
+      await patient.save();
+    }
     // update medicine sales and quantity
     const medicines = order.Medicine;
     for (let i = 0; i < medicines.length; i++) {
