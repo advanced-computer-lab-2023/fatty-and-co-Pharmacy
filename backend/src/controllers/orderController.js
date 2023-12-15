@@ -2,6 +2,7 @@ const patientModel = require("../models/patients");
 const orderModel = require("../models/orders");
 const cartModel = require("../models/cart");
 const medicineModel = require("../models/medicine");
+const prescriptionModel = require("../models/prescriptions");
 
 const checkout = async (req, res) => {
   try {
@@ -81,6 +82,9 @@ const checkout = async (req, res) => {
       DeliveryAddress: deliveryAddress,
     });
     await newOrder.save();
+
+    // TODO: check if prescription is bought and set status to filled
+
     cart.TotalCost = 0;
     cart.Medicine = [];
     await cart.save();

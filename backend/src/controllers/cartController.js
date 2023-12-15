@@ -67,7 +67,6 @@ const checkPrescription = async (MedicineID, Username) => {
   const medicine = await medicineModel.findById(MedicineID);
 
   if (!medicine) {
-    res.status(400).send({ message: "Medicine not found" });
     return false;
   }
 
@@ -79,8 +78,6 @@ const checkPrescription = async (MedicineID, Username) => {
   const prescriptions = await prescriptionModel.find({
     PatientUsername: Username,
   });
-
-  console.log(prescriptions);
 
   // Check if the medicine is prescribed
   let prescribed = false;
