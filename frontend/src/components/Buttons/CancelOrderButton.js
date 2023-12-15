@@ -40,7 +40,17 @@ function CancelOrderButton(props) {
       .then((response) => {
         console.log(response.data);
         dispatch({ type: "CANCEL_ORDER", payload: response.data });
-        walletDispatch({ type: "GET_WALLET", payload: response.data });
+        axios
+          .get(API_PATHS.getWalletAmount, { headers: { Authorization } })
+          .then((response1) => {
+            walletDispatch({
+              type: "GET_WALLET",
+              payload: response1.data.Wallet,
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
         toast({
           title: "Order Cancelled Successfully",
           status: "success",

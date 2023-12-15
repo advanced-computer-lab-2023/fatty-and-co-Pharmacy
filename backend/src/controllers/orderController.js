@@ -131,7 +131,7 @@ const cancelOrder = async (req, res) => {
     await order.save();
 
     // refund patient wallet
-    if (order.paymentMethod != "Cash") {
+    if (order.PaymentMethod != "Cash") {
       const patient = await patientModel.findOne({
         Username: order.PatientUsername,
       });

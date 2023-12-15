@@ -38,7 +38,7 @@ const OrdersTable = ({ title, captions, data }) => {
             </Tr>
           </Thead>
           <Tbody>
-            {data?.map((row) => {
+            {data?.slice().reverse().map((row) => {
               return (
                 <OrderRow
                   key={row._id}
