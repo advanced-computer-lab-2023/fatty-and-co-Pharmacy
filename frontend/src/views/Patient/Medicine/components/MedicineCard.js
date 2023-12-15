@@ -1,5 +1,7 @@
 // Chakra imports
 import {
+  Heading,
+  ButtonGroup,
   Box,
   Button,
   Flex,
@@ -24,18 +26,22 @@ import {
   MenuItem,
   Tag,
   TagLabel,
+  Tooltip,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useMedicineContext } from "../../../../hooks/useMedicineContext";
+import { useCartContext } from "../../../../hooks/useCartContext";
 import { API_PATHS } from "API/api_paths";
 import axios from "axios";
 import { useEffect } from "react";
 import { useAuthContext } from "hooks/useAuthContext";
+import { CartPlusFill } from "react-bootstrap-icons";
 
 const MedicineCard = ({ Medicine, medicineDiscount, ...rest }) => {
   // Chakra color mode
   const textColor = useColorModeValue("gray.700", "white");
   const { dispatch } = useMedicineContext();
+  const { cart, dispatch: cartDispatch } = useCartContext();
   const [Name, setName] = useState(Medicine.Name);
 
   const [Quantity, setQuantity] = useState(Medicine.Quantity);
@@ -109,6 +115,17 @@ const MedicineCard = ({ Medicine, medicineDiscount, ...rest }) => {
           duration: 9000,
           isClosable: true,
         });
+
+        axios
+          .get(API_PATHS.viewCart, {
+            headers: { Authorization },
+          })
+          .then((response) => {
+            cartDispatch({ type: "SET_CART", payload: response.data.medicine });
+          })
+          .catch((error) => {
+            console.error("Error fetching cart:", error);
+          });
       })
       .catch((error) => {
         toast({

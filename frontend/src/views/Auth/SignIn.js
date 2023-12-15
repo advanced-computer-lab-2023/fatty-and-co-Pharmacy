@@ -253,9 +253,9 @@ function SignIn() {
         <Box
           display={{ base: "none", md: "block" }}
           overflowX="hidden"
-          h="100%"
+          h="100vh"
           w="40vw"
-          position="absolute"
+          position="fixed"
           right="0px"
         >
           <Box
@@ -265,7 +265,7 @@ function SignIn() {
             bgSize="cover"
             bgPosition="50%"
             position="absolute"
-            borderBottomLeftRadius="20px"
+            //borderBottomLeftRadius="20px"
           ></Box>
         </Box>
       </Flex>

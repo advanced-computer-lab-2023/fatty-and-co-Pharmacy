@@ -1,5 +1,5 @@
 // Chakra imports
-import { Button, Flex, Grid, Text, useColorModeValue } from "@chakra-ui/react";
+import { Button, Flex, Grid, Text, useColorModeValue,useToast } from "@chakra-ui/react";
 // Custom components
 import Card from "components/Card/Card";
 import CardBody from "components/Card/CardBody";
@@ -9,6 +9,8 @@ import MedicineCard from "./MedicineCard";
 import { useState, useMemo, useEffect } from "react";
 import { SearchBar } from "components/Navbars/SearchBar/SearchBar";
 import axios from "axios";
+import { API_PATHS } from "API/api_paths";
+import { useAuthContext } from "hooks/useAuthContext";
 
 import MultiSelect from "components/Selections/MultiSelect";
 
@@ -22,6 +24,10 @@ const MedicineGroup = ({
 
   const [name, setName] = useState("All Medicine");
   const [selectedUses, setSelectedUses] = useState([]);
+  const [medicineDiscount, setMedicineDiscount] = useState(0);
+  const toast = useToast();
+  const { user } = useAuthContext();
+  const Authorization = `Bearer ${user.token}`;
 
   const medicinalUses = useMemo(() => {
     return Array.from(
@@ -34,11 +40,31 @@ const MedicineGroup = ({
     setSearchAndFilterParams({ ...searchAndFilterParams, Name: value });
   };
 
+    const getMedicineDiscount = () => {
+      axios.get(API_PATHS.getMedicineDiscount, {
+        headers: { Authorization },
+      })
+      .then((response) => {
+        console.log(response.data.discount);
+        setMedicineDiscount(response.data.discount);
+      })
+      .catch((error) => {
+        toast({
+          title: "Error",
+          description: error.response.data.message,
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        });
+      });
+  }
+
   useEffect(() => {
     setSearchAndFilterParams({
       ...searchAndFilterParams,
       Medicinal_Use: selectedUses.map((item) => item.use),
     });
+    getMedicineDiscount();
   }, [selectedUses]);
 
   const handleMedicinalUseChange = (values) => {
@@ -120,6 +146,7 @@ const MedicineGroup = ({
                   key={medicine._id}
                   Medicine={medicine}
                   setName={setName}
+                  medicineDiscount={medicineDiscount}
                 />
               ))}
         </Grid>
