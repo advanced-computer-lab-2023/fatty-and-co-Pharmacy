@@ -32,7 +32,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useAuthContext } from "hooks/useAuthContext";
 
-const MedicineCard = ({ Medicine, ...rest }) => {
+const MedicineCard = ({ Medicine, medicineDiscount, ...rest }) => {
   // Chakra color mode
   const textColor = useColorModeValue("gray.700", "white");
   const { dispatch } = useMedicineContext();
@@ -121,6 +121,25 @@ const MedicineCard = ({ Medicine, ...rest }) => {
       });
   };
 
+  const [isPrescribed, setIsPrescribed] = useState(false);
+  useEffect(() => {
+    const checkIfMedicineIsPrescribed = () => {
+      axios
+        .get(API_PATHS.checkMedicinePrescribed, {
+          params: { Medicine: Medicine._id },
+          headers: { Authorization },
+        })
+        .then((response) => {
+          console.log(Name + "  " + response.data.isPrescribed);
+          setIsPrescribed(response.data.isPrescribed);
+        })
+        .catch((error) => {
+          console.log(error.response.data.message);
+        });
+    };
+    checkIfMedicineIsPrescribed();
+  }, []);
+
   // TODO: Needs editing to improve the UX
   const viewAlternatives = () => {
     dispatch({ type: "FILTER_MEDICINES", payload: Active_Ingredients[0] });
@@ -128,72 +147,173 @@ const MedicineCard = ({ Medicine, ...rest }) => {
   };
 
   return (
-    <Flex direction="column">
-      <Box mb="20px" position="relative" borderRadius="15px">
-        <Image src={file} alt={Name} borderRadius="15px" boxSize="200px" />
-        <Box
-          w="100%"
-          h="100%"
-          position="absolute"
-          top="0"
-          borderRadius="15px"
-          bg="linear-gradient(360deg, rgba(49, 56, 96, 0.16) 0%, rgba(20, 25, 40, 0.38) 100%)"
-        ></Box>
-      </Box>
+    <Box
+      borderWidth="1px"
+      borderRadius="lg"
+      overflow="hidden"
+      p="4"
+      boxShadow="md"
+    >
       <Flex direction="column">
-        <Text fontSize="md" color="gray.500" fontWeight="600" mb="10px">
-          {Medicinal_Use.map((use) => (
-            <Tag key={use} style={{ margin: "0 5px 0 0" }}>
-              {use}
-            </Tag>
-          ))}
-        </Text>
-        <Text fontSize="xl" color={textColor} fontWeight="bold" mb="3px">
-          {Name}
-          <Badge ml="1" colorScheme={isArchviedC}>
-            {isArchvied}
-          </Badge>
-        </Text>
-        <Text fontSize="sm" color="gray.500" fontWeight="400">
-          Active Ing:
-          {Active_Ingredients.map((use) => (
-            <text>{" " + use} </text>
-          ))}
-        </Text>
-        {/* <Text fontSize="sm" color="gray.500" fontWeight="400">
-          Quantity: {Quantity}
-        </Text> */}
-        <Text fontSize="sm" color="gray.500" fontWeight="400">
-          Price: {Price} EGP
-        </Text>
-        {/* <Text fontSize="sm" color="gray.500" fontWeight="400">
-          Sales : {Sales}
-        </Text> */}
-        <Text fontSize="sm" color="gray.500" fontWeight="400">
-          Medication Type: {MedicationType}
-        </Text>
-        <br />
-
-        <Text fontSize="sm" color="gray.500" fontWeight="400" mb="10px">
-          {Description}
-        </Text>
-        <Flex justifyContent="space-between">
-          <Button
-            disabled={MedicationType === "Prescribed"}
-            colorScheme={"teal"}
-            onClick={() => {
-              if (Quantity === 0) {
-                viewAlternatives();
-              } else {
-                addToCart(Medicine);
-              }
-            }}
-          >
-            {Quantity === 0 ? "View Alternatives" : "Add to Cart"}
-          </Button>
-        </Flex>
+        <Tooltip label={Description}>
+          <Box>
+            <Image src={file} alt={Name} borderRadius="15px" boxSize="200px" />
+            <Stack mt="6" spacing="3">
+              <Heading size="md">
+                {Name}
+                <Badge ml="1" colorScheme={isArchviedC}>
+                  {isArchvied}
+                </Badge>
+              </Heading>
+              <Text fontSize="md" color="gray.500" fontWeight="600" mb="10px">
+                {Medicinal_Use.map((use) => (
+                  <Tag key={use} style={{ margin: "0 5px 0 0" }}>
+                    {use}
+                  </Tag>
+                ))}
+              </Text>
+              <Text fontSize="sm" color="gray.500" fontWeight="400">
+                Active Ingredients:
+                {Active_Ingredients.map((use) => (
+                  <Text>{" " + use} </Text>
+                ))}
+              </Text>
+              <Text fontSize="sm" color="gray.500" fontWeight="400">
+                Medication Type: {MedicationType}
+              </Text>
+              {/* <Text>
+            {Description}
+          </Text> */}
+              <Text fontSize="xl" color="teal">
+                Price:{" "}
+                {medicineDiscount !== 0 ? (
+                  <>
+                    <span
+                      style={{ textDecoration: "line-through", color: "teal" }}
+                    >
+                      {Price}
+                    </span>{" "}
+                    {"  "}
+                    <span style={{ color: "red" }}>
+                      {Price - (Price * medicineDiscount) / 100}
+                    </span>
+                  </>
+                ) : (
+                  <span style={{ color: "teal" }}>{Price}</span>
+                )}
+              </Text>
+            </Stack>
+          </Box>
+        </Tooltip>
+        <Tooltip
+          placement="bottom-start"
+          label={
+            Quantity === 0
+              ? "Out of Stock. You can find alternatives"
+              : !isPrescribed
+              ? "This medicine needs a prescription to order"
+              : "Add to cart"
+          }
+          bg={!isPrescribed || Quantity === 0 ? "red.500" : "green.500"}
+        >
+          <Flex justifyContent="space-between">
+            <Button
+              disabled={!isPrescribed && Quantity !== 0}
+              colorScheme={"teal"}
+              onClick={() => {
+                if (Quantity === 0) {
+                  viewAlternatives();
+                } else {
+                  addToCart(Medicine);
+                }
+              }}
+            >
+              {Quantity === 0 ? (
+                "View Alternatives"
+              ) : (
+                <Flex>
+                  <CartPlusFill style={{ margin: "3px", width: "14px" }} />{" "}
+                </Flex>
+              )}
+            </Button>
+          </Flex>
+        </Tooltip>
       </Flex>
-    </Flex>
+    </Box>
+
+    // <Flex direction="column">
+    //   <Box mb="20px" position="relative" borderRadius="15px">
+    //     <Image src={file} alt={Name} borderRadius="15px" boxSize="200px" />
+    //     <Box
+    //       w="100%"
+    //       h="100%"
+    //       position="absolute"
+    //       top="0"
+    //       borderRadius="15px"
+    //       bg="linear-gradient(360deg, rgba(49, 56, 96, 0.16) 0%, rgba(20, 25, 40, 0.38) 100%)"
+    //     ></Box>
+    //   </Box>
+    //   <Flex direction="column">
+    //     <Text fontSize="md" color="gray.500" fontWeight="600" mb="10px">
+    //       {Medicinal_Use.map((use) => (
+    //         <Tag key={use} style={{ margin: "0 5px 0 0" }}>
+    //           {use}
+    //         </Tag>
+    //       ))}
+    //     </Text>
+    //     <Text fontSize="xl" color={textColor} fontWeight="bold" mb="3px">
+    //       {Name}
+    //       <Badge ml="1" colorScheme={isArchviedC}>`
+    //         {isArchvied}
+    //       </Badge>
+    //     </Text>
+    //     <Text fontSize="sm" color="gray.500" fontWeight="400">
+    //       Active Ing:
+    //       {Active_Ingredients.map((use) => (
+    //         <text>{" " + use} </text>
+    //       ))}
+    //     </Text>
+    //     {/* <Text fontSize="sm" color="gray.500" fontWeight="400">
+    //       Quantity: {Quantity}
+    //     </Text> */}
+    //     <Text fontSize="sm" color="gray.500" fontWeight="400">
+    //       Price: {Price} EGP
+    //     </Text>
+    //     {/* <Text fontSize="sm" color="gray.500" fontWeight="400">
+    //       Sales : {Sales}
+    //     </Text> */}
+    //     <Text fontSize="sm" color="gray.500" fontWeight="400">
+    //       Medication Type: {MedicationType}
+    //     </Text>
+    //     <br />
+
+    //     <Text fontSize="sm" color="gray.500" fontWeight="400" mb="10px">
+    //       {Description}
+    //     </Text>
+
+    //     <Tooltip
+    //       isDisabled={MedicationType !== "Prescribed" || Quantity === 0}
+    //       label="This medicine needs a prescription to order"
+    //       bg="red.500"
+    //     >
+    //       <Flex justifyContent="space-between">
+    //         <Button
+    //           disabled={MedicationType === "Prescribed" && Quantity !== 0}
+    //           colorScheme={"teal"}
+    //           onClick={() => {
+    //             if (Quantity === 0) {
+    //               viewAlternatives();
+    //             } else {
+    //               addToCart(Medicine);
+    //             }
+    //           }}
+    //         >
+    //           {Quantity === 0 ? "View Alternatives" : "Add to Cart"}
+    //         </Button>
+    //       </Flex>
+    //     </Tooltip>
+    //   </Flex>
+    // </Flex>
   );
 };
 

@@ -17,11 +17,9 @@ const checkout = async (req, res) => {
     const deliveryAddress = req.query.DeliveryAddress;
 
     if (totalCost == 0) {
-      res
-        .status(400)
-        .send({
-          message: `Your cart is empty. Please add your items to cart before checking out.`,
-        });
+      res.status(400).send({
+        message: `Your cart is empty. Please add your items to cart before checking out.`,
+      });
       return;
     }
 
@@ -53,11 +51,9 @@ const checkout = async (req, res) => {
           }
         }
         await cart.save();
-        res
-          .status(400)
-          .send({
-            message: `Sorry, we only have ${medicine.Quantity} of ${medicine.Name} in stock.`,
-          });
+        res.status(400).send({
+          message: `Sorry, we only have ${medicine.Quantity} of ${medicine.Name} in stock.`,
+        });
         return;
       }
       medicine.Quantity -= quantity;
@@ -135,14 +131,15 @@ const cancelOrder = async (req, res) => {
     await order.save();
 
     // refund patient wallet
-    const patient = await patientModel.findOne({
-      Username: order.PatientUsername,
-    });
-    const wallet = patient.Wallet;
-    const newWallet = wallet + order.TotalCost;
-    patient.Wallet = newWallet;
-    await patient.save();
-
+    if (order.paymentMethod != "Cash") {
+      const patient = await patientModel.findOne({
+        Username: order.PatientUsername,
+      });
+      const wallet = patient.Wallet;
+      const newWallet = wallet + order.TotalCost;
+      patient.Wallet = newWallet;
+      await patient.save();
+    }
     // update medicine sales and quantity
     const medicines = order.Medicine;
     for (let i = 0; i < medicines.length; i++) {

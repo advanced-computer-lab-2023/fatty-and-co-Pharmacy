@@ -13,6 +13,7 @@ import { API_PATHS } from "API/api_paths";
 import axios from "axios";
 import { useAuthContext } from "hooks/useAuthContext";
 import { useOrdersContext } from "hooks/useOrdersContext";
+import { useWalletContext } from "hooks/useWalletContext";
 
 function CancelOrderButton(props) {
   const { OrderId, disabled } = props;
@@ -20,6 +21,7 @@ function CancelOrderButton(props) {
   const onClose = () => setIsOpen(false);
   const cancelRef = useRef();
   const { orders, dispatch } = useOrdersContext();
+  const { wallet, dispatch: walletDispatch } = useWalletContext();
 
   const { user } = useAuthContext();
   const Authorization = `Bearer ${user.token}`;
@@ -38,9 +40,9 @@ function CancelOrderButton(props) {
       .then((response) => {
         console.log(response.data);
         dispatch({ type: "CANCEL_ORDER", payload: response.data });
+        walletDispatch({ type: "GET_WALLET", payload: response.data });
         toast({
           title: "Order Cancelled Successfully",
-          description: "Order Price has been refunded to your wallet",
           status: "success",
           duration: 9000,
           isClosable: true,
