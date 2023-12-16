@@ -2,7 +2,7 @@
 
 This project is a virtual pharmacy website for remotely ordering and managing prescriptions.
 
-<img src="./frontend/src/assets/img/ShebeenElkom.png" width="200">
+<img src="./frontend/src/assets/img/GomaaLogo.gif" width="200">
 
 ## Motivation
 
@@ -14,6 +14,7 @@ The motivation behind the Friday's Pharmacy project is to provide a seamless and
 - Unit tests are needed
 - UI and UX need to be improved in several areas such as ordering a prescription
   [include all missing or broken requirements here]
+- Pharmacist/Doctor chat is not working
 
 ## Code Style
 
