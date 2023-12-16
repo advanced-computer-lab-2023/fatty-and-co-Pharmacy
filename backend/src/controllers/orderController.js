@@ -59,6 +59,11 @@ const checkout = async (req, res) => {
       }
       medicine.Quantity -= quantity;
       medicine.Sales += quantity;
+      const currentMonth = new Date().getMonth();
+      // Update the SalesPerMonth array for the current month
+      if (medicine.SalesPerMonth) {
+         medicine.SalesPerMonth[currentMonth] += quantity;
+      }
       await medicine.save();
     }
 
@@ -146,6 +151,8 @@ const cancelOrder = async (req, res) => {
     }
     // update medicine sales and quantity
     const medicines = order.Medicine;
+    const orderMonth = new Date(order.Date).getMonth();
+
     for (let i = 0; i < medicines.length; i++) {
       const medicine = await medicineModel.findOne({ _id: medicines[i] });
       const sales = medicine.Sales;
@@ -154,6 +161,9 @@ const cancelOrder = async (req, res) => {
       const newQuantity = quantity + 1;
       medicine.Sales = newSales;
       medicine.Quantity = newQuantity;
+      if (medicine.SalesPerMonth) {
+        medicine.SalesPerMonth[orderMonth] -= 1;
+      }
       await medicine.save();
     }
 

@@ -117,6 +117,25 @@ const getMedicineDiscount = async (req, res) => {
   }
 };
 
+const viewSubscribedPackage = async (req, res) => {
+  try {
+    const current_user = req.user.Username; //changed this
+    const patient = await patientModel.findOne({ Username: current_user });
+    const subscription = await subscriptionModel
+      .findOne({ Patient: patient, Status: "Subscribed" })
+      .populate("Patient")
+      .populate("Package");
+    if (subscription) {
+      const package = subscription.Package;
+      res.status(200).send({subscription, package});
+    } else {
+      res.status(404).send({ Error: "Cannot find any current subscriptions!" });
+    }
+  } catch (error) {
+    res.status(400).send({ message: error.message });
+  }
+};
+
 module.exports = {
   getAllPatients,
   deletePatient,
@@ -125,5 +144,6 @@ module.exports = {
   getPatientUsername,
   getEmergencyContact,
   getWalletAmount,
-  getMedicineDiscount
+  getMedicineDiscount,
+  viewSubscribedPackage,
 };
