@@ -2,7 +2,7 @@
 
 This project is a virtual pharmacy website for remotely ordering and managing prescriptions.
 
-<img src="./frontend/src/assets/img/ShebeenElkom.png" width="200">
+<img src="./frontend/src/assets/img/GomaaLogo.gif" width="200">
 
 ## Motivation
 
@@ -14,6 +14,7 @@ The motivation behind the Friday's Pharmacy project is to provide a seamless and
 - Unit tests are needed
 - UI and UX need to be improved in several areas such as ordering a prescription
   [include all missing or broken requirements here]
+- Pharmacist/Doctor chat is not working
 
 ## Code Style
 
@@ -386,7 +387,6 @@ Enhancement suggestions are tracked as GitHub issues. Create an issue on the rep
 - [Search Bar in React Tutorial - Cool Search Filter Tutorial](https://www.youtube.com/watch?v=x7niho285qs&list=PLs8AFNosNo41M5IvL5TdewlCzyOUrhDc1&index=16&t=1337s)
 - [React: Add/Remove Input Fields Dynamically on button click](https://youtu.be/XtS14dXwvwE?list=PLs8AFNosNo41M5IvL5TdewlCzyOUrhDc1)
 - [MERN Auth Tutorial](https://www.youtube.com/playlist?list=PL4cUxeGkcC9g8OhpOZxNdhXggFz2lOuCT)
-- (add youtube videos and any guides used)
 
 ## Authors
 
