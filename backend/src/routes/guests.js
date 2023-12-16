@@ -8,6 +8,7 @@ const {
   sendOTP,
   validateOTP,
   resetPass,
+  cartLogin,
 } = require("../controllers/guestController");
 const requireAuth = require("../common/middleware/requireAuth");
 const { pharmUpload } = require("../common/middleware/pharmUpload");
@@ -20,6 +21,7 @@ router.get("/", (req, res) => {
 });
 
 router.post("/login", login);
+router.post("/cartLogin", cartLogin);
 router.post("/sendOTP", sendOTP);
 router.post("/validateOTP", validateOTP);
 
@@ -59,7 +61,6 @@ router.post("/addPatient", createPatient);
 router.post("/addRequest", pharmUpload, createRequest);
 router.patch("/resetPass/", resetPass);
 
-
 // the following routes require authentication
 router.use(requireAuth);
 
@@ -67,6 +68,5 @@ router.use(requireAuth);
 router.put("/updateRequest/:id", updateRequest);
 
 router.patch("/updatePass/", updatePass);
-
 
 module.exports = router;
