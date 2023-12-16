@@ -101,10 +101,10 @@ const MedicineGroup = ({
         <Flex direction="row" alignItems="flex-start">
           <Flex direction="column">
             <Text fontSize="lg" color={textColor} fontWeight="bold">
-              "Medicine Group"
+              Pharmacy
             </Text>
             <Text fontSize="sm" color="gray.500" fontWeight="400">
-              "Medicine Group Description"
+              Available Medicines
             </Text>
           </Flex>
           <Flex direction={"row"} justifyContent={"flex-end"} marginLeft={20}>
