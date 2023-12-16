@@ -2,6 +2,7 @@
 import {
   Flex,
   Grid,
+  Box,
   Image,
   SimpleGrid,
   useColorModeValue,
@@ -24,14 +25,29 @@ export default function MedicineReport() {
         templateRows={{ sm: "repeat(2, 1fr)", lg: "1fr" }}
         gap='24px'
         mb={{ lg: "26px" }}>
-        <SalesOverview
-          title={"Sales Overview"}
-          percentage={5}
-        />
-        <TotalSalesOverview
-            title={"Total Sales"}
-            percentage={5}
-        />
+            <Box
+            borderWidth="1px"
+            borderRadius="lg"
+            overflow="hidden"
+            p="4"
+            boxShadow="md">
+                <SalesOverview
+                title={"Sales Overview"}
+                percentage={5}
+                />
+            </Box>
+            <Box
+                borderWidth="1px"
+                borderRadius="lg"
+                overflow="hidden"
+                p="4"
+                boxShadow="md"
+            >
+                <TotalSalesOverview
+                    title={"Total Sales"}
+                    percentage={5}
+                />
+            </Box>
       </Grid>
     </Flex>
   );
