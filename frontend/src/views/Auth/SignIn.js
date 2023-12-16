@@ -17,6 +17,7 @@ import {
   Alert,
   AlertIcon,
   FormErrorMessage,
+  useToast,
 } from "@chakra-ui/react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import * as Yup from "yup";
@@ -37,6 +38,7 @@ function SignIn() {
   // const [password, setPassword] = useState("");
   const { login, error, loading } = useLogin();
   const [showPassword, setShowPassword] = useState(false);
+  const toast = useToast();
 
   const handleSubmit = async (values, { setSubmitting }) => {
     console.log(values);
@@ -44,7 +46,7 @@ function SignIn() {
       const { Username, Password } = values;
       await login(Username, Password);
       setSubmitting(false);
-    } catch (error) {
+    } catch (err) {
       toast({
         title: "An error occurred.",
         description: error,
@@ -251,9 +253,9 @@ function SignIn() {
         <Box
           display={{ base: "none", md: "block" }}
           overflowX="hidden"
-          h="100%"
+          h="100vh"
           w="40vw"
-          position="absolute"
+          position="fixed"
           right="0px"
         >
           <Box
@@ -263,7 +265,7 @@ function SignIn() {
             bgSize="cover"
             bgPosition="50%"
             position="absolute"
-            borderBottomLeftRadius="20px"
+            //borderBottomLeftRadius="20px"
           ></Box>
         </Box>
       </Flex>

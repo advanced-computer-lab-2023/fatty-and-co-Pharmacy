@@ -1,9 +1,10 @@
 const express = require("express");
 const {
-    viewCart,
-    deleteItem,
-    addMedicineToCart,
-    decrementItemCount
+  viewCart,
+  deleteItem,
+  addMedicineToCart,
+  decrementItemCount,
+  checkIfMedicineIsPrescribed,
 } = require("../controllers/cartController");
 
 const { checkPatient } = require("../common/middleware/checkType");
@@ -22,5 +23,10 @@ router.post("/decrementItem", checkPatient, decrementItemCount);
 router.get("/viewCart", checkPatient, viewCart);
 router.post("/deleteItem", checkPatient, deleteItem);
 
+router.get(
+  "/checkMedicinePrescribed",
+  checkPatient,
+  checkIfMedicineIsPrescribed
+);
 
 module.exports = router;
