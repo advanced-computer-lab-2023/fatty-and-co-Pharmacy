@@ -191,7 +191,6 @@ const ChatWithPharmacist = () => {
             />
           ))} */}
         </Box>
-
         <Flex position="sticky">
           <Box w="600px">
             <Text>Chat</Text>
