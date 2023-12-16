@@ -46,7 +46,7 @@ const TotalSalesOverview = ({ title, percentage, chart }) => {
           </Text>
         </Flex>
       </CardHeader>
-      <Box w='100%' h={{ sm: "300px" }} ps='8px'>
+      <Box mt="20" w='100%' h={{ sm: "300px" }} ps='8px'>
         <Box w="100%" h={{ sm: "300px" }} ps="8px">
            <SalesLineChart key={JSON.stringify(chartData)} chartData={chartData} />
         </Box>

@@ -25,7 +25,7 @@ export default function MedicineReport() {
         templateRows={{ sm: "repeat(2, 1fr)", lg: "1fr" }}
         gap='24px'
         mb={{ lg: "26px" }}>
-            <Box
+        <Box
             borderWidth="1px"
             borderRadius="lg"
             overflow="hidden"

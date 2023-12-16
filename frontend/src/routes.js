@@ -113,6 +113,14 @@ var dashRoutes = [
     layout: "/pharmacist",
   },
   {
+    path: "/salesReport",
+    name: "View Sales",
+    rtlName: "لوحة القيادة",
+    icon: <PersonIcon color="inherit" />,
+    component: MedicineReport,
+    layout: "/admin",
+  },
+  {
     path: "/updatePass",
     name: "Change Password",
     rtlName: "لوحة القيادة",
