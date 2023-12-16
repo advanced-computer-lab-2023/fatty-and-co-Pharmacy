@@ -145,14 +145,16 @@ const ChatWithDoctor = () => {
             />
           ))}
         </Box>
-        {selectedDoctor ? (
-          <Box w="600px">
-            <Text>Chat</Text>
-            <ChatBoxDoctor messages={messages} receiver={currentDoctor} />
-          </Box>
-        ) : (
-          <span>Open a conversation to see Chat</span>
-        )}
+        <Flex position="sticky">
+          {selectedDoctor ? (
+            <Box w="600px">
+              <Text>Chat</Text>
+              <ChatBoxDoctor messages={messages} receiver={currentDoctor} />
+            </Box>
+          ) : (
+            <span>Open a conversation to see Chat</span>
+          )}
+        </Flex>
       </HStack>
     </Flex>
   );
