@@ -5,7 +5,7 @@ import { useToast } from "@chakra-ui/toast";
 import { API_PATHS } from "API/api_paths";
 import { useAuthContext } from "hooks/useAuthContext";
 import Conversation from "components/Chat/Conversation";
-import ChatBox from "components/Chat/ChatArea/ChatBox";
+import ChatBoxDoctor from "components/Chat/ChatArea/ChatBoxDoctor";
 import socketIOClient from "socket.io-client";
 
 const ENDPOINT = "http://localhost:8000"; // clinic socket
@@ -148,7 +148,7 @@ const ChatWithDoctor = () => {
         {selectedDoctor ? (
           <Box w="600px">
             <Text>Chat</Text>
-            <ChatBox messages={messages} receiver={currentDoctor} />
+            <ChatBoxDoctor messages={messages} receiver={currentDoctor} />
           </Box>
         ) : (
           <span>Open a conversation to see Chat</span>

@@ -24,7 +24,7 @@ import ThankYouCard from "views/Patient/Medicine/components/ThankYou";
 import MedicineReport from "views/Admin/MedicineReport";
 import DashboardPharm from "views/Dashboard/DashboardPharm";
 import ChatWithPatient from "views/Pharmacist/chatWithPatient";
-import DashboardPat from "views/Dashboard/DashboardPat";
+import DashboardPat from "views/Dashboard/DashboardPat"; // not needed we just redirect to medicine
 import ChatWithPharmacist from "views/Patient/chatWithPharmacist";
 import ChatWithDoctor from "views/Pharmacist/chatWithDoctor";
 
@@ -80,7 +80,6 @@ var dashRoutes = [
     component: ChatWithDoctor,
     layout: "/pharmacist",
   },
-
   {
     path: "/viewRequests",
     name: "View Requests",
@@ -96,14 +95,6 @@ var dashRoutes = [
     icon: <HomeIcon color="inherit" />,
     component: DashboardPharm,
     layout: "/pharmacist",
-  },
-  {
-    path: "/dashboard",
-    name: "Dashboard",
-    rtlName: "لوحة القيادة",
-    icon: <HomeIcon color="inherit" />,
-    component: DashboardPat,
-    layout: "/patient",
   },
   {
     path: "/chatWithPatient",
