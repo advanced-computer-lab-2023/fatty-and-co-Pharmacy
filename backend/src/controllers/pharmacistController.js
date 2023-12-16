@@ -1,5 +1,5 @@
 const pharmacistModel = require("../models/pharmacists");
-
+const patientModel = require("../models/patients");
 // I think this is useless?
 // if not then it need to create a user in systemuser model too using addentry method
 const createPharmacist = async (req, res) => {
@@ -37,6 +37,8 @@ const getPharmacist = async (req, res) => {
   }
 };
 
+
+
 // I think this is useless?
 // if not useless it needs to delete from user model too
 const deletePharmacist = async (req, res) => {
@@ -48,9 +50,33 @@ const deletePharmacist = async (req, res) => {
   }
 };
 
+//get all patients in the db with no duplicates for CHAT
+const getAllPatients = async (req, res) => {
+  try {
+    const patients = await patientModel.find();
+    res.status(200).json(patients);
+  } catch (error) {
+    res.status(400).send({ message: error.message });
+  }
+};
+
+const getPharmacistUsernameSocket = async (req, res) => {
+  // get username of pharmacist
+  try {
+    console.log(req.user.Username);
+    // const pharmacist = await pharmacistModel.findOne({
+    //   Username: req.user.Username,
+    // });
+    res.status(200).json(req.user.Username);
+  } catch (error) {
+    res.status(400).send({ message: error.message });
+  }
+};
 module.exports = {
   createPharmacist,
   getAllPharmacists,
   getPharmacist,
   deletePharmacist,
+  getAllPatients,
+  getPharmacistUsernameSocket,
 };

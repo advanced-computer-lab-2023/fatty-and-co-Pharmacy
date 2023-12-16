@@ -117,6 +117,19 @@ const getMedicineDiscount = async (req, res) => {
   }
 };
 
+const getPatientUsernameSocket = async (req, res) => {
+  // get username of patient
+  try {
+    console.log(req.user.Username);
+    // const patient = await patientModel.findOne({
+    //   Username: req.user.Username,
+    // });
+    res.status(200).json(req.user.Username);
+  } catch (error) {
+    res.status(400).send({ message: error.message });
+  }
+};
+
 const viewSubscribedPackage = async (req, res) => {
   try {
     const current_user = req.user.Username; //changed this
@@ -145,5 +158,6 @@ module.exports = {
   getEmergencyContact,
   getWalletAmount,
   getMedicineDiscount,
+  getPatientUsernameSocket,
   viewSubscribedPackage,
 };
