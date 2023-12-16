@@ -59,6 +59,7 @@ const checkout = async (req, res) => {
       }
       medicine.Quantity -= quantity;
       medicine.Sales += quantity;
+      if(medicine.SalesPerMonth) medicine.SalesPerMonth[11]+=quantity;
       await medicine.save();
     }
 
@@ -154,6 +155,7 @@ const cancelOrder = async (req, res) => {
       const newQuantity = quantity + 1;
       medicine.Sales = newSales;
       medicine.Quantity = newQuantity;
+      if(medicine.SalesPerMonth) medicine.SalesPerMonth[11]-=1;
       await medicine.save();
     }
 
