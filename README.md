@@ -2,7 +2,7 @@
 
 This project is a virtual pharmacy website for remotely ordering and managing prescriptions.
 
-<img src="./frontend/src/assets/img/ShebeenElkom.png" width="200">
+<img src="./frontend/src/assets/img/GomaaLogo.gif" width="200">
 
 ## Motivation
 
@@ -14,6 +14,7 @@ The motivation behind the Friday's Pharmacy project is to provide a seamless and
 - Unit tests are needed
 - UI and UX need to be improved in several areas such as ordering a prescription
   [include all missing or broken requirements here]
+- Pharmacist/Doctor chat is not working
 
 ## Code Style
 
@@ -28,6 +29,10 @@ This project adheres to certain coding conventions for consistency and readabili
 
 We use [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) to make sure formatting is proper so make sure to use it when writing code.
 
+### Design Pattern
+
+The project follows the MVC design pattern ,MVC is a software architectural pattern commonly used for developing user interfaces that divide the related program logic into three interconnected elements. This is done to separate internal representations of information from the ways information is presented to and accepted from the user , So the Files in the backend was divided into the M (models) where the schema of the models exist which represent the core of the database , the C (controller) where the functions needed for the routes exists and the V (views) the view in MERN stack is represented by the react frontend server.
+
 ## Screenshots
 
 ![App Screenshot](./screenshots/website/loginPage.jpg)
@@ -40,7 +45,7 @@ We use [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.pre
 
 ## Tech Stack
 
-**FrontEnd:** React, ChakraUI
+**FrontEnd:** React
 
 **BackEnd:** Node, Express
 
