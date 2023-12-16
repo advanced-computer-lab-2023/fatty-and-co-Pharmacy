@@ -57,7 +57,7 @@ export default function Dashboard(props) {
     };
   }, [scrollTop]);
   const getActiveRoute = (routes) => {
-    let activeRoute = "Default Brand Text";
+    let activeRoute = "Pharmacy";
     for (let i = 0; i < routes.length; i++) {
       if (routes[i].collapse) {
         let collapseActiveRoute = getActiveRoute(routes[i].views);

@@ -58,7 +58,7 @@ export default function Dashboard(props) {
     return window.location.pathname !== "/admin/full-screen-maps";
   };
   const getActiveRoute = (routes) => {
-    let activeRoute = "Default Brand Text";
+    let activeRoute = "Pharmacy";
     for (let i = 0; i < routes.length; i++) {
       if (routes[i].collapse) {
         let collapseActiveRoute = getActiveRoute(routes[i].views);
@@ -168,13 +168,13 @@ export default function Dashboard(props) {
           <HamburgerIcon cursor="pointer" w="20px" h="20px" />
         </Button>
         <Portal>
-        <AdminNavbar
-          logoText={"PURITY UI DASHBOARD"}
-          brandText={getActiveRoute(routes)}
-          secondary={getActiveNavbar(routes)}
-          fixed={fixed}
-          {...rest}
-        />
+          <AdminNavbar
+            logoText={"PURITY UI DASHBOARD"}
+            brandText={getActiveRoute(routes)}
+            secondary={getActiveNavbar(routes)}
+            fixed={fixed}
+            {...rest}
+          />
         </Portal>
         {getRoute() ? (
           <PanelContent>

@@ -37,6 +37,7 @@ import { GiMedicines } from "react-icons/gi";
 import { BsCart2 } from "react-icons/bs";
 import { IoMenuSharp } from "react-icons/io5";
 import { RiLockPasswordFill } from "react-icons/ri";
+import { BsGraphUpArrow } from "react-icons/bs";
 
 var dashRoutes = [
   {
@@ -49,15 +50,15 @@ var dashRoutes = [
   },
   {
     path: "/pharmacistmedicine",
-    name: "Pharmacist Medicine",
+    name: "Shop",
     rtlName: "لوحة القيادة",
-    icon: <HomeIcon color="inherit" />,
+    icon: <GiMedicines />,
     component: PharmacistMedicine,
     layout: "/pharmacist",
   },
   {
-    path: "/patientmedicine",
-    name: "Medicines",
+    path: "/dashboard",
+    name: "Shop",
     rtlName: "لوحة القيادة",
     icon: <GiMedicines />,
     component: PatientMedicine,
@@ -104,7 +105,7 @@ var dashRoutes = [
     path: "/updatePass",
     name: "Change Password",
     rtlName: "لوحة القيادة",
-    icon: <PersonIcon color="inherit" />,
+    icon: <RiLockPasswordFill />,
     component: UpdatePass,
     layout: "/pharmacist",
   },
@@ -112,7 +113,7 @@ var dashRoutes = [
     path: "/salesReport",
     name: "View Sales",
     rtlName: "لوحة القيادة",
-    icon: <PersonIcon color="inherit" />,
+    icon: <BsGraphUpArrow />,
     component: MedicineReport,
     layout: "/pharmacist",
   },
@@ -120,7 +121,7 @@ var dashRoutes = [
     path: "/salesReport",
     name: "View Sales",
     rtlName: "لوحة القيادة",
-    icon: <PersonIcon color="inherit" />,
+    icon: <BsGraphUpArrow />,
     component: MedicineReport,
     layout: "/admin",
   },
