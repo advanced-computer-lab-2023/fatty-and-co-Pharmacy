@@ -32,7 +32,7 @@ export default function MedicineReport() {
             p="4"
             boxShadow="md">
                 <SalesOverview
-                title={"Sales Overview"}
+                title={"Sales Report"}
                 percentage={5}
                 />
             </Box>
