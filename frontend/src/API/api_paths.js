@@ -44,7 +44,11 @@ export const API_PATHS = {
   getRequestFile: ADMIN_BASE + "getRequestFile/", // + filename
   acceptRequest: ADMIN_BASE + "acceptRequest/",
   rejectRequest: ADMIN_BASE + "rejectRequest/",
+
+
   // Pharmacist paths
+  getAllPatients: PHARMACIST_BASE + "getAllPatients/",
+  getPharmacistUsernameSocket: PHARMACIST_BASE + "getPharmacistUsernameSocket/",  
 
   // Patient paths
   getMedicineDiscount: PATIENT_BASE + "getMedicineDiscount/",

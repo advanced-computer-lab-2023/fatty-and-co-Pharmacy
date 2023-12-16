@@ -4,6 +4,8 @@ const {
   getAllPharmacists,
   getPharmacist,
   deletePharmacist,
+  getAllPatients,
+  getPharmacistUsernameSocket,
 } = require("../controllers/pharmacistController");
 
 const {
@@ -26,5 +28,9 @@ router.delete("/deletePharmacist/:id", deletePharmacist);
 
 // TODO: add type check as middleware if needed
 router.get("/getPharmacist/:id", getPharmacist);
+
+router.get("/getAllPatients",checkPharmacist, getAllPatients);
+
+router.get("/getPharmacistUsernameSocket", checkPharmacist, getPharmacistUsernameSocket);
 
 module.exports = router;
