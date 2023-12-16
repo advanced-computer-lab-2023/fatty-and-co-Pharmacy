@@ -26,6 +26,8 @@ import DashboardPharm from "views/Dashboard/DashboardPharm";
 import ChatWithPatient from "views/Pharmacist/chatWithPatient";
 import DashboardPat from "views/Dashboard/DashboardPat";
 import ChatWithPharmacist from "views/Patient/chatWithPharmacist";
+import ChatWithDoctor from "views/Pharmacist/chatWithDoctor";
+
 import {
   HomeIcon,
   StatsIcon,
@@ -70,14 +72,13 @@ var dashRoutes = [
     component: ChatWithPharmacist,
     layout: "/patient",
   },
-
   {
-    path: "/chatWithPharmacist",
-    name: "Patient Medicine",
+    path: "/chatWithDoctor",
+    name: "Chat With Doctor",
     rtlName: "لوحة القيادة",
     icon: <HomeIcon color="inherit" />,
-    component: ChatWithPharmacist,
-    layout: "/patient",
+    component: ChatWithDoctor,
+    layout: "/pharmacist",
   },
 
   {
@@ -112,7 +113,7 @@ var dashRoutes = [
     component: ChatWithPatient,
     layout: "/pharmacist",
   },
-  
+
   {
     path: "/addAdmin",
     name: "Add Admin",
