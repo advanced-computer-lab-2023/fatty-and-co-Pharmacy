@@ -224,6 +224,24 @@ function Cart() {
                         <Table variant="simple">
                             <Tbody>
                                 <Tr>
+                                    <Td>
+                                        Medicine
+                                    </Td>
+                                    <Td>
+                                        Price in EGP
+                                    </Td>
+                                </Tr>
+                                    {medicine?.map((med) => (
+                                        <Tr key={med._id}>
+                                            <Td>
+                                                {med && med.Name ? med.Name : "N/A"}
+                                            </Td>
+                                            <Td>
+                                                {med && med.TotalPrice ? med.TotalPrice : "N/A"}
+                                            </Td>
+                                        </Tr>
+                                    ))}
+                                <Tr>
                                     <Td textAlign="right">
                                         <Heading as="h3" size="lg" textAlign="right">
                                             Total:
