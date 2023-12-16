@@ -26,17 +26,6 @@ export default function MedicineReport() {
         gap='24px'
         mb={{ lg: "26px" }}>
         <Box
-            borderWidth="1px"
-            borderRadius="lg"
-            overflow="hidden"
-            p="4"
-            boxShadow="md">
-                <SalesOverview
-                title={"Sales Report"}
-                percentage={5}
-                />
-            </Box>
-            <Box
                 borderWidth="1px"
                 borderRadius="lg"
                 overflow="hidden"
@@ -48,6 +37,18 @@ export default function MedicineReport() {
                     percentage={5}
                 />
             </Box>
+        <Box
+            borderWidth="1px"
+            borderRadius="lg"
+            overflow="hidden"
+            p="4"
+            boxShadow="md">
+                <SalesOverview
+                title={"Sales Report"}
+                percentage={5}
+                />
+            </Box>
+            
       </Grid>
     </Flex>
   );
