@@ -32,6 +32,10 @@ import {
   SupportIcon,
 } from "components/Icons/Icons";
 import pharmSignUp from "views/Auth/pharmSignUp";
+import { GiMedicines } from "react-icons/gi";
+import { BsCart2 } from "react-icons/bs";
+import { IoMenuSharp } from "react-icons/io5";
+import { RiLockPasswordFill } from "react-icons/ri";
 
 var dashRoutes = [
   {
@@ -52,9 +56,9 @@ var dashRoutes = [
   },
   {
     path: "/patientmedicine",
-    name: "Patient Medicine",
+    name: "Medicines",
     rtlName: "لوحة القيادة",
-    icon: <HomeIcon color="inherit" />,
+    icon: <GiMedicines />,
     component: PatientMedicine,
     layout: "/patient",
   },
@@ -112,10 +116,18 @@ var dashRoutes = [
     layout: "/admin",
   },
   {
+    path: "/cart",
+    name: "Cart",
+    rtlName: "لوحة القيادة",
+    icon: <BsCart2 />,
+    component: Cart,
+    layout: "/patient",
+  },
+  {
     path: "/updatePass",
     name: "Change Password",
     rtlName: "لوحة القيادة",
-    icon: <HomeIcon color="inherit" />,
+    icon: <RiLockPasswordFill />,
     component: UpdatePass,
     layout: "/patient",
   },
@@ -145,14 +157,6 @@ var dashRoutes = [
     show: false,
   },
   {
-    path: "/cart",
-    name: "Cart",
-    rtlName: "لوحة القيادة",
-    icon: <StatsIcon color="inherit" />,
-    component: Cart,
-    layout: "/patient",
-  },
-  {
     path: "/checkout",
     name: "Checkout",
     rtlName: "لوحة القيادة",
@@ -174,7 +178,7 @@ var dashRoutes = [
     path: "/orders",
     name: "Orders",
     rtlName: "لوحة القيادة",
-    icon: <StatsIcon color="inherit" />,
+    icon: <IoMenuSharp />,
     component: ViewOrders,
     layout: "/patient",
   },
