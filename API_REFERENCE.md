@@ -272,3 +272,363 @@ GET /getPharmacist/:id
 | Parameter | Type     | Description                                         |
 | :-------- | :------- | :-------------------------------------------------- |
 | `id`      | `string` | **Required**. The id of the pharmacist to be viewed |
+
+### Patient Routes
+
+#### Get All Patients
+
+```http
+GET /getAllPatients
+```
+
+No parameters required.
+
+#### Delete Patient
+
+```http
+DELETE /deletePatient/:id
+```
+
+| Parameter | Type     | Description                                       |
+| :-------- | :------- | :------------------------------------------------ |
+| `id`      | `string` | **Required**. The id of the patient to be deleted |
+
+#### Get Patient
+
+```http
+GET /getPatient/:id
+```
+
+| Parameter | Type     | Description                                      |
+| :-------- | :------- | :----------------------------------------------- |
+| `id`      | `string` | **Required**. The id of the patient to be viewed |
+
+#### Update Patient
+
+```http
+PATCH /updatePatient/:id
+```
+
+| Parameter | Type     | Description                                       |
+| :-------- | :------- | :------------------------------------------------ |
+| `id`      | `string` | **Required**. The id of the patient to be updated |
+
+#### Get Patient Username
+
+```http
+GET /getPatientUsername/:Username
+```
+
+| Parameter  | Type     | Description                               |
+| :--------- | :------- | :---------------------------------------- |
+| `Username` | `string` | **Required**. The username of the patient |
+
+#### Get Emergency Contact
+
+```http
+GET /getEmergencyContact/:Username
+```
+
+| Parameter  | Type     | Description                                                                          |
+| :--------- | :------- | :----------------------------------------------------------------------------------- |
+| `Username` | `string` | **Required**. The username of the patient whose emergency contact is to be retrieved |
+
+#### Get Wallet Amount
+
+```http
+GET /getWalletAmount
+```
+
+No parameters required.
+
+#### Get Medicine Discount
+
+```http
+GET /getMedicineDiscount
+```
+
+No parameters required.
+
+#### View Subscription
+
+```http
+GET /viewSubscription
+```
+
+No parameters required.
+
+### Order Routes
+
+#### Checkout
+
+```http
+POST /checkout
+```
+
+| Parameter      | Type     | Description                            |
+| :------------- | :------- | :------------------------------------- |
+| `orderDetails` | `object` | **Required**. The details of the order |
+
+#### Get Orders
+
+```http
+GET /getOrders
+```
+
+No parameters required.
+
+#### Get Order Details and Status
+
+```http
+GET /getOrderDetailsandStatus
+```
+
+No parameters required.
+
+#### Cancel Order
+
+```http
+POST /cancelOrder
+```
+
+| Parameter | Type     | Description                                       |
+| :-------- | :------- | :------------------------------------------------ |
+| `orderId` | `string` | **Required**. The id of the order to be cancelled |
+
+### Medicine Routes
+
+#### Get Medicines
+
+```http
+GET /getMedicines
+```
+
+No parameters required.
+
+#### Get Medicine
+
+```http
+GET /getMedicine/:Name
+```
+
+| Parameter | Type     | Description                            |
+| :-------- | :------- | :------------------------------------- |
+| `Name`    | `string` | **Required**. The name of the medicine |
+
+#### Add Medicine
+
+```http
+POST /addMedicine
+```
+
+| Parameter         | Type     | Description                               |
+| :---------------- | :------- | :---------------------------------------- |
+| `MedicineDetails` | `object` | **Required**. The details of the medicine |
+| `MImage`          | `file`   | **Required**. The image of the medicine   |
+
+#### Delete Medicine
+
+```http
+DELETE /deleteMedicine/:id
+```
+
+| Parameter | Type     | Description                                        |
+| :-------- | :------- | :------------------------------------------------- |
+| `id`      | `string` | **Required**. The id of the medicine to be deleted |
+
+#### Update Medicine
+
+```http
+PATCH /updateMedicine/:id
+```
+
+| Parameter         | Type     | Description                                        |
+| :---------------- | :------- | :------------------------------------------------- |
+| `id`              | `string` | **Required**. The id of the medicine to be updated |
+| `MedicineDetails` | `object` | **Required**. The updated details of the medicine  |
+| `MImage`          | `file`   | **Required**. The updated image of the medicine    |
+
+#### Filter Medicine
+
+```http
+GET /filter
+```
+
+| Parameter      | Type     | Description                                  |
+| :------------- | :------- | :------------------------------------------- |
+| `medicinalUse` | `string` | **Required**. The medicinal use to filter by |
+
+#### Download File
+
+```http
+GET /downloadFile/:filename
+```
+
+| Parameter  | Type     | Description                                             |
+| :--------- | :------- | :------------------------------------------------------ |
+| `filename` | `string` | **Required**. The filename of the file to be downloaded |
+
+#### Get Total Sales
+
+```http
+GET /getTotalSales
+```
+
+No parameters required.
+
+### Payment Routes
+
+#### Pay With Card
+
+```http
+POST /cardPayment
+```
+
+| Parameter     | Type     | Description                           |
+| :------------ | :------- | :------------------------------------ |
+| `cardDetails` | `object` | **Required**. The details of the card |
+| `amount`      | `number` | **Required**. The amount to be paid   |
+
+### Cart Routes
+
+#### Add To Cart
+
+```http
+POST /addToCart
+```
+
+| Parameter    | Type     | Description                                                  |
+| :----------- | :------- | :----------------------------------------------------------- |
+| `medicineId` | `string` | **Required**. The id of the medicine to be added to the cart |
+
+#### Decrement Item
+
+```http
+POST /decrementItem
+```
+
+| Parameter    | Type     | Description                                                        |
+| :----------- | :------- | :----------------------------------------------------------------- |
+| `medicineId` | `string` | **Required**. The id of the medicine to be decremented in the cart |
+
+#### View Cart
+
+```http
+GET /viewCart
+```
+
+No parameters required.
+
+#### Delete Item
+
+```http
+POST /deleteItem
+```
+
+| Parameter    | Type     | Description                                                      |
+| :----------- | :------- | :--------------------------------------------------------------- |
+| `medicineId` | `string` | **Required**. The id of the medicine to be deleted from the cart |
+
+#### Check Medicine Prescribed
+
+```http
+GET /checkMedicinePrescribed
+```
+
+| Parameter    | Type     | Description                                                      |
+| :----------- | :------- | :--------------------------------------------------------------- |
+| `medicineId` | `string` | **Required**. The id of the medicine to check if it's prescribed |
+
+### Delivery Address Routes
+
+#### View Delivery Addresses
+
+```http
+GET /viewDeliveryAddresses
+```
+
+No parameters required.
+
+#### Add Delivery Address
+
+```http
+POST /addDeliveryAddress
+```
+
+| Parameter        | Type     | Description                                           |
+| :--------------- | :------- | :---------------------------------------------------- |
+| `addressDetails` | `object` | **Required**. The details of the new delivery address |
+
+### Test Routes
+
+#### Get Users
+
+```http
+GET /Users
+```
+
+No parameters required.
+
+#### Get Admins
+
+```http
+GET /Admins
+```
+
+No parameters required.
+
+#### Get Pharmacists
+
+```http
+GET /Pharmacists
+```
+
+No parameters required.
+
+#### Get Patients
+
+```http
+GET /Patients
+```
+
+No parameters required.
+
+#### Create User
+
+```http
+POST /createUser
+```
+
+| Parameter     | Type     | Description                               |
+| :------------ | :------- | :---------------------------------------- |
+| `userDetails` | `object` | **Required**. The details of the new user |
+
+#### Create Pharmacist
+
+```http
+POST /createPharmacist
+```
+
+| Parameter           | Type     | Description                                     |
+| :------------------ | :------- | :---------------------------------------------- |
+| `pharmacistDetails` | `object` | **Required**. The details of the new pharmacist |
+
+#### Create Patient
+
+```http
+POST /createPatient
+```
+
+| Parameter        | Type     | Description                                  |
+| :--------------- | :------- | :------------------------------------------- |
+| `patientDetails` | `object` | **Required**. The details of the new patient |
+
+#### Create Medicine
+
+```http
+POST /createMedicine
+```
+
+| Parameter         | Type     | Description                                   |
+| :---------------- | :------- | :-------------------------------------------- |
+| `medicineDetails` | `object` | **Required**. The details of the new medicine |
