@@ -117,6 +117,19 @@ const getMedicineDiscount = async (req, res) => {
   }
 };
 
+const getPatientUsernameSocket = async (req, res) => {
+  // get username of patient
+  try {
+    console.log(req.user.Username);
+    // const patient = await patientModel.findOne({
+    //   Username: req.user.Username,
+    // });
+    res.status(200).json(req.user.Username);
+  } catch (error) {
+    res.status(400).send({ message: error.message });
+  }
+};
+
 module.exports = {
   getAllPatients,
   deletePatient,
@@ -125,5 +138,6 @@ module.exports = {
   getPatientUsername,
   getEmergencyContact,
   getWalletAmount,
-  getMedicineDiscount
+  getMedicineDiscount,
+  getPatientUsernameSocket,
 };

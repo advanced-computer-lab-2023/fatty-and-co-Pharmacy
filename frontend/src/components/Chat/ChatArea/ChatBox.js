@@ -9,7 +9,7 @@ import { useAuthContext } from "hooks/useAuthContext";
 
 import socketIOClient from "socket.io-client";
 
-const ENDPOINT = "http://localhost:8000"; 
+const ENDPOINT = "http://localhost:7000"; 
 const socket = socketIOClient(ENDPOINT);
 
 console.log(socket);
@@ -110,20 +110,38 @@ const getDoctorUsername = async () => {
   }
 };
 
-
+const getPharmacistUsername = async () => {
+  try {
+    const response = await axios.get(API_PATHS.getPharmacistUsernameSocket, {
+      headers: { Authorization },
+    });
+    setCurrentUsername(response.data);
+    console.log(response.data);
+    socket.emit('addUser', response.data); // Add this line
+  } catch (error) {
+    console.log(error);
+    toast({
+      title: "Error",
+      description: error.message,
+      status: "error",
+      duration: 9000,
+      isClosable: true,
+    });
+  }
+};
   useEffect(() => {
     // Connect to the Socket.IO server when the component mounts
     
     console.log(user.userType);
-    if(user.userType === "Doctor")
-    getDoctorUsername();
+    if(user.userType === "Pharmacist")
+    getPharmacistUsername();
     else if(user.userType === "Patient")
     getPatientUsername(); 
 
     console.log("current username");
     console.log(currentUsername);
 
-    //console.log(socket);
+    console.log(socket);
     socket.on("connect", () => {
       console.log("Connected to server");
     });
@@ -136,7 +154,7 @@ const getDoctorUsername = async () => {
     });
 
 
-  }, [currentUsername]);
+  }, []);
 
  
   useEffect(() => {
@@ -154,8 +172,6 @@ const getDoctorUsername = async () => {
         isCurrentUser: data.senderUsername === currentUsername,
       });
     });
-
-
   },[]);
 
   const fetchMessages = async () => {
@@ -203,6 +219,7 @@ const getDoctorUsername = async () => {
     console.log(" messages changed chatBox");
   }, [messages]);
 
+  
   const handleSendMessage = async () => {
     try {
       socket.emit('sendMessage', {sendUsername: currentUsername, recUsername: receiver.Username, text: newMessage});

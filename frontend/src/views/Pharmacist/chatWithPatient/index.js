@@ -8,8 +8,8 @@ import Conversation from "components/Chat/Conversation";
 import ChatBox from "components/Chat/ChatArea/ChatBox";
 import socketIOClient from "socket.io-client";
 
-const ENDPOINT = "http://localhost:8000";
-const socket = socketIOClient(ENDPOINT);
+//const ENDPOINT = "http://localhost:7000";
+//const socket = socketIOClient(ENDPOINT);
 const ChatWithPatient = () => {
   const { user } = useAuthContext();
   const Authorization = `Bearer ${user.token}`;
@@ -25,21 +25,21 @@ const ChatWithPatient = () => {
   const [messages, setMessages] = useState([]);
   const [selectedPatient, setSelectedPatient] = useState(false);
 
-  socket.on("receivedNotification", (recUsername, sendUsername) => {
-    console.log("notif username");
-    console.log(recUsername);
-    console.log(currentUsername);
-    if (recUsername === currentUsername) {
-      console.log("notification received");
-      const updatedPat_rec = chatPatients.map((d) =>
-        d.Username === sendUsername ? { ...d, hasNotif: true } : d
-      );
-      setChatPatients(updatedPat_rec);
-      //setRender(true);
-      console.log("chatPatsafternotification");
-      console.log(chatPatients);
-    }
-  });
+//   socket.on("receivedNotification", (recUsername, sendUsername) => {
+//     console.log("notif username");
+//     console.log(recUsername);
+//     console.log(currentUsername);
+//     if (recUsername === currentUsername) {
+//       console.log("notification received");
+//       const updatedPat_rec = chatPatients.map((d) =>
+//         d.Username === sendUsername ? { ...d, hasNotif: true } : d
+//       );
+//       setChatPatients(updatedPat_rec);
+//       //setRender(true);
+//       console.log("chatPatsafternotification");
+//       console.log(chatPatients);
+//     }
+//   });
 
   const getPharmacistUsername = async () => {
     try {
@@ -92,6 +92,8 @@ const ChatWithPatient = () => {
 
   useEffect(() => {
     if (currentPatient) {
+        console.log("current patient");
+        console.log(currentPatient);
       fetchMessages();
     }
   }, [currentPatient]);
@@ -100,27 +102,28 @@ const ChatWithPatient = () => {
     setCurrentPatient(patient);
     setSelectedPatient(true);
 
-    const updatedPat = chatPatients.map((d) =>
-      d.Username === patient.Username ? { ...d, hasNotif: false } : d
-    );
-    setChatPatients(updatedPat);
+    // const updatedPat = chatPatients.map((d) =>
+    //   d.Username === patient.Username ? { ...d, hasNotif: false } : d
+    // );
+    // setChatPatients(updatedPat);
 
     console.log("clicked");
     console.log(patient.Username);
 
-    await axios.put(
-      API_PATHS.setNotificationsToSeen,
-      { senderUsername: patient.Username },
-      { headers: { Authorization } }
-    );
+    // await axios.put(
+    //   API_PATHS.setNotificationsToSeen,
+    //   { senderUsername: patient.Username },
+    //   { headers: { Authorization } }
+    // );
   };
 
 
   const fetchConversations = async () => {
     try {
-      const response = await axios.get(API_PATHS.getChatPatients, {
+      const response = await axios.get(API_PATHS.getAllPatients, {
         headers: { Authorization },
       });
+      console.log("chat patients");
       console.log(response.data);
       setChatPatients(response.data);
       //console.log(response.data);
@@ -128,7 +131,7 @@ const ChatWithPatient = () => {
       console.log(error);
       toast({
         title: "Error",
-        description: error.response.data.message,
+        description: error.message,
         status: "error",
         duration: 9000,
         isClosable: true,
@@ -137,13 +140,15 @@ const ChatWithPatient = () => {
   };
   useEffect(() => {
     console.log("user type");
-    console.log(user.Type);
+    //console.log(user.Type);
     if (user.userType === "Pharmacist") {
-      getPharmacistUsername;
+      getPharmacistUsername();
     } else {
       getPatientUsername();
     }
+    console.log("current username");
     fetchConversations();
+
   }, []);
 
   return (

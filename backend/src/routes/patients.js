@@ -7,7 +7,8 @@ const {
   getPatientUsername,
   getEmergencyContact,
   getWalletAmount,
-  getMedicineDiscount
+  getMedicineDiscount,
+  getPatientUsernameSocket,
 } = require("../controllers/patientController");
 
 const router = express.Router();
@@ -33,4 +34,5 @@ router.get("/getWalletAmount", getWalletAmount);
 
 router.get("/getMedicineDiscount", getMedicineDiscount);
 
+router.get("/getPatientUsernameSocket", getPatientUsernameSocket);
 module.exports = router;

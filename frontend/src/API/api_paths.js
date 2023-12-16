@@ -8,7 +8,7 @@ const GUEST_BASE = "http://localhost:7000/guest/";
 const CART_BASE = "http://localhost:7000/cart/";
 const DELIVERY_ADDRESS_BASE = "http://localhost:7000/deliveryAddress/";
 const PAYMENT_BASE = "http://localhost:7000/payment/";
-
+const MESSAGE_BASE = "http://localhost:7000/message/";
 export const API_PATHS = {
   // Add paths here
 
@@ -49,9 +49,11 @@ export const API_PATHS = {
   // Pharmacist paths
   getAllPatients: PHARMACIST_BASE + "getAllPatients/",
   getPharmacistUsernameSocket: PHARMACIST_BASE + "getPharmacistUsernameSocket/",  
+  
 
   // Patient paths
   getMedicineDiscount: PATIENT_BASE + "getMedicineDiscount/",
+  getPatientUsernameSocket: PATIENT_BASE + "getPatientUsernameSocket/", 
 
   // Order paths
   checkout: ORDER_BASE + "checkout/",
@@ -70,4 +72,8 @@ export const API_PATHS = {
   addDeliveryAddress: DELIVERY_ADDRESS_BASE + "addDeliveryAddress/",
 
   cardPayment: PAYMENT_BASE + "cardPayment/",
+
+  //Messages paths
+  getMessages: MESSAGE_BASE + "getMessages/",
+  createMessage: MESSAGE_BASE + "createMessage/",
 };

@@ -178,7 +178,7 @@ mongoose
   .then(() => {
     console.log("MongoDB Connected");
     // Listen for requests
-    app.listen(port, () => {
+    server.listen(port, () => {
       console.log(`Listening to requests on http://localhost:${port}`);
     });
   })

@@ -23,7 +23,7 @@ const checkPatient = async (req, res, next) => {
 };
 
 const checkUser = (req, res, next) => {
-  if (req.user && (req.user.Type === "Doctor" || req.user.Type === "Patient")) {
+  if (req.user && (req.user.Type === "Doctor" || req.user.Type === "Patient" || req.user.Type === "Pharmacist")) {
     next();
   } else {
     res.status(403).json({ error: 'User must be a doctor or a patient' });

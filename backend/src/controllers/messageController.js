@@ -1,30 +1,40 @@
-const Message = require('../models/messages');
+const Message = require("../models/messages");
 
 // Get all messages of A conversation
 const getMessages = async (req, res) => {
   const sender = req.user.Username;
   const receiver = req.query.Receiver;
-  // console.log(sender);
-  // console.log("hello rec");
+  //console.log(sender);
+  console.log("hello rec");
   // console.log(receiver);
   try {
-    const messages = await Message.find({
-      $or: [
-        { receiverUsername: receiver, senderUsername: sender },
-        { receiverUsername: sender, senderUsername: receiver }
-      ]
-    }).sort({ timestamp: 'asc' });
-    
-    const formattedMessages = messages.map(message => ({
+    let query;
+
+    if (req.user.Username === "HusseinPha2@") {
+      query = {
+        $or: [
+          { receiverUsername: sender, senderUsername: receiver },
+          { receiverUsername: receiver, senderUsername: sender },
+        ],
+      };
+    } else {
+      query = {
+        $or: [{ receiverUsername: sender }, { senderUsername: sender }],
+      };
+    }
+
+    const messages = await Message.find(query).sort({ timestamp: "asc" });
+
+    const formattedMessages = messages.map((message) => ({
       sender: message.senderUsername,
       content: message.text,
       timestamp: message.timestamp,
-      isCurrentUser: message.senderUsername === req.user.Username
+      isCurrentUser: message.senderUsername === req.user.Username,
     }));
-    
+
     res.status(200).json(formattedMessages);
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
@@ -49,10 +59,8 @@ const createMessage = async (req, res) => {
     };
 
     res.status(200).json(messageData);
-
-
   } catch (error) {
-    res.status(500).json({ error: error.message});
+    res.status(500).json({ error: error.message });
   }
 };
 

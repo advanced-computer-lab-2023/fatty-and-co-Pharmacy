@@ -37,35 +37,39 @@ const getPharmacist = async (req, res) => {
   }
 };
 
+
+
 // I think this is useless?
 // if not useless it needs to delete from user model too
 const deletePharmacist = async (req, res) => {
   try {
     const pharmacist = await pharmacistModel.findByIdAndDelete(req.params.id);
-    res.status(200).send({ pharmacist });
+    res.status(200).json({ pharmacist });
   } catch (error) {
     res.status(400).send({ message: error.message });
   }
 };
 
-
 //get all patients in the db with no duplicates for CHAT
 const getAllPatients = async (req, res) => {
   try {
     const patients = await patientModel.find();
-    res.status(200).send({ patients });
+    res.status(200).json(patients);
   } catch (error) {
     res.status(400).send({ message: error.message });
   }
-}
+};
 
-const getPharmacistUsernameSocket = async (req, res) => { // get username of pharmacist
-  try{
-    const pharmacist = await pharmacistModel.findOne({Username: req.user.Username});
-    res.status(200).send({pharmacist});
-
-  }catch(error){
-    res.status(400).send({message: error.message});
+const getPharmacistUsernameSocket = async (req, res) => {
+  // get username of pharmacist
+  try {
+    console.log(req.user.Username);
+    // const pharmacist = await pharmacistModel.findOne({
+    //   Username: req.user.Username,
+    // });
+    res.status(200).json(req.user.Username);
+  } catch (error) {
+    res.status(400).send({ message: error.message });
   }
 };
 module.exports = {

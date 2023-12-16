@@ -21,7 +21,9 @@ import Checkout from "views/Patient/Cart/Checkout";
 import MakePayment from "views/Patient/makePayment";
 import ViewOrders from "views/Patient/viewOrders";
 import ThankYouCard from "views/Patient/Medicine/components/ThankYou";
-
+import DashboardPharm from "views/Dashboard/DashboardPharm";
+import ChatWithPatient from "views/Pharmacist/chatWithPatient";
+import DashboardPat from "views/Dashboard/DashboardPat";
 import {
   HomeIcon,
   StatsIcon,
@@ -32,6 +34,7 @@ import {
   SupportIcon,
 } from "components/Icons/Icons";
 import pharmSignUp from "views/Auth/pharmSignUp";
+import ChatWithPharmacist from "views/Patient/chatWithPharmacist";
 
 var dashRoutes = [
   {
@@ -59,12 +62,31 @@ var dashRoutes = [
     layout: "/patient",
   },
   {
+    path: "/chatWithPharmacist",
+    name: "Patient Medicine",
+    rtlName: "لوحة القيادة",
+    icon: <HomeIcon color="inherit" />,
+    component: ChatWithPharmacist,
+    layout: "/patient",
+  },
+
+  {
+    path: "/chatWithPharmacist",
+    name: "Patient Medicine",
+    rtlName: "لوحة القيادة",
+    icon: <HomeIcon color="inherit" />,
+    component: ChatWithPharmacist,
+    layout: "/patient",
+  },
+
+  {
     path: "/viewRequests",
     name: "View Requests",
     icon: <HomeIcon color="inherit" />,
     component: Requests,
     layout: "/admin",
   },
+
   {
     path: "/addAdmin",
     name: "Add Admin",
@@ -87,6 +109,31 @@ var dashRoutes = [
     component: Dashboard,
     layout: "/admin",
   },
+  {
+    path: "/dashboard",
+    name: "Dashboard",
+    rtlName: "لوحة القيادة",
+    icon: <HomeIcon color="inherit" />,
+    component: DashboardPharm,
+    layout: "/pharmacist",
+  },
+  {
+    path: "/dashboard",
+    name: "Dashboard",
+    rtlName: "لوحة القيادة",
+    icon: <HomeIcon color="inherit" />,
+    component: DashboardPat,
+    layout: "/patient",
+  },
+  {
+    path: "/chatWithPatient",
+    name: "chatWithPatient",
+    rtlName: "لوحة القيادة",
+    icon: <HomeIcon color="inherit" />,
+    component: ChatWithPatient,
+    layout: "/pharmacist",
+  },
+  
   {
     path: "/viewpatient",
     name: "View Patient",
