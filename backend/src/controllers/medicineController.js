@@ -19,6 +19,19 @@ const createMedicine = async (req, res) => {
   const UpdatedMedicinalUse = Medicinal_Use.split(",");
   const UpdatedActiveIngredients = Active_Ingredients.split(",");
   try {
+    // Randomly distribute total sales over the 12 months
+    const distributeSales = (totalSales) => {
+      const salesPerMonth = Array.from({ length: 12 }, () => 0);
+
+      // Distribute sales randomly
+      for (let i = 0; i < totalSales; i++) {
+        const randomMonthIndex = Math.floor(Math.random() * 12);
+        salesPerMonth[randomMonthIndex]++;
+      }
+      return salesPerMonth;
+    };
+
+    const salesPerMonth = distributeSales(Sales);
     const newMedicine = new medicineModel({
       Name: Name,
       Quantity: Quantity,
@@ -27,6 +40,7 @@ const createMedicine = async (req, res) => {
       Price: Price,
       Image: { filename: filename, originalname: originalname },
       Sales: Sales,
+      SalesPerMonth: salesPerMonth,
       Medicinal_Use: UpdatedMedicinalUse,
     });
 
@@ -82,6 +96,21 @@ const updateMedicine = async (req, res) => {
 
     const UpdatedMedicinalUse = Medicinal_Use.split(",");
     const UpdatedActiveIngredients = Active_Ingredients.split(",");
+
+    // Randomly distribute total sales over the 12 months
+    const distributeSales = (totalSales) => {
+      const salesPerMonth = Array.from({ length: 12 }, () => 0);
+
+      // Distribute sales randomly
+      for (let i = 0; i < totalSales; i++) {
+        const randomMonthIndex = Math.floor(Math.random() * 12);
+        salesPerMonth[randomMonthIndex]++;
+      }
+      return salesPerMonth;
+    };
+
+    const salesPerMonth = distributeSales(Sales);
+
     const updatedMedicine = {
       Name,
       Quantity,
@@ -91,6 +120,7 @@ const updateMedicine = async (req, res) => {
       Medicinal_Use: UpdatedMedicinalUse,
       State,
       Sales,
+      SalesPerMonth: salesPerMonth,
       MedicationType,
       _id: id,
       ...(isImage && { Image: { filename: filename, originalname: originalname } }),
@@ -160,6 +190,27 @@ const downloadFile = async (req, res) => {
   downloadStream.pipe(res);
 };
 
+const getTotalSales =  async (req, res) => {
+  try {
+    const totalSalesPerMonth = Array.from({ length: 12 }, () => 0);
+
+    // Aggregate total sales per month for all medicines
+    const allMedicines = await medicineModel.find();
+    allMedicines.forEach((medicine) => {
+      if (medicine.SalesPerMonth) {
+        medicine.SalesPerMonth.forEach((sales, index) => {
+          totalSalesPerMonth[index] += sales;
+        });
+      }
+    });
+
+    res.status(200).json(totalSalesPerMonth);
+  } catch (error) {
+    console.error('Error getting total sales per month:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 module.exports = {
   createMedicine,
   getMedicines,
@@ -168,4 +219,5 @@ module.exports = {
   filterMedicine,
   getMedicine,
   downloadFile,
+  getTotalSales,
 };

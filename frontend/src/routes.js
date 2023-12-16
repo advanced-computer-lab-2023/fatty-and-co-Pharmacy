@@ -21,6 +21,7 @@ import Checkout from "views/Patient/Cart/Checkout";
 import MakePayment from "views/Patient/makePayment";
 import ViewOrders from "views/Patient/viewOrders";
 import ThankYouCard from "views/Patient/Medicine/components/ThankYou";
+import MedicineReport from "views/Admin/MedicineReport";
 
 import {
   HomeIcon,
@@ -106,6 +107,22 @@ var dashRoutes = [
     icon: <PersonIcon color="inherit" />,
     component: UpdatePass,
     layout: "/pharmacist",
+  },
+  {
+    path: "/salesReport",
+    name: "View Sales",
+    rtlName: "لوحة القيادة",
+    icon: <PersonIcon color="inherit" />,
+    component: MedicineReport,
+    layout: "/pharmacist",
+  },
+  {
+    path: "/salesReport",
+    name: "View Sales",
+    rtlName: "لوحة القيادة",
+    icon: <PersonIcon color="inherit" />,
+    component: MedicineReport,
+    layout: "/admin",
   },
   {
     path: "/updatePass",

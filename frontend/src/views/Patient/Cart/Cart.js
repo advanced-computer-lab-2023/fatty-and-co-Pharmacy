@@ -38,9 +38,12 @@ function Cart() {
   const { cart: medicine, dispatch } = useCartContext();
   const textColor = useColorModeValue("gray.700", "white");
   const toast = useToast();
+    const [subscription, setSubscription] = useState([{}]);
+    const [myPackage, setMyPackage] = useState([{}]);
 
   useEffect(() => {
     fetchCart();
+        getSubscriptionInfo();
   }, []);
 
   const fetchCart = () => {
@@ -116,6 +119,21 @@ function Cart() {
   const checkout = async () => {
     history.push("/checkout");
   };
+
+    const getSubscriptionInfo = () => {
+        const url = API_PATHS.viewSubscription;
+        axios
+        .get(url, {
+            headers: {
+            Authorization: Authorization,
+            },
+        })
+        .then((response) => {
+            setMyPackage(response.data.package);
+            setSubscription(response.data.subscription);
+        })
+        .catch((err) => console.log(err));
+    }
 
   return (
     <Box pt="20px">
@@ -195,50 +213,84 @@ function Cart() {
                                     </Button></Td>
                                     <Td />
                                 </Tr> */}
-              </Tbody>
-            </Table>
-          </CardBody>
-        </Card>
-        <Card my="22px" flex="1">
-          <CardHeader p="6px 0px 22px 0px">
-            <Flex direction="column">
-              <Text fontSize="lg" fontWeight="bold" pb=".5rem">
-                Order Summary
-              </Text>
+                            </Tbody>
+                        </Table>
+                    </CardBody>
+                </Card>
+                <Card my="22px" flex="1">
+                    <CardHeader p="6px 0px 22px 0px">
+                        <Flex direction="column">
+                            <Text
+                                fontSize="lg"
+                                fontWeight="bold"
+                                pb=".5rem"
+                            >
+                                Order Summary
+                            </Text>
+                        </Flex>
+                    </CardHeader>
+                    <CardBody>
+                        <Table variant="simple">
+                            <Tbody>
+                                <Tr>
+                                    <Td>
+                                        Medicine
+                                    </Td>
+                                    {myPackage.Medicine_Discount && 
+                                        <Td>
+                                            Price after discount
+                                        </Td>   
+                                    }
+                                    {!myPackage.Medicine_Discount &&
+                                        <Td>
+                                            Price
+                                        </Td>  
+                                    }
+                                </Tr>
+                                    {medicine?.map((med) => (
+                                        <Tr key={med._id}>
+                                            <Td>
+                                                {med && med.Name ? med.Name : "N/A"}
+                                            </Td>
+                                            {myPackage.Medicine_Discount && 
+                                                <Td>
+                                                    {med && med.TotalPrice ? parseFloat(med.TotalPrice - (med.TotalPrice * myPackage.Medicine_Discount / 100)).toFixed(2) : "N/A"}
+                                                </Td>   
+                                            }
+                                            {!myPackage.Medicine_Discount &&
+                                                <Td>
+                                                    {med && med.TotalPrice}
+                                                </Td>  
+                                            }
+                                        </Tr>
+                                    ))}
+                                <Tr>
+                                    <Td textAlign="right">
+                                        <Heading as="h3" size="lg" textAlign="right">
+                                            Total:
+                                        </Heading></Td>
+                                    <Td textAlign="left">
+                                        <Heading as="h3" size="lg" textAlign="left">
+                                            {cart.TotalCost ? parseFloat(cart.TotalCost).toFixed(2) : 0} EGP
+                                        </Heading>
+                                    </Td>
+                                </Tr>
+                                <Tr>
+                                    <Td colSpan="4">
+                                        <Button colorScheme="teal">
+                                            <Link href="./checkout" size="lg" variant="solid">
+                                                Proceed to Checkout
+                                            </Link>
+                                        </Button>
+                                    </Td>
+                                </Tr>
+                            </Tbody>
+                        </Table>
+                    </CardBody>
+                </Card>
             </Flex>
-          </CardHeader>
-          <CardBody>
-            <Table variant="simple">
-              <Tbody>
-                <Tr>
-                  <Td textAlign="right">
-                    <Heading as="h3" size="lg" textAlign="right">
-                      Total:
-                    </Heading>
-                  </Td>
-                  <Td textAlign="left">
-                    <Heading as="h3" size="lg" textAlign="left">
-                      {cart.TotalCost ? cart.TotalCost : 0}
-                      EGP
-                    </Heading>
-                  </Td>
-                </Tr>
-                <Tr>
-                  <Td colSpan="4">
-                    <Button colorScheme="teal">
-                      <Link href="./checkout" size="lg" variant="solid">
-                        Proceed to Checkout
-                      </Link>
-                    </Button>
-                  </Td>
-                </Tr>
-              </Tbody>
-            </Table>
-          </CardBody>
-        </Card>
-      </Flex>
-    </Box>
-  );
+        </Box >
+    );
 }
 
 export default Cart;

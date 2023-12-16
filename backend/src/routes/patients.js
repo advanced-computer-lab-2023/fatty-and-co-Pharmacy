@@ -7,7 +7,8 @@ const {
   getPatientUsername,
   getEmergencyContact,
   getWalletAmount,
-  getMedicineDiscount
+  getMedicineDiscount,
+  viewSubscribedPackage,
 } = require("../controllers/patientController");
 
 const router = express.Router();
@@ -32,5 +33,7 @@ router.get("/getEmergencyContact/:Username", getEmergencyContact);
 router.get("/getWalletAmount", getWalletAmount);
 
 router.get("/getMedicineDiscount", getMedicineDiscount);
+
+router.get("/viewSubscription",viewSubscribedPackage);
 
 module.exports = router;
