@@ -190,6 +190,27 @@ const downloadFile = async (req, res) => {
   downloadStream.pipe(res);
 };
 
+const getTotalSales =  async (req, res) => {
+  try {
+    const totalSalesPerMonth = Array.from({ length: 12 }, () => 0);
+
+    // Aggregate total sales per month for all medicines
+    const allMedicines = await medicineModel.find();
+    allMedicines.forEach((medicine) => {
+      if (medicine.SalesPerMonth) {
+        medicine.SalesPerMonth.forEach((sales, index) => {
+          totalSalesPerMonth[index] += sales;
+        });
+      }
+    });
+
+    res.status(200).json(totalSalesPerMonth);
+  } catch (error) {
+    console.error('Error getting total sales per month:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 module.exports = {
   createMedicine,
   getMedicines,
@@ -198,4 +219,5 @@ module.exports = {
   filterMedicine,
   getMedicine,
   downloadFile,
+  getTotalSales,
 };

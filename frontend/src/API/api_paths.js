@@ -32,6 +32,7 @@ export const API_PATHS = {
   updateMedicine: MEDICINE_BASE + "updateMedicine/", // add id of medicine to update
   deleteMedicine: MEDICINE_BASE + "deleteMedicine/", // add id of medicine to delete
   downloadFile: MEDICINE_BASE + "downloadFile/", // get the image by filename to download
+  getTotalSales: MEDICINE_BASE + "getTotalSales/",
 
   // getmedicines: MEDICINE_BASE + "getmedicines",
 

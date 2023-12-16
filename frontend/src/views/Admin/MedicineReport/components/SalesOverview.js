@@ -35,8 +35,6 @@ const SalesOverview = ({ title, percentage, chart }) => {
   const handleMedicineChange = (event) => {
     const selectedMedicineId = event.target.value;
     const selectedMedicine = medicines.find((medicine) => medicine._id === selectedMedicineId);
-
-    // Check if the medicine is already selected
     if (!selectedMedicines.some((med) => med._id === selectedMedicine._id)) {
       setSelectedMedicines((prevSelected) => [...prevSelected, selectedMedicine]);
     }

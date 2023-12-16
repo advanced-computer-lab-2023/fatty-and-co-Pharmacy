@@ -13,6 +13,7 @@ import SalesLineChart from "./components/SalesLineChart";
 
 import React from "react";
 import SalesOverview from "./components/SalesOverview";
+import TotalSalesOverview from "./components/TotalSalesOverview";
 
 export default function MedicineReport() {
 
@@ -26,6 +27,10 @@ export default function MedicineReport() {
         <SalesOverview
           title={"Sales Overview"}
           percentage={5}
+        />
+        <TotalSalesOverview
+            title={"Total Sales"}
+            percentage={5}
         />
       </Grid>
     </Flex>

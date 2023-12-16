@@ -7,6 +7,7 @@ const {
   filterMedicine,
   getMedicine,
   downloadFile,
+  getTotalSales,
 } = require("../controllers/medicineController");
 
 const { checkPharmacist } = require("../common/middleware/checkType");
@@ -58,5 +59,7 @@ router.get("/filter", filterMedicine);
  * @param {string} filename - The filename in the params
  */
 router.get("/downloadFile/:filename", downloadFile);
+
+router.get("/getTotalSales", getTotalSales);
 
 module.exports = router;

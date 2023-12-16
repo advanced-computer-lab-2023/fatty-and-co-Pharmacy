@@ -263,7 +263,7 @@ function Cart() {
                                             </Td>
                                             {myPackage.Medicine_Discount && 
                                                 <Td>
-                                                    {med && med.TotalPrice ? (med.TotalPrice - (med.TotalPrice * myPackage.Medicine_Discount / 100)) : "N/A"}
+                                                    {med && med.TotalPrice ? parseFloat(med.TotalPrice - (med.TotalPrice * myPackage.Medicine_Discount / 100)).toFixed(2) : "N/A"}
                                                 </Td>   
                                             }
                                             {!myPackage.Medicine_Discount &&
@@ -280,7 +280,7 @@ function Cart() {
                                         </Heading></Td>
                                     <Td textAlign="left">
                                         <Heading as="h3" size="lg" textAlign="left">
-                                            {cart.TotalCost ? cart.TotalCost : 0}
+                                            {cart.TotalCost ? parseFloat(cart.TotalCost).toFixed(2) : 0}
                                         </Heading>
                                     </Td>
                                 </Tr>
