@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { Flex, Box, Text, HStack, toast } from "@chakra-ui/react";
 import axios from "axios";
@@ -26,21 +25,21 @@ const ChatWithPatient = () => {
   const [messages, setMessages] = useState([]);
   const [selectedPatient, setSelectedPatient] = useState(false);
 
-//   socket.on("receivedNotification", (recUsername, sendUsername) => {
-//     console.log("notif username");
-//     console.log(recUsername);
-//     console.log(currentUsername);
-//     if (recUsername === currentUsername) {
-//       console.log("notification received");
-//       const updatedPat_rec = chatPatients.map((d) =>
-//         d.Username === sendUsername ? { ...d, hasNotif: true } : d
-//       );
-//       setChatPatients(updatedPat_rec);
-//       //setRender(true);
-//       console.log("chatPatsafternotification");
-//       console.log(chatPatients);
-//     }
-//   });
+  //   socket.on("receivedNotification", (recUsername, sendUsername) => {
+  //     console.log("notif username");
+  //     console.log(recUsername);
+  //     console.log(currentUsername);
+  //     if (recUsername === currentUsername) {
+  //       console.log("notification received");
+  //       const updatedPat_rec = chatPatients.map((d) =>
+  //         d.Username === sendUsername ? { ...d, hasNotif: true } : d
+  //       );
+  //       setChatPatients(updatedPat_rec);
+  //       //setRender(true);
+  //       console.log("chatPatsafternotification");
+  //       console.log(chatPatients);
+  //     }
+  //   });
 
   const getPharmacistUsername = async () => {
     try {
@@ -93,8 +92,8 @@ const ChatWithPatient = () => {
 
   useEffect(() => {
     if (currentPatient) {
-        console.log("current patient");
-        console.log(currentPatient);
+      console.log("current patient");
+      console.log(currentPatient);
       fetchMessages();
     }
   }, [currentPatient]);
@@ -118,7 +117,6 @@ const ChatWithPatient = () => {
     // );
   };
 
-
   const fetchConversations = async () => {
     try {
       const response = await axios.get(API_PATHS.getAllPatients, {
@@ -141,7 +139,7 @@ const ChatWithPatient = () => {
   };
   useEffect(() => {
     console.log("user type");
-   // console.log(user.Type);
+    // console.log(user.Type);
     if (user.userType === "Pharmacist") {
       getPharmacistUsername();
     } else {
@@ -155,7 +153,7 @@ const ChatWithPatient = () => {
     <Flex marginTop={75}>
       <HStack spacing="300" w="850px" align="start">
         <Box w="250px">
-          <Text>My patients</Text>
+          <Text>Patients</Text>
           {chatPatients.map((patient) => (
             <Conversation
               key={patient._id}

@@ -9,13 +9,15 @@ const CART_BASE = "http://localhost:7000/cart/";
 const DELIVERY_ADDRESS_BASE = "http://localhost:7000/deliveryAddress/";
 const PAYMENT_BASE = "http://localhost:7000/payment/";
 const MESSAGE_BASE = "http://localhost:7000/message/";
+const DOCTOR_BASE = "http://localhost:7000/doctor/";
+
 export const API_PATHS = {
   // Add paths here
 
   // Patient paths
   getWalletAmount: PATIENT_BASE + "getWalletAmount/", // + username
   viewSubscription: PATIENT_BASE + "viewSubscription/",
-  getPatientUsernameSocket: PATIENT_BASE + "getPatientUsernameSocket/", 
+  getPatientUsernameSocket: PATIENT_BASE + "getPatientUsernameSocket/",
   // Guest paths
   signup: GUEST_BASE + "addPatient/",
   pharmSignUp: GUEST_BASE + "addRequest/",
@@ -24,7 +26,7 @@ export const API_PATHS = {
   resetPass: GUEST_BASE + "resetPass/",
   sendOTP: GUEST_BASE + "sendOTP/",
   validateOTP: GUEST_BASE + "validateOTP/",
-  
+
   // Medicine paths
   addMedicine: MEDICINE_BASE + "addMedicine/",
   getMedicines: MEDICINE_BASE + "getMedicines/",
@@ -48,10 +50,7 @@ export const API_PATHS = {
   rejectRequest: ADMIN_BASE + "rejectRequest/",
   // Pharmacist paths
   getAllPatients: PHARMACIST_BASE + "getAllPatients/",
-  getPharmacistUsernameSocket: PHARMACIST_BASE + "getPharmacistUsernameSocket/",  
-
-
-
+  getPharmacistUsernameSocket: PHARMACIST_BASE + "getPharmacistUsernameSocket/",
 
   // Patient paths
   getMedicineDiscount: PATIENT_BASE + "getMedicineDiscount/",
@@ -74,8 +73,10 @@ export const API_PATHS = {
 
   cardPayment: PAYMENT_BASE + "cardPayment/",
 
-
   //message paths
   getMessages: MESSAGE_BASE + "getMessages/",
   createMessage: MESSAGE_BASE + "createMessage/",
+
+  // Doctor paths
+  getAllDoctors: DOCTOR_BASE + "getAllDoctors/",
 };
