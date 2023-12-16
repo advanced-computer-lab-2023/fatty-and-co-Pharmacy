@@ -8,14 +8,14 @@ const GUEST_BASE = "http://localhost:7000/guest/";
 const CART_BASE = "http://localhost:7000/cart/";
 const DELIVERY_ADDRESS_BASE = "http://localhost:7000/deliveryAddress/";
 const PAYMENT_BASE = "http://localhost:7000/payment/";
-
+const MESSAGE_BASE = "http://localhost:7000/message/";
 export const API_PATHS = {
   // Add paths here
 
   // Patient paths
   getWalletAmount: PATIENT_BASE + "getWalletAmount/", // + username
   viewSubscription: PATIENT_BASE + "viewSubscription/",
-
+  getPatientUsernameSocket: PATIENT_BASE + "getPatientUsernameSocket/", 
   // Guest paths
   signup: GUEST_BASE + "addPatient/",
   pharmSignUp: GUEST_BASE + "addRequest/",
@@ -47,6 +47,11 @@ export const API_PATHS = {
   acceptRequest: ADMIN_BASE + "acceptRequest/",
   rejectRequest: ADMIN_BASE + "rejectRequest/",
   // Pharmacist paths
+  getAllPatients: PHARMACIST_BASE + "getAllPatients/",
+  getPharmacistUsernameSocket: PHARMACIST_BASE + "getPharmacistUsernameSocket/",  
+
+
+
 
   // Patient paths
   getMedicineDiscount: PATIENT_BASE + "getMedicineDiscount/",
@@ -68,4 +73,9 @@ export const API_PATHS = {
   addDeliveryAddress: DELIVERY_ADDRESS_BASE + "addDeliveryAddress/",
 
   cardPayment: PAYMENT_BASE + "cardPayment/",
+
+
+  //message paths
+  getMessages: MESSAGE_BASE + "getMessages/",
+  createMessage: MESSAGE_BASE + "createMessage/",
 };

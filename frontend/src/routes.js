@@ -22,7 +22,10 @@ import MakePayment from "views/Patient/makePayment";
 import ViewOrders from "views/Patient/viewOrders";
 import ThankYouCard from "views/Patient/Medicine/components/ThankYou";
 import MedicineReport from "views/Admin/MedicineReport";
-
+import DashboardPharm from "views/Dashboard/DashboardPharm";
+import ChatWithPatient from "views/Pharmacist/chatWithPatient";
+import DashboardPat from "views/Dashboard/DashboardPat";
+import ChatWithPharmacist from "views/Patient/chatWithPharmacist";
 import {
   HomeIcon,
   StatsIcon,
@@ -60,12 +63,56 @@ var dashRoutes = [
     layout: "/patient",
   },
   {
+    path: "/chatWithPharmacist",
+    name: "Patient Medicine",
+    rtlName: "لوحة القيادة",
+    icon: <HomeIcon color="inherit" />,
+    component: ChatWithPharmacist,
+    layout: "/patient",
+  },
+
+  {
+    path: "/chatWithPharmacist",
+    name: "Patient Medicine",
+    rtlName: "لوحة القيادة",
+    icon: <HomeIcon color="inherit" />,
+    component: ChatWithPharmacist,
+    layout: "/patient",
+  },
+
+  {
     path: "/viewRequests",
     name: "View Requests",
     icon: <HomeIcon color="inherit" />,
     component: Requests,
     layout: "/admin",
   },
+
+  {
+    path: "/dashboard",
+    name: "Dashboard",
+    rtlName: "لوحة القيادة",
+    icon: <HomeIcon color="inherit" />,
+    component: DashboardPharm,
+    layout: "/pharmacist",
+  },
+  {
+    path: "/dashboard",
+    name: "Dashboard",
+    rtlName: "لوحة القيادة",
+    icon: <HomeIcon color="inherit" />,
+    component: DashboardPat,
+    layout: "/patient",
+  },
+  {
+    path: "/chatWithPatient",
+    name: "chatWithPatient",
+    rtlName: "لوحة القيادة",
+    icon: <HomeIcon color="inherit" />,
+    component: ChatWithPatient,
+    layout: "/pharmacist",
+  },
+  
   {
     path: "/addAdmin",
     name: "Add Admin",
