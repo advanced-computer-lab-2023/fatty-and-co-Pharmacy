@@ -5,6 +5,7 @@ const userModel = require("../models/systemusers");
 const { getPatients } = require("./testController");
 const subscriptionModel = require("../models/subscriptions");
 const packageModel = require("../models/packages");
+const pharmacistModel = require("../models/pharmacists");
 
 const getEmergencyContact = async (req, res) => {
   try {
@@ -89,14 +90,19 @@ const updatePatient = async (req, res) => {
 
 const getWalletAmount = async (req, res) => {
   try {
-    const patient = await patientModel.findOne({ Username: req.user.Username });
+    var patient = await patientModel.findOne({ Username: req.user.Username });
+    if (!patient) {
+      var patient = await pharmacistModel.findOne({
+        Username: req.user.Username,
+      });
+    }
     if (patient) {
       res.status(200).json({ Wallet: patient.Wallet });
     } else {
-      res.status(404).json({ error: "Cannot find wallet!" });
+      res.status(404).json({ error: "Cannot find wallet" });
     }
   } catch {
-    res.status(404).json({ error: "Error occured while fetching amount!" });
+    res.status(404).json({ error: "Error occured while fetching amount" });
   }
 };
 
@@ -111,7 +117,7 @@ const getMedicineDiscount = async (req, res) => {
     if (subscription) {
       const discount = subscription.Package.Medicine_Discount;
       res.status(200).send({ discount });
-    } 
+    }
   } catch (error) {
     res.status(400).send({ message: error.message });
   }
@@ -127,7 +133,7 @@ const viewSubscribedPackage = async (req, res) => {
       .populate("Package");
     if (subscription) {
       const package = subscription.Package;
-      res.status(200).send({subscription, package});
+      res.status(200).send({ subscription, package });
     } else {
       res.status(404).send({ Error: "Cannot find any current subscriptions!" });
     }
