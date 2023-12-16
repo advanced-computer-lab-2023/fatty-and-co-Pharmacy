@@ -14,6 +14,7 @@ export const API_PATHS = {
 
   // Patient paths
   getWalletAmount: PATIENT_BASE + "getWalletAmount/", // + username
+  viewSubscription: PATIENT_BASE + "viewSubscription/",
 
   // Guest paths
   signup: GUEST_BASE + "addPatient/",
@@ -23,7 +24,7 @@ export const API_PATHS = {
   resetPass: GUEST_BASE + "resetPass/",
   sendOTP: GUEST_BASE + "sendOTP/",
   validateOTP: GUEST_BASE + "validateOTP/",
-
+  
   // Medicine paths
   addMedicine: MEDICINE_BASE + "addMedicine/",
   getMedicines: MEDICINE_BASE + "getMedicines/",
@@ -31,6 +32,7 @@ export const API_PATHS = {
   updateMedicine: MEDICINE_BASE + "updateMedicine/", // add id of medicine to update
   deleteMedicine: MEDICINE_BASE + "deleteMedicine/", // add id of medicine to delete
   downloadFile: MEDICINE_BASE + "downloadFile/", // get the image by filename to download
+  getTotalSales: MEDICINE_BASE + "getTotalSales/",
 
   // getmedicines: MEDICINE_BASE + "getmedicines",
 

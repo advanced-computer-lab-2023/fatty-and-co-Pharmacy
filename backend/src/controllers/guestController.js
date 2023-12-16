@@ -122,6 +122,31 @@ const login = async (req, res) => {
     res.status(400).send({ message: error.message });
   }
 };
+
+const cartLogin = async (req, res) => {
+  console.log("Hussein cart login");
+  console.log(req.body);
+  const { Username, Password, Medicines } = req.body;
+  try {
+    console.log("Hussein cart login 2");
+    const user = await systemUserModel.login(Username, Password);
+    console.log("Hussein cart login 2");
+    const token = generateToken(user);
+    console.log(token);
+    const cart = await cartModel.findOne({ PatientUsername: Username });
+    console.log(cart);
+    for (let i = 0; i < Medicines.length; i++) {
+      const medicine = Medicines[i];
+      console.log("Hussein medicine" + medicine);
+      cart.Medicine.push(medicine);
+    }
+    cart.save();
+    console.log("Hussein cart login 3");
+    // res.status(200).send({ token, userType: user.Type });
+  } catch (error) {
+    res.status(400).send({ message: error.message });
+  }
+};
 //turn the data from the request into a doctor object using the doctor controller function createDoctor
 
 const transporter = nodemailer.createTransport({
@@ -286,4 +311,5 @@ module.exports = {
   sendOTP,
   validateOTP,
   resetPass,
+  cartLogin,
 };
