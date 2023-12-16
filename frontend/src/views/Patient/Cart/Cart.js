@@ -33,9 +33,12 @@ function Cart() {
     const { cart:medicine , dispatch } = useCartContext();
     const textColor = useColorModeValue("gray.700", "white");
     const toast = useToast();
+    const [subscription, setSubscription] = useState([{}]);
+    const [myPackage, setMyPackage] = useState([{}]);
 
     useEffect(() => {
         fetchCart();
+        getSubscriptionInfo();
     }, []);
 
     const fetchCart = () => {
@@ -111,6 +114,21 @@ function Cart() {
     const checkout = async () => {
         history.push('/checkout');
     };
+
+    const getSubscriptionInfo = () => {
+        const url = API_PATHS.viewSubscription;
+        axios
+        .get(url, {
+            headers: {
+            Authorization: Authorization,
+            },
+        })
+        .then((response) => {
+            setMyPackage(response.data.package);
+            setSubscription(response.data.subscription);
+        })
+        .catch((err) => console.log(err));
+    }
 
     return (
         <Box pt="20px">
@@ -227,18 +245,32 @@ function Cart() {
                                     <Td>
                                         Medicine
                                     </Td>
-                                    <Td>
-                                        Price in EGP
-                                    </Td>
+                                    {myPackage.Medicine_Discount && 
+                                        <Td>
+                                            Price after discount
+                                        </Td>   
+                                    }
+                                    {!myPackage.Medicine_Discount &&
+                                        <Td>
+                                            Price
+                                        </Td>  
+                                    }
                                 </Tr>
                                     {medicine?.map((med) => (
                                         <Tr key={med._id}>
                                             <Td>
                                                 {med && med.Name ? med.Name : "N/A"}
                                             </Td>
-                                            <Td>
-                                                {med && med.TotalPrice ? med.TotalPrice : "N/A"}
-                                            </Td>
+                                            {myPackage.Medicine_Discount && 
+                                                <Td>
+                                                    {med && med.TotalPrice ? (med.TotalPrice - (med.TotalPrice * myPackage.Medicine_Discount / 100)) : "N/A"}
+                                                </Td>   
+                                            }
+                                            {!myPackage.Medicine_Discount &&
+                                                <Td>
+                                                    {med && med.TotalPrice}
+                                                </Td>  
+                                            }
                                         </Tr>
                                     ))}
                                 <Tr>

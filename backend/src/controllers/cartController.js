@@ -3,6 +3,8 @@ const orderModel = require("../models/orders");
 const cartModel = require("../models/cart");
 const medicineModel = require("../models/medicine");
 const prescriptionModel = require("../models/prescriptions");
+const subscriptionModel = require("../models/subscriptions");
+
 
 const addMedicineToCart = async (req, res) => {
   try {
@@ -40,7 +42,19 @@ const addMedicineToCart = async (req, res) => {
       res.status(400).send({ message: "Cart not found" });
       return;
     }
-    cart.TotalCost += medicine.Price;
+    // check if patient has a discount 
+    const current_user = req.user.Username; //changed this
+    const patient = await patientModel.findOne({ Username: current_user });
+    const subscription = await subscriptionModel
+      .findOne({ Patient: patient, Status: "Subscribed" })
+      .populate("Patient")
+      .populate("Package");
+    if (subscription) {
+      const package = subscription.Package;
+      cart.TotalCost += medicine.Price-(medicine.Price * package.Medicine_Discount / 100);
+    }else{
+      cart.TotalCost += medicine.Price;
+    }
     cart.Medicine.push(MedicineID);
     await cart.save();
     res.status(200).send(cart);
@@ -122,8 +136,19 @@ const decrementItemCount = async (req, res) => {
       res.status(400).send({ message: "Medicine not found in the cart" });
       return;
     }
+    const current_user = req.user.Username; //changed this
+    const patient = await patientModel.findOne({ Username: current_user });
+    const subscription = await subscriptionModel
+      .findOne({ Patient: patient, Status: "Subscribed" })
+      .populate("Patient")
+      .populate("Package");
+    if (subscription) {
+      const package = subscription.Package;
+      cart.TotalCost -= medicine.Price-(medicine.Price * package.Medicine_Discount / 100);
+    }else{
+      cart.TotalCost -= medicine.Price;
+    }
     cart.Medicine.splice(medicineIndex, 1);
-    cart.TotalCost -= medicine.Price;
     await cart.save();
     res.status(200).send(cart);
   } catch (error) {
@@ -201,10 +226,22 @@ const deleteItem = async (req, res) => {
     );
     let totalPriceToRemove = 0;
 
+    const current_user = req.user.Username; //changed this
+    const patient = await patientModel.findOne({ Username: current_user });
+    const subscription = await subscriptionModel
+    .findOne({ Patient: patient, Status: "Subscribed" })
+    .populate("Patient")
+    .populate("Package");
+
     for (const itemID of removedMedicine) {
       const medicine = await medicineModel.findById(itemID);
       if (medicine) {
-        totalPriceToRemove += medicine.Price;
+        if (subscription) {
+          const package = subscription.Package;
+          totalPriceToRemove += medicine.Price-(medicine.Price * package.Medicine_Discount / 100);
+          }else{
+          totalPriceToRemove += medicine.Price;
+          }
       }
     }
 
