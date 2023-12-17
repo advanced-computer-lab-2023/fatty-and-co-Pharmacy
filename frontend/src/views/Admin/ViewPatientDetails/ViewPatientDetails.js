@@ -96,8 +96,8 @@ export const ViewPatientDetails = () => {
     <Box mt="40px">
       <Card p="16px" my={{ sm: "24px", xl: "0px" }}>
         <CardHeader p="12px 5px" mb="12px">
-          <Text fontSize="lg" color="black" fontWeight="bold">
-            Search for a pharmacist
+          <Text fontSize="lg" color="grey" fontWeight="bold">
+            Search for a patient
           </Text>
         </CardHeader>
         <CardBody px="5px">

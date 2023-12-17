@@ -6,6 +6,9 @@ import axios from "axios";
 import { useRequestsContext } from "hooks/useRequestsContext";
 import Header from "./components/Header";
 import ProfileBgImage from "assets/img/ProfileBackground.png";
+import Card from "components/Card/Card.js";
+import CardBody from "components/Card/CardBody.js";
+import CardHeader from "components/Card/CardHeader.js";
 import {
   Flex,
   Grid,
@@ -26,6 +29,8 @@ import {
   Td,
 } from "@chakra-ui/react";
 import { ViewPharmacistDetails } from "../ViewPharmacistDetails/ViewPharmacistDetails";
+import { ViewPatientDetails } from "../ViewPatientDetails/ViewPatientDetails";
+import DeleteUserForm from "../DeleteUser/DeleteUserForm";
 
 export function ViewRequestsInner() {
   // const [data, setData] = useState([{}]);
@@ -66,17 +71,24 @@ export function ViewRequestsInner() {
     <Flex direction="column">
       <Header backgroundHeader={ProfileBgImage} backgroundProfile={bgProfile} />
       <Box pt="50px">
-        <Grid templateColumns={{ sm: "1fr", xl: "repeat(2, 1fr)" }} gap="22px">
-          <Flex direction="column" alignItems="center" justifyContent="center">
-            <Requests
-              title={"Requests"}
-              captions={["Name", "Username", "Status", ""]}
-              data={requests}
-            />
-          </Flex>
-          <Flex direction="column" alignItems="center">
+        <Grid templateColumns={{ sm: "1fr", xl: "3fr 2fr" }} gap="22px">
+          <Requests
+            title={"Requests"}
+            captions={["Name", "Username", "Status", ""]}
+            data={requests}
+          />
+          <Card>
+            <CardHeader>
+              <Flex justify="space-between" align="center" mb="1rem" w="100%">
+                <Text fontSize="xl" color="black" fontWeight="bold">
+                  User Search
+                </Text>
+              </Flex>
+            </CardHeader>
             <ViewPharmacistDetails />
-          </Flex>
+            <ViewPatientDetails />
+            <DeleteUserForm />
+          </Card>
         </Grid>
       </Box>
     </Flex>

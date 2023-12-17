@@ -89,7 +89,7 @@ export const ViewPharmacistDetails = () => {
   return (
     <Card p="16px" my={{ sm: "24px", xl: "0px" }}>
       <CardHeader p="12px 5px" mb="12px">
-        <Text fontSize="lg" color="black" fontWeight="bold">
+        <Text fontSize="lg" color="grey" fontWeight="bold">
           Search for a pharmacist
         </Text>
       </CardHeader>
@@ -119,12 +119,14 @@ export const ViewPharmacistDetails = () => {
             >
               <Card>
                 <CardHeader p="12px 5px" mb="12px">
-                  <HStack>
-                    <InfoOutlineIcon color="teal.400" />
-                    <Text fontSize="lg" fontWeight="bold">
-                      {formData.name} Information
-                    </Text>
-                  </HStack>
+                  {username && (
+                    <HStack>
+                      <InfoOutlineIcon color="teal.400" />
+                      <Text fontSize="lg" fontWeight="bold">
+                        {formData.name} Information
+                      </Text>
+                    </HStack>
+                  )}
                 </CardHeader>
                 <CardBody>
                   {username && username !== ":username" ? (

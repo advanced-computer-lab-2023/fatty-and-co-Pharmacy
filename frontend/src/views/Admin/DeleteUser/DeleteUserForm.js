@@ -73,7 +73,7 @@ function DeleteUserForm() {
         >
           <CardHeader>
             <Flex justify="space-between" align="center" mb="1rem" w="100%">
-              <Text fontSize="lg" color={textColor} fontWeight="bold">
+              <Text fontSize="lg" color="grey" fontWeight="bold">
                 Delete User
               </Text>
             </Flex>

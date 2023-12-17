@@ -52,7 +52,7 @@ import { FaUserDoctor } from "react-icons/fa6";
 var dashRoutes = [
   {
     path: "/dashboard",
-    name: "Requests",
+    name: "Dashboard",
     icon: <VscGitPullRequestGoToChanges />,
     component: Requests,
     layout: "/admin",
@@ -88,13 +88,16 @@ var dashRoutes = [
     icon: <IoIosPeople />,
     component: ViewPatientDetails,
     layout: "/admin",
-  }, 
+  },
   {
     path: "/viewpharmacist",
     name: "Pharmacists",
     rtlName: "لوحة القيادة",
     icon: <FaUserDoctor />,
     component: ViewPharmacistDetails,
+    layout: "/admin",
+  },
+  {
     path: "/chatWithPharmacist",
     name: "chat With Pharmacist",
     rtlName: "لوحة القيادة",
@@ -110,14 +113,6 @@ var dashRoutes = [
     component: ChatWithDoctor,
     layout: "/pharmacist",
   },
-  {
-    path: "/viewRequests",
-    name: "View Requests",
-    icon: <HomeIcon color="inherit" />,
-    component: Requests,
-    layout: "/admin",
-  },
- 
   {
     path: "/dashboard",
     name: "Dashboard",
