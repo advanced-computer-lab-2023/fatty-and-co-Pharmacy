@@ -22,6 +22,11 @@ import MakePayment from "views/Patient/makePayment";
 import ViewOrders from "views/Patient/viewOrders";
 import ThankYouCard from "views/Patient/Medicine/components/ThankYou";
 import MedicineReport from "views/Admin/MedicineReport";
+import DashboardPharm from "views/Dashboard/DashboardPharm";
+import ChatWithPatient from "views/Pharmacist/chatWithPatient";
+import DashboardPat from "views/Dashboard/DashboardPat"; // not needed we just redirect to medicine
+import ChatWithPharmacist from "views/Patient/chatWithPharmacist";
+import ChatWithDoctor from "views/Pharmacist/chatWithDoctor";
 
 import {
   HomeIcon,
@@ -83,15 +88,53 @@ var dashRoutes = [
     icon: <IoIosPeople />,
     component: ViewPatientDetails,
     layout: "/admin",
-  },
+  }, 
   {
     path: "/viewpharmacist",
     name: "Pharmacists",
     rtlName: "لوحة القيادة",
     icon: <FaUserDoctor />,
     component: ViewPharmacistDetails,
+    path: "/chatWithPharmacist",
+    name: "chat With Pharmacist",
+    rtlName: "لوحة القيادة",
+    icon: <HomeIcon color="inherit" />,
+    component: ChatWithPharmacist,
+    layout: "/patient",
+  },
+  {
+    path: "/chatWithDoctor",
+    name: "Chat With Doctor",
+    rtlName: "لوحة القيادة",
+    icon: <HomeIcon color="inherit" />,
+    component: ChatWithDoctor,
+    layout: "/pharmacist",
+  },
+  {
+    path: "/viewRequests",
+    name: "View Requests",
+    icon: <HomeIcon color="inherit" />,
+    component: Requests,
     layout: "/admin",
   },
+ 
+  {
+    path: "/dashboard",
+    name: "Dashboard",
+    rtlName: "لوحة القيادة",
+    icon: <HomeIcon color="inherit" />,
+    component: DashboardPharm,
+    layout: "/pharmacist",
+  },
+  {
+    path: "/chatWithPatient",
+    name: "chatWithPatient",
+    rtlName: "لوحة القيادة",
+    icon: <HomeIcon color="inherit" />,
+    component: ChatWithPatient,
+    layout: "/pharmacist",
+  },
+
   {
     path: "/addAdmin",
     name: "Add Admin",
