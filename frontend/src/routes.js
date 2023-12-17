@@ -66,7 +66,7 @@ var dashRoutes = [
   },
   {
     path: "/chatWithPharmacist",
-    name: "Patient Medicine",
+    name: "chat With Pharmacist",
     rtlName: "لوحة القيادة",
     icon: <HomeIcon color="inherit" />,
     component: ChatWithPharmacist,

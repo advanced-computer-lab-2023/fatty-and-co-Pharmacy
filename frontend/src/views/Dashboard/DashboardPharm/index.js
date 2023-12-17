@@ -62,7 +62,7 @@ import {
     });
 
 
-    let chatUrl = `./chatWithPharmacist`;
+    let chatUrl = `./chatWithPatient`;
 
 
     const getDoctorUsername = async () => {
