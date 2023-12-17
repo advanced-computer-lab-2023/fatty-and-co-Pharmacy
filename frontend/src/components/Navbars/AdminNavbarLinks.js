@@ -90,7 +90,6 @@ export default function HeaderLinks(props) {
       alignItems="center"
       flexDirection="row"
     >
-      
       {!user && (
         <NavLink to="/auth/signin">
           <Button
@@ -103,12 +102,12 @@ export default function HeaderLinks(props) {
               document.documentElement.dir ? (
                 ""
               ) : (
-                <ProfileIcon color={navbarIcon} w="22px" h="22px" me="0px"  />
+                <ProfileIcon color={navbarIcon} w="22px" h="22px" me="0px" />
               )
             }
             leftIcon={
               document.documentElement.dir ? (
-                <ProfileIcon color={navbarIcon} w="22px" h="22px" me="0px"   />
+                <ProfileIcon color={navbarIcon} w="22px" h="22px" me="0px" />
               ) : (
                 ""
               )
@@ -130,15 +129,27 @@ export default function HeaderLinks(props) {
               document.documentElement.dir ? (
                 ""
               ) : (
-                <Tooltip label="Profile" > 
-                <ProfileIcon color={navbarIcon} w="22px" h="22px" me="0px" _hover={{color:"black"}}  />
+                <Tooltip label="Profile">
+                  <ProfileIcon
+                    color={navbarIcon}
+                    w="22px"
+                    h="22px"
+                    me="0px"
+                    _hover={{ color: "black" }}
+                  />
                 </Tooltip>
               )
             }
             leftIcon={
               document.documentElement.dir ? (
-                <Tooltip label="Profile" fontSize='md'> 
-                <ProfileIcon color={navbarIcon} w="22px" h="22px" me="0px"  _hover={{color:"black"}}  />
+                <Tooltip label="Profile" fontSize="md">
+                  <ProfileIcon
+                    color={navbarIcon}
+                    w="22px"
+                    h="22px"
+                    me="0px"
+                    _hover={{ color: "black" }}
+                  />
                 </Tooltip>
               ) : (
                 ""
@@ -170,37 +181,35 @@ export default function HeaderLinks(props) {
       {user.userType == "Patient" && <PatientCart> </PatientCart>}
       {user.userType !== "Admin" && (
         <ChakraProvider theme={theme}>
-          <Tooltip label="Wallet" >
-          <Flex
-            alignItems="center"
-          >
-            <Icon
-              as={MdAttachMoney}
-              boxSize={5}
-              color={navbarIcon}
-              _hover={{ color: "teal.500", cursor: "pointer" }}
-              w="18px"
-              h="18px"
-              mb="2px"
-            />
-            <Text
-              fontSize="sm"
-              fontWeight="bold"
-              color={navbarIcon}
-              _hover={{ color: "teal.500", cursor: "pointer" }}
-              w="auto"
-              h="27px"
-              mr="13px"
-            >
-              {Wallet !== null ? `${parseFloat(Wallet).toFixed(2)}` : ""}
-            </Text>
-          </Flex>
+          <Tooltip label="Wallet">
+            <Flex alignItems="center">
+              <Icon
+                as={MdAttachMoney}
+                boxSize={5}
+                color={navbarIcon}
+                _hover={{ color: "teal.500", cursor: "pointer" }}
+                w="18px"
+                h="18px"
+                mb="2px"
+              />
+              <Text
+                fontSize="sm"
+                fontWeight="bold"
+                color={navbarIcon}
+                _hover={{ color: "teal.500", cursor: "pointer" }}
+                w="auto"
+                h="27px"
+                mr="13px"
+              >
+                {Wallet !== null ? `${parseFloat(Wallet).toFixed(2)}` : ""}
+              </Text>
+            </Flex>
           </Tooltip>
         </ChakraProvider>
       )}
       <Menu>
         <MenuButton>
-          <BellIcon color={navbarIcon} w="18px" h="18px" me="18px" mb="4px"  />
+          <BellIcon color={navbarIcon} w="18px" h="18px" me="18px" mb="4px" />
         </MenuButton>
         <MenuList p="16px 8px">
           <Flex flexDirection="column">
@@ -234,8 +243,6 @@ export default function HeaderLinks(props) {
           </Flex>
         </MenuList>
       </Menu>
-
-      
       {/** logout */}
       <Divider orientation="vertical" />
       {user && (
