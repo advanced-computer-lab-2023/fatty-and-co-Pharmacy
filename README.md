@@ -34,13 +34,14 @@ The project follows the MVC design pattern ,MVC is a software architectural patt
 
 ## Screenshots
 
-![App Screenshot](./screenshots/website/loginPage.jpg)
-![App Screenshot](./screenshots/website/signupPage.jpg)
-![App Screenshot](./screenshots/website/homePage.jpg)
-![App Screenshot](./screenshots/website/profilePage.jpg)
-![App Screenshot](./screenshots/website/orderPage.jpg)
-![App Screenshot](./screenshots/website/viewMedicinesPage.jpg)
-[include anything else here]
+<img src="./frontend/src/assets/img/signup.jpg" width="500" hight="400">
+
+<img src="./frontend/src/assets/img/med.jpg" width="500" hight="400">
+
+<img src="./frontend/src/assets/img/checkout.jpg" width="500" hight="400">
+
+<img src="./frontend/src/assets/img/sales.jpg" width="500" hight="400">
+
 
 ## Tech Stack
 
