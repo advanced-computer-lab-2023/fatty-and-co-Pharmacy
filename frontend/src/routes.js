@@ -38,31 +38,64 @@ import {
   SupportIcon,
 } from "components/Icons/Icons";
 import pharmSignUp from "views/Auth/pharmSignUp";
+import { GiMedicines } from "react-icons/gi";
+import { BsCart2 } from "react-icons/bs";
+import { IoMenuSharp } from "react-icons/io5";
+import { RiLockPasswordFill } from "react-icons/ri";
+import { BsGraphUpArrow } from "react-icons/bs";
+import { IoPersonAdd } from "react-icons/io5";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { VscGitPullRequestGoToChanges } from "react-icons/vsc";
+import { IoIosPeople } from "react-icons/io";
+import { FaUserDoctor } from "react-icons/fa6";
 
 var dashRoutes = [
   {
+    path: "/dashboard",
+    name: "Dashboard",
+    icon: <VscGitPullRequestGoToChanges />,
+    component: Requests,
+    layout: "/admin",
+  },
+  {
     path: "/adminmedicine",
-    name: "Admin Medicine",
+    name: "Shop",
     rtlName: "لوحة القيادة",
-    icon: <HomeIcon color="inherit" />,
+    icon: <GiMedicines />,
     component: AdminMedicine,
     layout: "/admin",
   },
   {
-    path: "/pharmacistmedicine",
-    name: "Pharmacist Medicine",
+    path: "/dashboard",
+    name: "Shop",
     rtlName: "لوحة القيادة",
-    icon: <HomeIcon color="inherit" />,
+    icon: <GiMedicines />,
     component: PharmacistMedicine,
     layout: "/pharmacist",
   },
   {
-    path: "/patientmedicine",
-    name: "Patient Medicine",
+    path: "/dashboard",
+    name: "Shop",
     rtlName: "لوحة القيادة",
-    icon: <HomeIcon color="inherit" />,
+    icon: <GiMedicines />,
     component: PatientMedicine,
     layout: "/patient",
+  },
+  {
+    path: "/viewpatient",
+    name: "Patients",
+    rtlName: "لوحة القيادة",
+    icon: <IoIosPeople />,
+    component: ViewPatientDetails,
+    layout: "/admin",
+  },
+  {
+    path: "/viewpharmacist",
+    name: "Pharmacists",
+    rtlName: "لوحة القيادة",
+    icon: <FaUserDoctor />,
+    component: ViewPharmacistDetails,
+    layout: "/admin",
   },
   {
     path: "/chatWithPharmacist",
@@ -80,14 +113,6 @@ var dashRoutes = [
     component: ChatWithDoctor,
     layout: "/pharmacist",
   },
-  {
-    path: "/viewRequests",
-    name: "View Requests",
-    icon: <HomeIcon color="inherit" />,
-    component: Requests,
-    layout: "/admin",
-  },
-
   {
     path: "/dashboard",
     name: "Dashboard",
@@ -108,38 +133,31 @@ var dashRoutes = [
   {
     path: "/addAdmin",
     name: "Add Admin",
-    icon: <HomeIcon color="inherit" />,
+    icon: <IoPersonAdd />,
     component: CreateAdmin,
     layout: "/admin",
   },
   {
     path: "/deleteUser",
     name: "Delete User",
-    icon: <HomeIcon color="inherit" />,
+    icon: <RiDeleteBin6Line />,
     component: DeleteUser,
     layout: "/admin",
   },
   {
-    path: "/dashboard",
+    path: "/temp",
     name: "Dashboard",
     rtlName: "لوحة القيادة",
     icon: <HomeIcon color="inherit" />,
     component: Dashboard,
     layout: "/admin",
-  },
-  {
-    path: "/viewpatient",
-    name: "View Patient",
-    rtlName: "لوحة القيادة",
-    icon: <StatsIcon color="inherit" />,
-    component: ViewPatientDetails,
-    layout: "/admin",
+    show: false,
   },
   {
     path: "/updatePass",
     name: "Change Password",
     rtlName: "لوحة القيادة",
-    icon: <PersonIcon color="inherit" />,
+    icon: <RiLockPasswordFill />,
     component: UpdatePass,
     layout: "/pharmacist",
   },
@@ -147,7 +165,7 @@ var dashRoutes = [
     path: "/salesReport",
     name: "View Sales",
     rtlName: "لوحة القيادة",
-    icon: <PersonIcon color="inherit" />,
+    icon: <BsGraphUpArrow />,
     component: MedicineReport,
     layout: "/pharmacist",
   },
@@ -155,7 +173,7 @@ var dashRoutes = [
     path: "/salesReport",
     name: "View Sales",
     rtlName: "لوحة القيادة",
-    icon: <PersonIcon color="inherit" />,
+    icon: <BsGraphUpArrow />,
     component: MedicineReport,
     layout: "/admin",
   },
@@ -163,25 +181,25 @@ var dashRoutes = [
     path: "/updatePass",
     name: "Change Password",
     rtlName: "لوحة القيادة",
-    icon: <HomeIcon color="inherit" />,
+    icon: <RiLockPasswordFill />,
     component: UpdatePass,
     layout: "/admin",
   },
   {
-    path: "/updatePass",
-    name: "Change Password",
+    path: "/cart",
+    name: "Cart",
     rtlName: "لوحة القيادة",
-    icon: <HomeIcon color="inherit" />,
-    component: UpdatePass,
+    icon: <BsCart2 />,
+    component: Cart,
     layout: "/patient",
   },
   {
-    path: "/viewpharmacist",
-    name: "View Pharmacist",
+    path: "/updatePass",
+    name: "Change Password",
     rtlName: "لوحة القيادة",
-    icon: <StatsIcon color="inherit" />,
-    component: ViewPharmacistDetails,
-    layout: "/admin",
+    icon: <RiLockPasswordFill />,
+    component: UpdatePass,
+    layout: "/patient",
   },
   {
     path: "/tables",
@@ -190,6 +208,7 @@ var dashRoutes = [
     icon: <StatsIcon color="inherit" />,
     component: Tables,
     layout: "/admin",
+    show: false,
   },
   {
     path: "/cardPayment",
@@ -199,14 +218,6 @@ var dashRoutes = [
     component: MakePayment,
     layout: "/patient",
     show: false,
-  },
-  {
-    path: "/cart",
-    name: "Cart",
-    rtlName: "لوحة القيادة",
-    icon: <StatsIcon color="inherit" />,
-    component: Cart,
-    layout: "/patient",
   },
   {
     path: "/checkout",
@@ -230,7 +241,7 @@ var dashRoutes = [
     path: "/orders",
     name: "Orders",
     rtlName: "لوحة القيادة",
-    icon: <StatsIcon color="inherit" />,
+    icon: <IoMenuSharp />,
     component: ViewOrders,
     layout: "/patient",
   },
@@ -242,6 +253,7 @@ var dashRoutes = [
     icon: <CreditIcon color="inherit" />,
     component: Billing,
     layout: "/admin",
+    show: false,
   },
   {
     path: "/rtl-support-page",

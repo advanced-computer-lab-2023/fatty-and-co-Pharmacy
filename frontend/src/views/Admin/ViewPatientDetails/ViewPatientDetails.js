@@ -7,10 +7,37 @@ import {
   Button,
   Text,
   Flex,
+  Table,
+  Tr,
+  Th,
+  THead,
+  Tbody,
+  HStack,
+  useColorModeValue,
+  Icon,
+  Divider,
 } from "@chakra-ui/react";
 import { API_PATHS } from "API/api_paths";
 import axios from "axios";
 import { useAuthContext } from "hooks/useAuthContext";
+import Card from "components/Card/Card.js";
+import CardBody from "components/Card/CardBody.js";
+import CardHeader from "components/Card/CardHeader.js";
+import {
+  FaBirthdayCake,
+  FaMoneyBillAlt,
+  FaHospital,
+  FaGraduationCap,
+} from "react-icons/fa";
+
+import {
+  ChevronRightIcon,
+  HamburgerIcon,
+  InfoOutlineIcon,
+  EmailIcon,
+  PhoneIcon,
+  WarningTwoIcon,
+} from "@chakra-ui/icons";
 
 export const ViewPatientDetails = () => {
   const [formData, setFormData] = useState({
@@ -66,57 +93,124 @@ export const ViewPatientDetails = () => {
   };
 
   return (
-    <Box pt="80px">
-      <FormControl id="username" isRequired>
-        <FormLabel>Username</FormLabel>
-        <Input
-          type="text"
-          placeholder="Enter username"
-          value={textboxValue}
-          onChange={handleChange}
-        />
-      </FormControl>
-      <Button onClick={handleSubmit}>Search</Button>
-      {(username && username !== ":username" && (
-        <Flex flexDirection="column">
-          <Text>
-            <strong>Name: </strong>
-            {formData.name}
+    <Box mt="40px">
+      <Card p="16px" my={{ sm: "24px", xl: "0px" }}>
+        <CardHeader p="12px 5px" mb="12px">
+          <Text fontSize="lg" color="grey" fontWeight="bold">
+            Search for a patient
           </Text>
-          <Text>
-            <strong>Email: </strong>
-            {formData.email}
-          </Text>
-          <Text>
-            <strong>Mobile Number: </strong>
-            {formData.mobileNum}
-          </Text>
-          <Text>
-            <strong>Date of Birth: </strong>
-            {formData.dateOfBirth.slice(0, 10)}
-          </Text>
-          <Text>
-            <strong>Gender: </strong>
-            {formData.gender}
-          </Text>
-          <Text>
-            <strong>Emergency Contact Name: </strong>
-            {formData.emergencyContact.fullName}
-          </Text>
-          <Text>
-            <strong>Emergency Contact Phone Number: </strong>
-            {formData.emergencyContact.phoneNumber}
-          </Text>
-          <Text>
-            <strong>Emergency Contact Relation: </strong>
-            {formData.emergencyContact.relation}
-          </Text>
-        </Flex>
-      )) || (
-        <Text fontSize="3xl" fontWeight="bold">
-          Username not found
-        </Text>
-      )}
+        </CardHeader>
+        <CardBody px="5px">
+          <Flex direction="column" w="100%">
+            <Box>
+              <HStack>
+                <FormControl id="username" isRequired mb="4">
+                  <FormLabel>Search by username</FormLabel>
+                  <Input
+                    type="text"
+                    placeholder="Enter username"
+                    value={textboxValue}
+                    onChange={handleChange}
+                  />
+                </FormControl>
+                <Button colorScheme="teal" onClick={handleSubmit} width="120px">
+                  Search
+                </Button>
+              </HStack>
+              <Box
+                borderWidth="1px"
+                borderRadius="lg"
+                overflow="hidden"
+                p="4"
+                boxShadow="md"
+              >
+                <Card>
+                  <CardHeader p="12px 5px" mb="12px">
+                    {username && (
+                      <HStack>
+                        <InfoOutlineIcon color="teal.400" />
+                        <Text fontSize="lg" fontWeight="bold">
+                          {formData.name} Information ({formData.gender})
+                        </Text>
+                      </HStack>
+                    )}
+                  </CardHeader>
+                  <CardBody>
+                    {username && username !== ":username" ? (
+                      <Flex flexDirection="column">
+                        <HStack>
+                          <Icon
+                            as={EmailIcon}
+                            boxSize={6}
+                            color={useColorModeValue("teal.500", "teal.300")}
+                          />
+                          <Text fontWeight="normal">{formData.email}</Text>
+                        </HStack>
+                        <Divider my="2" />
+                        <HStack>
+                          <Icon
+                            as={FaBirthdayCake}
+                            boxSize={6}
+                            color={useColorModeValue("teal.500", "teal.300")}
+                          />
+                          <Text fontWeight="normal">
+                            {formData.dateOfBirth.slice(0, 10)}
+                          </Text>
+                        </HStack>
+                        <Divider my="2" />
+                        <HStack>
+                          <Icon
+                            as={PhoneIcon}
+                            boxSize={6}
+                            color={useColorModeValue("teal.500", "teal.300")}
+                          />
+                          <Text>{formData.mobileNum}</Text>
+                        </HStack>
+                        <Divider my="2" />
+                        <Box mt="20px">
+                          <HStack>
+                            <Icon
+                              as={WarningTwoIcon}
+                              boxSize={6}
+                              color={useColorModeValue("teal.500", "teal.300")}
+                            />
+                            <Text fontWeight="bold">
+                              EmergencyContact:{" "}
+                              {formData.emergencyContact.fullName}
+                            </Text>
+                          </HStack>
+                          <Divider my="2" />
+                          <HStack>
+                            <Icon
+                              as={InfoOutlineIcon}
+                              boxSize={6}
+                              color={useColorModeValue("teal.500", "teal.300")}
+                            />
+                            <Text>{formData.emergencyContact.relation}</Text>
+                          </HStack>
+                          <Divider my="2" />
+                          <HStack>
+                            <Icon
+                              as={PhoneIcon}
+                              boxSize={6}
+                              color={useColorModeValue("teal.500", "teal.300")}
+                            />
+                            <Text>{formData.emergencyContact.phoneNumber}</Text>
+                          </HStack>
+                        </Box>
+                      </Flex>
+                    ) : (
+                      <Text fontSize="3xl" fontWeight="bold" textAlign="center">
+                        Username not found
+                      </Text>
+                    )}
+                  </CardBody>
+                </Card>
+              </Box>
+            </Box>
+          </Flex>
+        </CardBody>
+      </Card>
     </Box>
   );
 };

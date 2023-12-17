@@ -86,96 +86,109 @@ export const ViewPharmacistDetails = () => {
     setTextboxValue(event.target.value);
   };
 
- return (
-   <Box pt="80px" maxW="600px" mx="auto">
-     <HStack>
-       <FormControl id="username" isRequired mb="4">
-         <FormLabel>Username</FormLabel>
-         <Input
-           type="text"
-           placeholder="Enter username"
-           value={textboxValue}
-           onChange={handleChange}
-         />
-       </FormControl>
-       <Button colorScheme="teal" onClick={handleSubmit} width="120px">
-         Search
-       </Button>
-     </HStack>
-     <Box
-       borderWidth="1px"
-       borderRadius="lg"
-       overflow="hidden"
-       p="4"
-       boxShadow="md"
-     >
-       <Card>
-         <CardHeader p="12px 5px" mb="12px">
-           <HStack>
-             <InfoOutlineIcon color="teal.400" />
-             <Text fontSize="lg" fontWeight="bold">
-               {formData.name} Information
-             </Text>
-           </HStack>
-         </CardHeader>
-         <CardBody>
-           {username && username !== ":username" ? (
-             <Flex flexDirection="column">
-               <HStack>
-                 <Icon
-                   as={EmailIcon}
-                   boxSize={6}
-                   color={useColorModeValue("teal.500", "teal.300")}
-                 />
-                 <Text fontWeight="normal">{formData.email}</Text>
-               </HStack>
-               <Divider my="2" />
-               <HStack>
-                 <Icon
-                   as={FaBirthdayCake}
-                   boxSize={6}
-                   color={useColorModeValue("teal.500", "teal.300")}
-                 />
-                 <Text fontWeight="normal">
-                   {formData.dateOfBirth.slice(0, 10)}
-                 </Text>
-               </HStack>
-               <Divider my="2" />
-               <HStack>
-                 <Icon
-                   as={FaMoneyBillAlt}
-                   boxSize={6}
-                   color={useColorModeValue("teal.500", "teal.300")}
-                 />
-                 <Text>${formData.hourlyRate}</Text>
-               </HStack>
-               <Divider my="2" />
-               <HStack>
-                 <Icon
-                   as={FaHospital}
-                   boxSize={6}
-                   color={useColorModeValue("teal.500", "teal.300")}
-                 />
-                 <Text>{formData.affiliation}</Text>
-               </HStack>
-               <Divider my="2" />
-               <HStack>
-                 <Icon
-                   as={FaGraduationCap}
-                   boxSize={6}
-                   color={useColorModeValue("teal.500", "teal.300")}
-                 />
-                 <Text>{formData.educationalBackground}</Text>
-               </HStack>
-             </Flex>
-           ) : (
-             <Text fontSize="3xl" fontWeight="bold" textAlign="center">
-               Username not found
-             </Text>
-           )}
-         </CardBody>
-       </Card>
-     </Box>
-   </Box>
- );
+  return (
+    <Card p="16px" my={{ sm: "24px", xl: "0px" }}>
+      <CardHeader p="12px 5px" mb="12px">
+        <Text fontSize="lg" color="grey" fontWeight="bold">
+          Search for a pharmacist
+        </Text>
+      </CardHeader>
+      <CardBody px="5px">
+        <Flex direction="column" w="100%">
+          <Box>
+            <HStack>
+              <FormControl id="username" isRequired mb="4">
+                <FormLabel>Search by username</FormLabel>
+                <Input
+                  type="text"
+                  placeholder="Enter username"
+                  value={textboxValue}
+                  onChange={handleChange}
+                />
+              </FormControl>
+              <Button colorScheme="teal" onClick={handleSubmit} width="120px">
+                Search
+              </Button>
+            </HStack>
+            <Box
+              borderWidth="1px"
+              borderRadius="lg"
+              overflow="hidden"
+              p="4"
+              boxShadow="md"
+            >
+              <Card>
+                <CardHeader p="12px 5px" mb="12px">
+                  {username && (
+                    <HStack>
+                      <InfoOutlineIcon color="teal.400" />
+                      <Text fontSize="lg" fontWeight="bold">
+                        {formData.name} Information
+                      </Text>
+                    </HStack>
+                  )}
+                </CardHeader>
+                <CardBody>
+                  {username && username !== ":username" ? (
+                    <Flex flexDirection="column">
+                      <HStack>
+                        <Icon
+                          as={EmailIcon}
+                          boxSize={6}
+                          color={useColorModeValue("teal.500", "teal.300")}
+                        />
+                        <Text fontWeight="normal">{formData.email}</Text>
+                      </HStack>
+                      <Divider my="2" />
+                      <HStack>
+                        <Icon
+                          as={FaBirthdayCake}
+                          boxSize={6}
+                          color={useColorModeValue("teal.500", "teal.300")}
+                        />
+                        <Text fontWeight="normal">
+                          {formData.dateOfBirth.slice(0, 10)}
+                        </Text>
+                      </HStack>
+                      <Divider my="2" />
+                      <HStack>
+                        <Icon
+                          as={FaMoneyBillAlt}
+                          boxSize={6}
+                          color={useColorModeValue("teal.500", "teal.300")}
+                        />
+                        <Text>${formData.hourlyRate}</Text>
+                      </HStack>
+                      <Divider my="2" />
+                      <HStack>
+                        <Icon
+                          as={FaHospital}
+                          boxSize={6}
+                          color={useColorModeValue("teal.500", "teal.300")}
+                        />
+                        <Text>{formData.affiliation}</Text>
+                      </HStack>
+                      <Divider my="2" />
+                      <HStack>
+                        <Icon
+                          as={FaGraduationCap}
+                          boxSize={6}
+                          color={useColorModeValue("teal.500", "teal.300")}
+                        />
+                        <Text>{formData.educationalBackground}</Text>
+                      </HStack>
+                    </Flex>
+                  ) : (
+                    <Text fontSize="3xl" fontWeight="bold" textAlign="center">
+                      Username not found
+                    </Text>
+                  )}
+                </CardBody>
+              </Card>
+            </Box>
+          </Box>
+        </Flex>
+      </CardBody>
+    </Card>
+  );
 };
