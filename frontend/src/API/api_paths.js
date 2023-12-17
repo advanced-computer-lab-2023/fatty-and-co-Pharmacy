@@ -10,7 +10,7 @@ const DELIVERY_ADDRESS_BASE = "http://localhost:7000/deliveryAddress/";
 const PAYMENT_BASE = "http://localhost:7000/payment/";
 const MESSAGE_BASE = "http://localhost:7000/message/";
 const DOCTOR_BASE = "http://localhost:7000/doctor/";
-
+const NOTIFICATION_BASE = "http://localhost:7000/notification/";
 export const API_PATHS = {
   // Add paths here
 
