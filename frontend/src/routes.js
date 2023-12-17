@@ -48,6 +48,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { VscGitPullRequestGoToChanges } from "react-icons/vsc";
 import { IoIosPeople } from "react-icons/io";
 import { FaUserDoctor } from "react-icons/fa6";
+import { IoIosChatbubbles } from "react-icons/io";
 
 var dashRoutes = [
   {
@@ -74,7 +75,7 @@ var dashRoutes = [
     layout: "/pharmacist",
   },
   {
-    path: "/dashboard",
+    path: "/patientmedicine",
     name: "Shop",
     rtlName: "لوحة القيادة",
     icon: <GiMedicines />,
@@ -101,31 +102,23 @@ var dashRoutes = [
     path: "/chatWithPharmacist",
     name: "chat With Pharmacist",
     rtlName: "لوحة القيادة",
-    icon: <HomeIcon color="inherit" />,
+    icon: <IoIosChatbubbles />,
     component: ChatWithPharmacist,
     layout: "/patient",
   },
   {
     path: "/chatWithDoctor",
-    name: "Chat With Doctor",
+    name: "Chat With a Doctor",
     rtlName: "لوحة القيادة",
-    icon: <HomeIcon color="inherit" />,
+    icon: <IoIosChatbubbles />,
     component: ChatWithDoctor,
     layout: "/pharmacist",
   },
   {
-    path: "/dashboard",
-    name: "Dashboard",
-    rtlName: "لوحة القيادة",
-    icon: <HomeIcon color="inherit" />,
-    component: DashboardPharm,
-    layout: "/pharmacist",
-  },
-  {
     path: "/chatWithPatient",
-    name: "chatWithPatient",
+    name: "Chat With a Patient",
     rtlName: "لوحة القيادة",
-    icon: <HomeIcon color="inherit" />,
+    icon: <IoIosChatbubbles />,
     component: ChatWithPatient,
     layout: "/pharmacist",
   },
