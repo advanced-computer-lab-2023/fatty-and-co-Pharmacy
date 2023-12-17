@@ -25,6 +25,7 @@ import {
   Text,
   Td,
 } from "@chakra-ui/react";
+import { ViewPharmacistDetails } from "../ViewPharmacistDetails/ViewPharmacistDetails";
 
 export function ViewRequestsInner() {
   // const [data, setData] = useState([{}]);
@@ -64,19 +65,19 @@ export function ViewRequestsInner() {
   return (
     <Flex direction="column">
       <Header backgroundHeader={ProfileBgImage} backgroundProfile={bgProfile} />
-      <Box pt="20px">
-        <Flex
-          direction="column"
-          alignItems="flex-start"
-          pt="50px"
-          justifyContent="flex-start"
-        >
-          <Requests
-            title={"Requests"}
-            captions={["Name", "Username", "Status", ""]}
-            data={requests}
-          />
-        </Flex>
+      <Box pt="50px">
+        <Grid templateColumns={{ sm: "1fr", xl: "repeat(2, 1fr)" }} gap="22px">
+          <Flex direction="column" alignItems="center" justifyContent="center">
+            <Requests
+              title={"Requests"}
+              captions={["Name", "Username", "Status", ""]}
+              data={requests}
+            />
+          </Flex>
+          <Flex direction="column" alignItems="center">
+            <ViewPharmacistDetails />
+          </Flex>
+        </Grid>
       </Box>
     </Flex>
   );
