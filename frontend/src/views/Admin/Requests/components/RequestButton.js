@@ -58,14 +58,14 @@ function RequestButton({ Username, Status }) {
         headers: { Authorization },
       })
       .then((response) => {
-        setData(response.data);
+        setData(response.data[0]);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
   }, []);
 
-  const jsonData = JSON.stringify(data);
+  // const jsonData = JSON.stringify(data);
 
   const handleAccept = async () => {
     axios
@@ -133,7 +133,7 @@ function RequestButton({ Username, Status }) {
 
   // handle file download
   const downloadIdFile = async () => {
-    let IdFileName = data[0].IdFileName;
+    let IdFileName = data.IdFileName;
     const idF = await fetch(API_PATHS.getRequestFile + IdFileName, {
       headers: {
         Authorization: Authorization,
@@ -151,7 +151,7 @@ function RequestButton({ Username, Status }) {
   };
 
   const downloadPharmacyDegreeFile = async () => {
-    let PharmacyDegreeName = data[0].PharmacyDegreeName;
+    let PharmacyDegreeName = data.PharmacyDegreeName;
     const PharmacyDegre = await fetch(
       API_PATHS.getRequestFile + PharmacyDegreeName,
       {
@@ -172,7 +172,7 @@ function RequestButton({ Username, Status }) {
   };
 
   const downloadWorkingLicenseFile = async () => {
-    let WorkingLicenseName = data[0].WorkingLicenseName;
+    let WorkingLicenseName = data.WorkingLicenseName;
     const license = await fetch(API_PATHS.getRequestFile + WorkingLicenseName, {
       headers: {
         Authorization: Authorization,
@@ -198,11 +198,10 @@ function RequestButton({ Username, Status }) {
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <ModalOverlay />
         <ModalContent>
-          <ModalCloseButton />
           <ModalBody>
             {data ? (
               <div>
-                <Card>
+                <Card mr="30">
                   <CardHeader p="12px 5px" mb="12px">
                     <HStack>
                       <InfoOutlineIcon color="teal.400" />
@@ -266,7 +265,7 @@ function RequestButton({ Username, Status }) {
                     )} */}
                   </CardBody>
                 </Card>
-                <p>Request Details: {jsonData}</p>
+                {/* <p>Request Details: {jsonData}</p> */}
                 <VStack spacing={3} w="80%">
                   <button onClick={downloadIdFile}>
                     ID File
