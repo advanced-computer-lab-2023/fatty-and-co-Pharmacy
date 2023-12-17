@@ -14,7 +14,6 @@ The motivation behind the Friday's Pharmacy project is to provide a seamless and
 - Unit tests are needed
 - UI and UX need to be improved in several areas such as ordering a prescription
   [include all missing or broken requirements here]
-- Pharmacist/Doctor chat is not working
 
 ## Code Style
 

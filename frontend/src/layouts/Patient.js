@@ -168,20 +168,20 @@ export default function Dashboard(props) {
           <HamburgerIcon cursor="pointer" w="20px" h="20px" />
         </Button>
         <Portal>
-        <AdminNavbar
-          logoText={"PURITY UI DASHBOARD"}
-          brandText={getActiveRoute(routes)}
-          secondary={getActiveNavbar(routes)}
-          fixed={fixed}
-          {...rest}
-        />
+          <AdminNavbar
+            logoText={"PURITY UI DASHBOARD"}
+            brandText={getActiveRoute(routes)}
+            secondary={getActiveNavbar(routes)}
+            fixed={fixed}
+            {...rest}
+          />
         </Portal>
         {getRoute() ? (
           <PanelContent>
             <PanelContainer>
               <Switch>
                 {getRoutes(routes)}
-                <Redirect from="/patient" to="/patient/dashboard" />
+                <Redirect from="/patient" to="/patient/patientmedicine" />
               </Switch>
             </PanelContainer>
           </PanelContent>
