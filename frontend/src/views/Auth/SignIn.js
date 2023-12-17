@@ -165,16 +165,13 @@ function SignIn() {
                           </InputRightElement>
                         </InputGroup>
                         <Flex justify="flex-end">
-                          <Text color={textColor} fontWeight="medium">
-                            <Link
-                              href="./resetPass"
-                              type="button"
-                              size="xs"
-                              mt="2"
-                            >
-                              Forgot Password?
-                            </Link>
-                          </Text>
+                        <Box>
+                            <a href="./resetPass">
+                              <Button type="button" size="xs" mt="2">
+                                Forgot Password?
+                              </Button>
+                            </a>
+                          </Box>
                         </Flex>
                         <FormErrorMessage>{errors.Password}</FormErrorMessage>
                       </FormControl>

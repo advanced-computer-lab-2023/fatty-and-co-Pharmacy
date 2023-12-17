@@ -26,7 +26,7 @@ import avatar1 from "assets/img/avatars/avatar1.png";
 import avatar2 from "assets/img/avatars/avatar2.png";
 import avatar3 from "assets/img/avatars/avatar3.png";
 // Custom Icons
-import { BsBoxArrowRight } from "react-icons/bs";
+import { BsBoxArrowRight, BsWallet2, BsBellFill } from "react-icons/bs";
 import { ProfileIcon, SettingsIcon } from "components/Icons/Icons";
 // Custom Components
 import { ItemContent } from "components/Menu/ItemContent";
@@ -41,6 +41,7 @@ import axios from "axios";
 import { API_PATHS } from "API/api_paths";
 import { useState, useEffect } from "react";
 import { useWalletContext } from "hooks/useWalletContext";
+import { useNotificationsContext } from "hooks/useNotificationsContext";
 import PatientCart from "./PatientCart";
 
 const theme = extendTheme({
@@ -55,7 +56,26 @@ export default function HeaderLinks(props) {
   const { variant, children, fixed, secondary, onOpen, ...rest } = props;
 
   const { Wallet, dispatch } = useWalletContext();
+  const { notifications, Dispatch } = useNotificationsContext();
   // const [Wallet, setWallet] = useState(null);
+  const handleClick = async (row) => {
+      try {
+        console.log(row);
+        console.log(row.Message);
+        console.log(row.Title);
+        console.log("here");
+        const notif = await axios.patch(API_PATHS.viewNotif ,{Message: row.Message, Title: row.Title} , {
+          headers: { Authorization },
+        });
+        console.log(notif.data);
+        //Dispatch({ type: "UPDATE_NOTIFICATION", payload: notif.data });
+      } catch (error) {
+        console.error("Error updating notification", error);
+      }
+       // history.push('./viewAppointPat');
+     
+      window.location.reload();
+    };
   useEffect(() => {
     const fetchWalletAmount = async () => {
       try {
@@ -68,7 +88,20 @@ export default function HeaderLinks(props) {
         console.error("Error fetching wallet amount", error);
       }
     };
+    const fetchNotifications = async () => {
+      try {
+        const notifs = await axios.get(API_PATHS.getNotifs, {
+          headers: { Authorization },
+        });
+        console.log(notifs.data);
+        Dispatch({ type: "GET_NOTIFICATIONS", payload: notifs.data });
+      } catch (error) {
+        console.error("Error fetching notifications", error);
+      }
+    };
     fetchWalletAmount();
+    fetchNotifications();
+    console.log(notifications);
   }, [Authorization]);
 
   // Chakra Color Mode
@@ -198,42 +231,40 @@ export default function HeaderLinks(props) {
           </Tooltip>
         </ChakraProvider>
       )}
+      {user.userType == "Pharmacist" && (
       <Menu>
+      <Tooltip label="Notifications" fontSize='md'> 
         <MenuButton>
-          <BellIcon color={navbarIcon} w="18px" h="18px" me="18px" mb="4px"  />
+        <Icon
+              as={BsBellFill}
+              //boxSize={4}
+              color={navbarIcon}
+              _hover={{ color: "teal.500", cursor: "pointer" }}
+              w="15px"
+              h="15px"
+              mr = "15px"
+              //mb="2px"
+            />
+          {/* <BellIcon color={navbarIcon} w="18px" h="18px" me="18px" mb="5px" _hover={{color:"teal.500", cursor: "pointer"}}/> */}
         </MenuButton>
+      </Tooltip>
         <MenuList p="16px 8px">
           <Flex flexDirection="column">
-            <MenuItem borderRadius="8px" mb="10px">
+            
+            {Array.isArray(notifications) && notifications.map((row) => {
+              return (
+              <MenuItem borderRadius="8px" mb="10px" onClick={() =>handleClick(row)}>
               <ItemContent
-                time="13 minutes ago"
-                info="from Alicia"
-                boldInfo="New Message"
-                aName="Alicia"
-                aSrc={avatar1}
+                info= {row.Message}
+                boldInfo={row.Title}
               />
             </MenuItem>
-            <MenuItem borderRadius="8px" mb="10px">
-              <ItemContent
-                time="2 days ago"
-                info="by Josh Henry"
-                boldInfo="New Album"
-                aName="Josh Henry"
-                aSrc={avatar2}
-              />
-            </MenuItem>
-            <MenuItem borderRadius="8px">
-              <ItemContent
-                time="3 days ago"
-                info="Payment succesfully completed!"
-                boldInfo=""
-                aName="Kara"
-                aSrc={avatar3}
-              />
-            </MenuItem>
+              );
+            })}            
           </Flex>
         </MenuList>
       </Menu>
+      )}
 
       
       {/** logout */}

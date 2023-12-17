@@ -26,6 +26,8 @@ export const API_PATHS = {
   resetPass: GUEST_BASE + "resetPass/",
   sendOTP: GUEST_BASE + "sendOTP/",
   validateOTP: GUEST_BASE + "validateOTP/",
+  viewNotif: GUEST_BASE + "viewNotif/",
+  getNotifs: GUEST_BASE + "getNotifs/",
 
   // Medicine paths
   addMedicine: MEDICINE_BASE + "addMedicine/",
