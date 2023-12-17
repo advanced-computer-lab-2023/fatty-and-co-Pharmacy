@@ -9,6 +9,8 @@ const {
   validateOTP,
   resetPass,
   cartLogin,
+  getNotifs,
+  viewNotif,
 } = require("../controllers/guestController");
 const requireAuth = require("../common/middleware/requireAuth");
 const { pharmUpload } = require("../common/middleware/pharmUpload");
@@ -61,9 +63,11 @@ router.post("/addPatient", createPatient);
 router.post("/addRequest", pharmUpload, createRequest);
 router.patch("/resetPass/", resetPass);
 
+
 // the following routes require authentication
 router.use(requireAuth);
-
+router.get("/getNotifs", getNotifs);
+router.patch("/viewNotif", viewNotif);
 // TODO: add type check as middleware if needed
 router.put("/updateRequest/:id", updateRequest);
 

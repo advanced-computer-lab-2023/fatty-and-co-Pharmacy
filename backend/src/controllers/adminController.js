@@ -45,7 +45,7 @@ const getRequestFile = async (req, res) => {
 
 const getRequests = async (req, res) => {
   try {
-    const requests = await requestModel.find();
+    const requests = await requestModel.find({Type: "Pharmacist"});
     res.status(200).json(requests);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -55,16 +55,13 @@ const getRequests = async (req, res) => {
 const acceptRequest = async (req, res) => {
   const { Username } = req.body;
   try {
-    const request = await requestModel.findOneAndUpdate(
-      { Username: Username, Status: { $ne: "Accepted" } },
-      { $set: { Status: "Accepted" } },
-      { new: true }
-    );
+    const request = await requestModel.findOne(
+      { Username: Username, Status: "Pending" });
     const user = await systemUserModel.create(
-      Username,
-      request.Password,
-      request.Email,
-      "Pharmacist"
+      {Username: Username,
+      Password: request.Password,
+      Email: request.Email,
+      Type: "Pharmacist"}
     );
     const doc = await pharmacistModel.create({
       Username: Username,
@@ -74,7 +71,8 @@ const acceptRequest = async (req, res) => {
       Affiliation: request.Affiliation,
       EducationalBackground: request.EducationalBackground,
     });
-
+    request.Status = "Accepted";
+    request.save();
     res.status(200).json(request);
   } catch (error) {
     res.status(400).json({ error: error.message });

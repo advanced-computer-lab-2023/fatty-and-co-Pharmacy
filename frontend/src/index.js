@@ -21,13 +21,16 @@ import { AuthContextProvider } from "context/AuthContext";
 import { WalletContextProvider } from "context/WalletContext";
 import {CartContextProvider} from "context/CartContext";
 import App from "./App";
+import { NotificationsContextProvider } from "context/NotificationsContext";
 
 ReactDOM.render(
   <React.StrictMode>
     <AuthContextProvider>
       <WalletContextProvider>
         <CartContextProvider>
+          <NotificationsContextProvider>
         <App />
+        </NotificationsContextProvider>
         </CartContextProvider>
       </WalletContextProvider>
     </AuthContextProvider>

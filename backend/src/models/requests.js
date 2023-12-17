@@ -63,6 +63,10 @@ const requestSchema = new Schema(
     PharmacyDegreeName: {
       type: String,
     },
+    Type :{
+      type: String,
+      enum: ["Doctor", "Pharmacist"],
+    },
   },
   { timestamps: true }
 );
