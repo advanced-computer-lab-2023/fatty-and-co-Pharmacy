@@ -3,7 +3,20 @@ const orderModel = require("../models/orders");
 const cartModel = require("../models/cart");
 const medicineModel = require("../models/medicine");
 const prescriptionModel = require("../models/prescriptions");
+const notificationModel = require("../models/notifications");
+const userModel = require("../models/systemusers");
+const nodemailer = require("nodemailer");
 
+const transporter = nodemailer.createTransport({
+  //service: 'gmail',
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
+  auth: {
+    user: "shebeenhealthclinic@gmail.com",
+    pass: "xojm teqp otis nknr",
+  },
+});
 const checkout = async (req, res) => {
   try {
     const username = req.user.Username;
@@ -58,6 +71,23 @@ const checkout = async (req, res) => {
         return;
       }
       medicine.Quantity -= quantity;
+      console.log(medicine.Quantity);
+    if(medicine.Quantity==0){
+      console.log(medicine.Quantity);
+      const user = await userModel.findOne({Username: "HusseinPha2@"});
+      const n1 = await notificationModel.create({
+        Title: "Medicine Out of Stock",
+        Message: `${medicine.Name} has gone out of stock`,
+        Username: "HusseinPha2@",
+      })
+  
+      await transporter.sendMail({
+        to: user.Email,
+        subject: "Medicine Out of Stock",
+        text: `${medicine.Name} has gone out of stock`,
+      });
+    
+    }
       medicine.Sales += quantity;
       const currentMonth = new Date().getMonth();
       // Update the SalesPerMonth array for the current month
@@ -93,6 +123,7 @@ const checkout = async (req, res) => {
     cart.TotalCost = 0;
     cart.Medicine = [];
     await cart.save();
+    
 
     res.status(200).send(newOrder);
   } catch (error) {

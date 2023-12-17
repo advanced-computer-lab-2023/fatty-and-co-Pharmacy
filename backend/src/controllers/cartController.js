@@ -1,10 +1,24 @@
 const patientModel = require("../models/patients");
+const pharmacistModel = require("../models/pharmacists");
 const orderModel = require("../models/orders");
 const cartModel = require("../models/cart");
 const medicineModel = require("../models/medicine");
 const prescriptionModel = require("../models/prescriptions");
 const subscriptionModel = require("../models/subscriptions");
+const notificationModel = require("../models/notifications");
+const userModel = require("../models/systemusers");
+const nodemailer = require("nodemailer");
 
+const transporter = nodemailer.createTransport({
+  //service: 'gmail',
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
+  auth: {
+    user: "shebeenhealthclinic@gmail.com",
+    pass: "xojm teqp otis nknr",
+  },
+});
 
 const addMedicineToCart = async (req, res) => {
   try {
@@ -57,6 +71,7 @@ const addMedicineToCart = async (req, res) => {
     }
     cart.Medicine.push(MedicineID);
     await cart.save();
+
     res.status(200).send(cart);
   } catch (error) {
     console.log(error);

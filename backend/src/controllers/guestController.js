@@ -3,6 +3,7 @@ const patientModel = require("../models/patients");
 const requestModel = require("../models/requests.js");
 const cartModel = require("../models/cart");
 const subscriptionModel = require("../models/subscriptions");
+const notificationsModel = require("../models/notifications");
 
 const bcrypt = require("bcrypt");
 const { validatePassword } = require("../common/utils/validators");
@@ -91,10 +92,36 @@ const createRequest = async (req, res) => {
       IdFileName,
       WorkingLicenseName,
       PharmacyDegreeName,
+      Type: "Pharmacist",
     });
     res.status(200).send({ request });
   } catch (error) {
     console.log(error);
+    res.status(400).send({ message: error.message });
+  }
+};
+
+const getNotifs = async (req, res) => {
+  try {
+    const notifs = await notificationsModel.find({Username: req.user.Username , Clicked: false});
+    res.status(200).send(notifs);
+  } catch (error) {
+    res.status(400).send({ message: error.message });
+  }
+};
+
+const viewNotif = async (req, res) => {
+  const {Title, Message} = req.body;
+  try {
+    console.log(Title);
+    console.log(Message);
+    const notif = await notificationsModel.findOneAndUpdate(
+      {Username: req.user.Username , Title, Message, Clicked: { $ne: true }},
+      { $set: { Clicked: true } },
+      { new: true });
+      console.log(notif);
+    res.status(200).send(notif);
+  } catch (error) {
     res.status(400).send({ message: error.message });
   }
 };
@@ -312,4 +339,6 @@ module.exports = {
   validateOTP,
   resetPass,
   cartLogin,
+  getNotifs,
+  viewNotif,
 };
