@@ -10,7 +10,7 @@ const getMessages = async (req, res) => {
   try {
     let query;
 
-    if (req.user.Username === "HusseinPha2@") {
+    if (req.user.Username === "evalpharm") {
       query = {
         $or: [
           { receiverUsername: sender, senderUsername: receiver },
