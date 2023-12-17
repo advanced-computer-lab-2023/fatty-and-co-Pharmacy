@@ -3,7 +3,9 @@ import {
   Badge,
   Button,
   Flex,
+  HStack,
   Td,
+  Divider,
   Text,
   Tr,
   useColorModeValue,
@@ -24,6 +26,21 @@ import { API_PATHS } from "API/api_paths";
 import axios from "axios";
 import { useAuthContext } from "hooks/useAuthContext";
 import { useRequestsContext } from "hooks/useRequestsContext";
+import Card from "components/Card/Card.js";
+import CardBody from "components/Card/CardBody.js";
+import CardHeader from "components/Card/CardHeader.js";
+import {
+  FaBirthdayCake,
+  FaMoneyBillAlt,
+  FaHospital,
+  FaGraduationCap,
+} from "react-icons/fa";
+import {
+  ChevronRightIcon,
+  HamburgerIcon,
+  InfoOutlineIcon,
+  EmailIcon,
+} from "@chakra-ui/icons";
 
 function RequestButton({ Username, Status }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -35,7 +52,6 @@ function RequestButton({ Username, Status }) {
   const toast = useToast();
 
   useEffect(() => {
-
     axios
       .get(API_PATHS.getRequest, {
         params: { Username: Username },
@@ -47,7 +63,7 @@ function RequestButton({ Username, Status }) {
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  }, []); 
+  }, []);
 
   const jsonData = JSON.stringify(data);
 
@@ -157,14 +173,11 @@ function RequestButton({ Username, Status }) {
 
   const downloadWorkingLicenseFile = async () => {
     let WorkingLicenseName = data[0].WorkingLicenseName;
-    const license = await fetch(
-      API_PATHS.getRequestFile + WorkingLicenseName,
-      {
-        headers: {
-          Authorization: Authorization,
-        },
-      }
-    );
+    const license = await fetch(API_PATHS.getRequestFile + WorkingLicenseName, {
+      headers: {
+        Authorization: Authorization,
+      },
+    });
     const licenseBlob = await license.blob();
     const licenseurl = URL.createObjectURL(licenseBlob);
 
@@ -189,6 +202,70 @@ function RequestButton({ Username, Status }) {
           <ModalBody>
             {data ? (
               <div>
+                <Card>
+                  <CardHeader p="12px 5px" mb="12px">
+                    <HStack>
+                      <InfoOutlineIcon color="teal.400" />
+                      <Text fontSize="lg" fontWeight="bold">
+                        {data.Username} Information
+                      </Text>
+                    </HStack>
+                  </CardHeader>
+                  <CardBody>
+                    {/* {data.Username && data.Username !== ":username" ? ( */}
+                    <Flex flexDirection="column">
+                      <HStack>
+                        <Icon
+                          as={EmailIcon}
+                          boxSize={6}
+                          color={useColorModeValue("teal.500", "teal.300")}
+                        />
+                        <Text fontWeight="normal">{data.Email}</Text>
+                      </HStack>
+                      <Divider my="2" />
+                      <HStack>
+                        <Icon
+                          as={FaBirthdayCake}
+                          boxSize={6}
+                          color={useColorModeValue("teal.500", "teal.300")}
+                        />
+                        <Text fontWeight="normal">{data.DateOfBirth}</Text>
+                      </HStack>
+                      <Divider my="2" />
+                      <HStack>
+                        <Icon
+                          as={FaMoneyBillAlt}
+                          boxSize={6}
+                          color={useColorModeValue("teal.500", "teal.300")}
+                        />
+                        <Text>${data.HourlyRate}</Text>
+                      </HStack>
+                      <Divider my="2" />
+                      <HStack>
+                        <Icon
+                          as={FaHospital}
+                          boxSize={6}
+                          color={useColorModeValue("teal.500", "teal.300")}
+                        />
+                        <Text>{data.Affiliation}</Text>
+                      </HStack>
+                      <Divider my="2" />
+                      <HStack>
+                        <Icon
+                          as={FaGraduationCap}
+                          boxSize={6}
+                          color={useColorModeValue("teal.500", "teal.300")}
+                        />
+                        <Text>{data.EducationalBackground}</Text>
+                      </HStack>
+                    </Flex>
+                    {/* ) : (
+                      <Text fontSize="3xl" fontWeight="bold" textAlign="center">
+                        Username not found
+                      </Text>
+                    )} */}
+                  </CardBody>
+                </Card>
                 <p>Request Details: {jsonData}</p>
                 <VStack spacing={3} w="80%">
                   <button onClick={downloadIdFile}>
@@ -206,7 +283,9 @@ function RequestButton({ Username, Status }) {
                 </VStack>
               </div>
             ) : (
-              <p>Loading data...</p>
+              <Flex align="center" justify="center" height="200px">
+                <Text fontSize="lg">Loading user data...</Text>
+              </Flex>
             )}
           </ModalBody>
           <ModalFooter>
