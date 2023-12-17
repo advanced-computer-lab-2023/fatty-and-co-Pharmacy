@@ -25,21 +25,21 @@ const ChatWithPatient = () => {
   const [messages, setMessages] = useState([]);
   const [selectedPatient, setSelectedPatient] = useState(false);
 
-  //   socket.on("receivedNotification", (recUsername, sendUsername) => {
-  //     console.log("notif username");
-  //     console.log(recUsername);
-  //     console.log(currentUsername);
-  //     if (recUsername === currentUsername) {
-  //       console.log("notification received");
-  //       const updatedPat_rec = chatPatients.map((d) =>
-  //         d.Username === sendUsername ? { ...d, hasNotif: true } : d
-  //       );
-  //       setChatPatients(updatedPat_rec);
-  //       //setRender(true);
-  //       console.log("chatPatsafternotification");
-  //       console.log(chatPatients);
-  //     }
-  //   });
+  socket.on("receivedNotification", (recUsername, sendUsername) => {
+    console.log("notif username");
+    console.log(recUsername);
+    console.log(currentUsername);
+    if (recUsername === currentUsername) {
+      console.log("notification received");
+      const updatedPat_rec = chatPatients.map((d) =>
+        d.Username === sendUsername ? { ...d, hasNotif: true } : d
+      );
+      setChatPatients(updatedPat_rec);
+      //setRender(true);
+      console.log("chatPatsafternotification");
+      console.log(chatPatients);
+    }
+  });
 
   const getPharmacistUsername = async () => {
     try {
@@ -102,19 +102,19 @@ const ChatWithPatient = () => {
     setCurrentPatient(patient);
     setSelectedPatient(true);
 
-    // const updatedPat = chatPatients.map((d) =>
-    //   d.Username === patient.Username ? { ...d, hasNotif: false } : d
-    // );
-    // setChatPatients(updatedPat);
+    const updatedPat = chatPatients.map((d) =>
+      d.Username === patient.Username ? { ...d, hasNotif: false } : d
+    );
+    setChatPatients(updatedPat);
 
     console.log("clicked");
     console.log(patient.Username);
 
-    // await axios.put(
-    //   API_PATHS.setNotificationsToSeen,
-    //   { senderUsername: patient.Username },
-    //   { headers: { Authorization } }
-    // );
+    await axios.put(
+      API_PATHS.setNotificationsToSeen,
+      { senderUsername: patient.Username },
+      { headers: { Authorization } }
+    );
   };
 
   const fetchConversations = async () => {

@@ -25,6 +25,22 @@ const ChatWithDoctor = () => {
   const [messages, setMessages] = useState([]);
   const [selectedDoctor, setSelectedDoctor] = useState(false);
 
+  socket.on("receivedNotification", (recUsername, sendUsername) => {
+    console.log("notif username");
+    console.log(recUsername);
+    console.log(currentUsername);
+    if (recUsername === currentUsername) {
+      console.log("notification received");
+      const updatedPat_rec = chatDoctors.map((d) =>
+        d.Username === sendUsername ? { ...d, hasNotif: true } : d
+      );
+      setChatDoctors(updatedPat_rec);
+      //setRender(true);
+      console.log("chatPatsafternotification");
+      console.log(chatDoctors);
+    }
+  });
+
   const getPharmacistUsername = async () => {
     try {
       const response = await axios.get(API_PATHS.getPharmacistUsernameSocket, {
@@ -86,10 +102,10 @@ const ChatWithDoctor = () => {
     setCurrentDoctor(doctor);
     setSelectedDoctor(true);
 
-    // const updatedPat = chatDoctors.map((d) =>
-    //   d.Username === doctor.Username ? { ...d, hasNotif: false } : d
-    // );
-    // setChatDoctors(updatedPat);
+    const updatedPat = chatDoctors.map((d) =>
+      d.Username === doctor.Username ? { ...d, hasNotif: false } : d
+    );
+    setChatDoctors(updatedPat);
 
     console.log("clicked");
     console.log(doctor.Username);
@@ -106,7 +122,7 @@ const ChatWithDoctor = () => {
       const response = await axios.get(API_PATHS.getAllDoctors, {
         headers: { Authorization },
       });
-      console.log("chat patients");
+      console.log("chat doctors");
       console.log(response.data);
       setChatDoctors(response.data);
       //console.log(response.data);

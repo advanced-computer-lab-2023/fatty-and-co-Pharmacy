@@ -79,4 +79,8 @@ export const API_PATHS = {
 
   // Doctor paths
   getAllDoctors: DOCTOR_BASE + "getAllDoctors/",
+
+  //notifications
+  getNotifications: NOTIFICATION_BASE + "getNotifications",
+  setNotificationsToSeen: NOTIFICATION_BASE + "setNotificationsToSeen",
 };
