@@ -8,6 +8,7 @@ const {
   getEmergencyContact,
   getWalletAmount,
   getMedicineDiscount,
+  getPatientUsernameSocket,
   viewSubscribedPackage,
 } = require("../controllers/patientController");
 
@@ -33,6 +34,8 @@ router.get("/getEmergencyContact/:Username", getEmergencyContact);
 router.get("/getWalletAmount", getWalletAmount);
 
 router.get("/getMedicineDiscount", getMedicineDiscount);
+
+router.get("/getPatientUsernameSocket", getPatientUsernameSocket);
 
 router.get("/viewSubscription",viewSubscribedPackage);
 

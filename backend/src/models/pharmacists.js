@@ -29,6 +29,11 @@ const pharmacistSchema = new Schema({
     type: String,
     required: true,
   },
+  Wallet: {
+    type: Number,
+    required: true,
+    default: 5000,
+  },
 });
 
 const Pharmacist = mongoose.model("Pharmacist", pharmacistSchema);

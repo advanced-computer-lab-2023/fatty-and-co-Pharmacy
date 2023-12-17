@@ -84,8 +84,9 @@ const rejectRequest = async (req, res) => {
   try {
     const request = await requestModel.findOneAndUpdate(
       { Username: Username, Status: { $ne: "Rejected" } },
-    { $set: { Status: "Rejected" } },
-    { new: true });
+      { $set: { Status: "Rejected" } },
+      { new: true }
+    );
     res.status(200).json(request);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -100,10 +101,6 @@ const deleteUser = async (req, res) => {
       const patient = await patientModel.findOneAndDelete({
         Username: Username,
       });
-      const orders = await orderModel.find({ PatientUsername: Username });
-      if (orders.length > 0) {
-        await orders.deleteMany({ PatientUsername: Username });
-      }
       res.status(200).json({ user, patient });
     } else if (user && user.Type == "Pharmacist") {
       const pharmacist = await pharmacistModel.findOneAndDelete({
