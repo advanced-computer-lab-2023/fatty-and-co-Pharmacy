@@ -8,8 +8,8 @@ import Conversation from "components/Chat/Conversation";
 import ChatBox from "components/Chat/ChatArea/ChatBox";
 import socketIOClient from "socket.io-client";
 
-//const ENDPOINT = "http://localhost:7000";
-//const socket = socketIOClient(ENDPOINT);
+const ENDPOINT = "http://localhost:7000";
+const socket = socketIOClient(ENDPOINT);
 const ChatWithPharmacist = () => {
   const { user } = useAuthContext();
   const Authorization = `Bearer ${user.token}`;
@@ -191,12 +191,10 @@ const ChatWithPharmacist = () => {
             />
           ))} */}
         </Box>
-        <Flex position="sticky">
-          <Box w="600px">
-            <Text>Chat</Text>
-            <ChatBox messages={messages} receiver={currentPharmacist} />
-          </Box>
-        </Flex>
+        <Box w="600px">
+          <Text>Chat</Text>
+          <ChatBox messages={messages} receiver={currentPharmacist} />
+        </Box>
       </HStack>
     </Flex>
   );
